@@ -7,17 +7,19 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.3</version>
+    <version>2.7.7</version>
   </parent>
 
-  <groupId>it.gov.pagopa</groupId>
-  <artifactId>microservice</artifactId> <!--TODO: set your artifactId-->
+  <groupId>it.gov.pagopa.apiconfig</groupId>
+  <artifactId>selfcareintegration</artifactId>
   <version>0.0.1</version>
-  <name>Your project name</name> <!--TODO: set your name-->
-  <description>Your description</description> <!--TODO: set your description-->
+  <name>ApiConfig - SelfCare Integration</name>
+  <description>Spring application exposes APIs to manage requests from selfcare</description>
 
   <properties>
     <java.version>11</java.version>
+    <springdoc-version>1.6.14</springdoc-version>
+    <ojdbc8-version>21.9.0.0</ojdbc8-version>
   </properties>
 
   <dependencies>
@@ -61,6 +63,12 @@
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
     </dependency>
+    
+    <dependency>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <artifactId>ojdbc8</artifactId>
+      <version>${ojdbc8-version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -75,7 +83,7 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.6.11</version>
+      <version>${springdoc-version}</version>
     </dependency>
 
     <dependency>

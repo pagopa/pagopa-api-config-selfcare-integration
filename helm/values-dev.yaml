@@ -1,10 +1,10 @@
 microservice-chart:
-  namespace: "your-namespace" # TODO: set your AKS namespace
+  namespace: "apiconfigselfcareintegration" # TODO: set your AKS namespace
   nameOverride: ""
   fullnameOverride: ""
   image:
-    repository: pagopadcommonacr.azurecr.io/yourname # TODO
-    tag: "0.0.3"
+    repository: pagopadcommonacr.azurecr.io/pagopaapiconfigselfcareintegration # TODO
+    tag: "0.0.1"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -28,8 +28,8 @@ microservice-chart:
     port: 8080
   ingress:
     create: true
-    host: "your.host" # TODO: set the host
-    path: /your-path-here/(.*) # TODO: set your path
+    host: "weudev.apiconfigselfcareintegration.internal.dev.platform.pagopa.it" # TODO: set the host
+    path: /pagopa-api-config-selfcare-integration/(.*) # TODO: set your path
   serviceAccount:
     create: false
     annotations: { }
@@ -61,10 +61,17 @@ microservice-chart:
           value: "75"
   envConfig:
     # TODO: set your name
-    WEBSITE_SITE_NAME: 'yourProjectName' # required to show cloud role name in application insights
+    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
+    ENV: 'azure-dev'
+    APP_LOGGING_LEVEL: 'DEBUG'
+    DEFAULT_LOGGING_LEVEL: 'DEBUG'
+    CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
+    SPRING_DATASOURCE_URL: ''
   envSecret:
     # required
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-d-connection-string'
+    SPRING_DATASOURCE_USERNAME: ''
+    SPRING_DATASOURCE_PASSWORD: ''
   keyvault:
     name: "pagopa-d-afm-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
