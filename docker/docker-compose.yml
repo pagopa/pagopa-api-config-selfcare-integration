@@ -1,19 +1,24 @@
 version: '3.8'
 
 services:
-  api-config-selfcare-integration:
-    container_name: 'spring-api-config-selfcare-integration'
-    ports:
-      - "8080:8080"
+  app:
+    container_name: 'app'
+    image: 'alessioselfcareint'
+    build:
+      dockerfile: Dockerfile
+      context: ../
     env_file:
       - ./config/.env
-    build:
-      context: ../
-      dockerfile: Dockerfile-local
+    ports:
+      - "8080:8080"
+    environment:
+       - "SPRING_PROFILES_ACTIVE=docker"
     depends_on:
-      - oracle
+      oracle:
+        condition: service_healthy
     networks:
       - api-conf-net
+
 
   flyway:
     container_name: 'flyway'
@@ -24,7 +29,8 @@ services:
       - ./database/drivers:/flyway/drivers
       - ./database/conf:/flyway/conf
     depends_on:
-      - oracle
+      oracle:
+        condition: service_healthy
     networks:
       - api-conf-net
 
@@ -33,6 +39,11 @@ services:
     image: pagopadcommonacr.azurecr.io/dboracle-ee-12.2.0.1-slim:latest
     volumes:
       - './database/volume:/ORCL'
+    healthcheck:
+      test: [ "CMD", "/home/oracle/setup/healthcheck.sh"]
+      interval: 45s
+      timeout: 15s
+      retries: 60
     ports:
       - "1521:1521"
       - "5500:5500"

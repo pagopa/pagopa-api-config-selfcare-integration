@@ -1,9 +1,9 @@
 microservice-chart:
-  namespace: "your-namespace" # TODO: set your AKS namespace
+  namespace: "apiconfig"
   nameOverride: ""
   fullnameOverride: ""
   image:
-    repository: pagopapcommonacr.azurecr.io/yourname # TODO
+    repository: pagopapcommonacr.azurecr.io/pagopaapiconfigselfcareintegration
     tag: "0.0.3"
     pullPolicy: Always
   livenessProbe:
@@ -28,8 +28,8 @@ microservice-chart:
     port: 8080
   ingress:
     create: true
-    host: "your.host" # TODO: set the host
-    path: /your-path-here/(.*) # TODO: set your path
+    host: "weuprod.apiconfigselfcareintegration.internal.platform.pagopa.it"
+    path: /pagopa-api-config-selfcare-integration/(.*)
   serviceAccount:
     create: false
     annotations: { }
@@ -60,13 +60,19 @@ microservice-chart:
           type: Utilization # Allowed types are 'Utilization' or 'AverageValue'
           value: "75"
   envConfig:
-    # TODO: set your name
-    WEBSITE_SITE_NAME: 'yourProjectName' # required to show cloud role name in application insights
+    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
+    ENV: 'azure-prod'
+    APP_LOGGING_LEVEL: 'INFO'
+    DEFAULT_LOGGING_LEVEL: 'INFO'
+    CORS_CONFIGURATION: ''#TODO
+    SPRING_DATASOURCE_URL: ''#TODO
   envSecret:
     # required
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-p-connection-string'
+    SPRING_DATASOURCE_USERNAME: ''#TODO
+    SPRING_DATASOURCE_PASSWORD: ''#TODO
   keyvault:
-    name: "pagopa-p-afm-kv"
+    name: "pagopa-p-apiconfig-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
   nodeSelector: { }
   tolerations: [ ]
