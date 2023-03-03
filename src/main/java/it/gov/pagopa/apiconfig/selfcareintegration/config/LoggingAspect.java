@@ -34,7 +34,6 @@ public class LoggingAspect {
   @Value("${info.properties.environment}")
   private String environment;
 
-  // TODO: set your package
   @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
   public void restController() {
     // all rest controllers
