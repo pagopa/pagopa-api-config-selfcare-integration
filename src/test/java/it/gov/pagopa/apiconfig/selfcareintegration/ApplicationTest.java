@@ -11,4 +11,10 @@ class ApplicationTest {
     assertTrue(true); // it just tests that an error has not occurred
   }
   
+  @Test
+  void applicationContextTest() {
+    Application.main(new String[] {});
+    assertTrue(true); // it just tests that an error has not occurred
+  }
+  
 }
