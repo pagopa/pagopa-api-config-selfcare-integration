@@ -17,6 +17,11 @@ import org.springframework.validation.annotation.Validated;
 public class AppException extends RuntimeException {
 
   /**
+   * generated serialVersionUID
+   */
+  private static final long serialVersionUID = 5459722925517334151L;
+
+  /**
    * title returned to the response when this exception occurred
    */
   String title;
