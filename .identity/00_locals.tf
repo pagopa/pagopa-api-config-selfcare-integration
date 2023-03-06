@@ -1,6 +1,6 @@
 locals {
   github = {
     org        = "pagopa"
-    repository = "your-name" # TODO
+    repository = "pagopa-api-config-selfcare-integration"
   }
 }
