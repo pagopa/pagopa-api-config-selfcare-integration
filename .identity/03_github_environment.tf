@@ -76,8 +76,19 @@ resource "github_actions_environment_secret" "cluster_name" {
 }
 
 #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_secret" "example_secret" {
+resource "github_actions_secret" "secret_sonar_token" {
+  count  = var.env_short == "d" ? 1 : 0
+
   repository       = local.github.repository
   secret_name      = "SONAR_TOKEN"
-  plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar.value
+  plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar[0].value
+}
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
+resource "github_actions_secret" "secret_sonar_bot_token" {
+  count  = var.env_short == "d" ? 1 : 0
+
+  repository       = local.github.repository
+  secret_name      = "BOT_TOKEN_GITHUB"
+  plaintext_value  = data.azurerm_key_vault_secret.key_vault_bot_token[0].value
 }
