@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_KEY: # TODO
+  PROJECT_KEY: pagopa_pagopa-api-config-selfcare-integration
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -67,7 +67,7 @@ jobs:
           # Needed to get some information about the pull request, if any
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # TODO
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build and analyze on Push main
         if: ${{ github.event_name != 'pull_request' }}
