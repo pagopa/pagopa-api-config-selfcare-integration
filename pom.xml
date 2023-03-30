@@ -10,16 +10,19 @@
     <version>2.7.7</version>
   </parent>
 
-  <groupId>it.gov.pagopa.apiconfig</groupId>
+  <groupId>it.gov.pagopa.api-config</groupId>
   <artifactId>selfcareintegration</artifactId>
   <version>0.0.1</version>
-  <name>ApiConfig - SelfCare Integration</name>
-  <description>Spring application exposes APIs to manage requests from selfcare</description>
+  <name>API-Config - SelfCare Integration</name>
+  <description>Spring application exposes APIs for SelfCare</description>
 
   <properties>
     <java.version>11</java.version>
-    <springdoc-version>1.6.14</springdoc-version>
-    <ojdbc8-version>21.9.0.0</ojdbc8-version>
+    <starter.version>0.3.0</starter.version>
+    <springdoc.version>1.6.14</springdoc.version>
+    <oracle.version>21.9.0.0</oracle.version>
+    <postgresql.version>42.5.4</postgresql.version>
+    <modelmapper.version>3.1.0</modelmapper.version>
   </properties>
 
   <repositories>
@@ -33,7 +36,7 @@
     <dependency>
       <groupId>it.gov.pagopa.api-config</groupId>
       <artifactId>starter</artifactId>
-      <version>0.2.0</version>
+      <version>${starter.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -71,21 +74,31 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-jpa</artifactId>
-    </dependency>
-    
+    <!-- database -->
+
     <dependency>
       <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc8</artifactId>
-      <version>${ojdbc8-version}</version>
+      <version>${oracle.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
@@ -95,13 +108,7 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>${springdoc-version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
+      <version>${springdoc.version}</version>
     </dependency>
 
     <dependency>
@@ -114,7 +121,7 @@
     <dependency>
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
-      <version>3.1.0</version>
+      <version>${modelmapper.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -9,8 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.AppInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 
+import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

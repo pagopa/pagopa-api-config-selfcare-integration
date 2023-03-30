@@ -1,10 +1,10 @@
-package it.gov.pagopa.apiconfig.selfcareintegration.exception;
+package it.gov.pagopa.apiconfig.exception;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.Application;
+import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 
 import java.sql.SQLException;
