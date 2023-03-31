@@ -41,12 +41,12 @@ public class StationDetails extends Station {
   @JsonProperty("port")
   @Schema(required = true)
   @NotNull
-  private Long port;
+  private Long porta;
 
   @JsonProperty("protocol")
   @Schema(required = true)
   @NotNull
-  private Protocol protocol;
+  private Protocol protocollo;
 
   @JsonProperty("redirect_ip")
   private String redirectIp;
@@ -63,21 +63,21 @@ public class StationDetails extends Station {
   private String redirectQueryString;
 
   @JsonProperty("redirect_protocol")
-  private Protocol redirectProtocol;
+  private Protocol redirectProtocollo;
 
   @JsonProperty("service")
-  private String service;
+  private String servizio;
 
   @JsonProperty("pof_service")
-  private String pofService;
+  private String servizioPof;
 
-  @JsonProperty("broker_code")
+  @JsonProperty("broker_details")
   @Schema(required = true)
   @NotBlank
-  private String brokerCode;
+  private BrokerDetails intermediarioPa;
 
   @JsonProperty("protocol_4mod")
-  private Protocol protocol4Mod;
+  private Protocol protocollo4Mod;
 
   @JsonProperty("ip_4mod")
   private String ip4Mod;
@@ -85,10 +85,10 @@ public class StationDetails extends Station {
   @Min(1)
   @Max(65535)
   @JsonProperty("port_4mod")
-  private Long port4Mod;
+  private Long porta4Mod;
 
   @JsonProperty("service_4mod")
-  private String service4Mod;
+  private String servizio4Mod;
 
   @JsonProperty("proxy_enabled")
   private Boolean proxyEnabled;
@@ -111,7 +111,7 @@ public class StationDetails extends Station {
   @Min(1)
   @JsonProperty("thread_number")
   @NotNull
-  private Long threadNumber;
+  private Long numThread;
 
   @Min(0)
   @JsonProperty("timeout_a")
@@ -137,7 +137,7 @@ public class StationDetails extends Station {
   @JsonIgnore private Long brokerObjId;
 
   @JsonProperty("invio_rt_istantaneo")
-  private Boolean rtInstantaneousDispatch;
+  private Boolean invioRtIstantaneo;
 
   @JsonProperty("target_host")
   private String targetHost;
@@ -162,5 +162,5 @@ public class StationDetails extends Station {
   @NotNull
   @Schema(required = true, description = "Primitive number version")
   @JsonProperty("primitive_version")
-  private Integer primitiveVersion;
+  private Integer versionePrimitive;
 }

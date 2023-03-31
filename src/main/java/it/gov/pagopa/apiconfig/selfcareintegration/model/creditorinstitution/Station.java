@@ -28,7 +28,7 @@ public class Station {
   @Schema(example = "1234567890100", required = true)
   @NotBlank
   @Size(max = 35)
-  private String stationCode;
+  private String idStazione;
 
   @JsonProperty("enabled")
   @Schema(required = true, description = "station enabled", defaultValue = "true")
@@ -46,5 +46,5 @@ public class Station {
   @JsonProperty("version")
   @Schema(required = true, description = "number version")
   @NotNull
-  private Long version;
+  private Long versione;
 }
