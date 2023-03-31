@@ -102,6 +102,9 @@ create table NODO4_CFG.STAZIONI
     TARGET_HOST           varchar(100),
     TARGET_PORT           numeric,
     TARGET_PATH           varchar(100),
+    TARGET_HOST_POF       varchar(100),
+    TARGET_PORT_POF       numeric,
+    TARGET_PATH_POF       varchar(100),
     VERSIONE_PRIMITIVE    numeric(2)   default 1,
     constraint PK_STAZIONI
         primary key (OBJ_ID),
@@ -122,6 +125,7 @@ create table NODO4_CFG.PA_STAZIONE_PA
     QUARTO_MODELLO boolean not null,
     STAZIONE_NODO  boolean not null default 'N',
     STAZIONE_AVV   boolean not null default 'N',
+    PAGAMENTO_SPONTANEO boolean not null default 'N',
     BROADCAST      char    not null default 'N',
     constraint PK_PA_STAZIONE_PA
         primary key (OBJ_ID),
