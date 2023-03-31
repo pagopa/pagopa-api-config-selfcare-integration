@@ -29,7 +29,7 @@ public class CreditorInstitutionsService {
     Pa pa = getPaIfExists(creditorInstitutionCode);
     List<PaStazionePa> queryResult = paStazionePaRepository.findAllByFkPa(pa.getObjId());
     List<StationDetails> stations = queryResult.stream()
-        .map(paStazionePa -> modelMapper.map(paStazionePa.getFkStazione(), StationDetails.class))
+        .map(paStazionePa -> modelMapper.map(paStazionePa.getStazione(), StationDetails.class))
         .collect(Collectors.toList());
     return CreditorInstitutionStationDetailsList.builder().stationsDetailsList(stations).build();
   }

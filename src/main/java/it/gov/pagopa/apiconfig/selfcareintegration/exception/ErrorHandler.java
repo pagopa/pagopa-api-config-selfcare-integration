@@ -95,7 +95,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
    * @return a {@code ResponseEntity} instance
    */
   @Override
-  protected ResponseEntity<Object> handleTypeMismatch(
+  public ResponseEntity<Object> handleTypeMismatch(
       TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     log.warn("Type mismatch: ", ex);
     var errorResponse =
