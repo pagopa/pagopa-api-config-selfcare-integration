@@ -29,7 +29,7 @@ public class Broker {
   @Size(max = 35)
   private String idIntermediarioPa;
 
-  @JsonProperty("broker_name")
+  @JsonProperty("broker_details")
   @Schema(example = "Regione Veneto", required = true)
   @NotBlank
   private String codiceIntermediario;
