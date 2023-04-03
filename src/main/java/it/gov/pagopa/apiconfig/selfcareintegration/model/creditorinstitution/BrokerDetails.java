@@ -24,7 +24,6 @@ import lombok.experimental.SuperBuilder;
 public class BrokerDetails extends Broker {
 
   @JsonProperty("extended_fault_bean")
-  @Schema(required = true)
   @NotNull
   private Boolean faultBeanEsteso;
 }

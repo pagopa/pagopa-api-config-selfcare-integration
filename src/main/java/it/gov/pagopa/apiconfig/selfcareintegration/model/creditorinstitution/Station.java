@@ -25,13 +25,13 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
   @JsonProperty("station_code")
-  @Schema(example = "1234567890100", required = true)
+  @Schema(example = "1234567890100")
   @NotBlank
   @Size(max = 35)
   private String idStazione;
 
   @JsonProperty("enabled")
-  @Schema(required = true, description = "station enabled", defaultValue = "true")
+  @Schema(description = "station enabled", defaultValue = "true")
   @NotNull
   private Boolean enabled;
 
@@ -44,7 +44,7 @@ public class Station {
   @Min(1)
   @Max(2)
   @JsonProperty("version")
-  @Schema(required = true, description = "number version")
+  @Schema(description = "number version")
   @NotNull
   private Long versione;
 }

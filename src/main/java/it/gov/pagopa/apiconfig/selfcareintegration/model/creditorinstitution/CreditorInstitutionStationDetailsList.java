@@ -19,7 +19,6 @@ import java.util.List;
 public class CreditorInstitutionStationDetailsList {
 
   @JsonProperty("stations")
-  @Schema(required = true)
   @NotNull
   private List<StationDetails> stationsDetailsList;
 }

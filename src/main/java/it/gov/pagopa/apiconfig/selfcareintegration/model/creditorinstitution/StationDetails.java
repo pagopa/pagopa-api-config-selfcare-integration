@@ -39,12 +39,10 @@ public class StationDetails extends Station {
   @Min(1)
   @Max(65535)
   @JsonProperty("port")
-  @Schema(required = true)
   @NotNull
   private Long porta;
 
   @JsonProperty("protocol")
-  @Schema(required = true)
   @NotNull
   private Protocol protocollo;
 
@@ -72,7 +70,6 @@ public class StationDetails extends Station {
   private String servizioPof;
 
   @JsonProperty("broker_details")
-  @Schema(required = true)
   @NotBlank
   private BrokerDetails intermediarioPa;
 
@@ -115,19 +112,16 @@ public class StationDetails extends Station {
 
   @Min(0)
   @JsonProperty("timeout_a")
-  @Schema(required = true)
   @NotNull
   private Long timeoutA = 15L;
 
   @Min(0)
   @JsonProperty("timeout_b")
-  @Schema(required = true)
   @NotNull
   private Long timeoutB = 30L;
 
   @Min(0)
   @JsonProperty("timeout_c")
-  @Schema(required = true)
   @NotNull
   private Long timeoutC = 120L;
 
@@ -160,7 +154,7 @@ public class StationDetails extends Station {
   @Min(1)
   @Max(2)
   @NotNull
-  @Schema(required = true, description = "Primitive number version")
+  @Schema(description = "Primitive number version")
   @JsonProperty("primitive_version")
   private Integer versionePrimitive;
 }

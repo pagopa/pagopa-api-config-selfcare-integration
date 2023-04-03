@@ -24,18 +24,17 @@ import javax.validation.constraints.Size;
 public class Broker {
 
   @JsonProperty("broker_code")
-  @Schema(example = "223344556677889900", required = true)
+  @Schema(example = "223344556677889900")
   @NotBlank
   @Size(max = 35)
   private String idIntermediarioPa;
 
   @JsonProperty("broker_details")
-  @Schema(example = "Regione Veneto", required = true)
+  @Schema(example = "Regione Veneto")
   @NotBlank
   private String codiceIntermediario;
 
   @JsonProperty("enabled")
-  @Schema(required = true)
   @NotNull
   private Boolean enabled;
 }
