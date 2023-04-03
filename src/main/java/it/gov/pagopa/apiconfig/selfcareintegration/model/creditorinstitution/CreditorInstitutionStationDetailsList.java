@@ -20,5 +20,6 @@ public class CreditorInstitutionStationDetailsList {
 
   @JsonProperty("stations")
   @NotNull
+  @Schema(description = "List of stations associated to the same EC")
   private List<StationDetails> stationsDetailsList;
 }

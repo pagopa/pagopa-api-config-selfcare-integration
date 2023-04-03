@@ -24,17 +24,18 @@ import javax.validation.constraints.Size;
 public class Broker {
 
   @JsonProperty("broker_code")
-  @Schema(example = "223344556677889900")
+  @Schema(example = "223344556677889900", description = "Code used to identify the intermediate EC")
   @NotBlank
   @Size(max = 35)
   private String idIntermediarioPa;
 
   @JsonProperty("broker_details")
-  @Schema(example = "Regione Veneto")
+  @Schema(example = "Regione Veneto", description = "Name and generic details of the intermediate EC")
   @NotBlank
   private String codiceIntermediario;
 
   @JsonProperty("enabled")
+  @Schema(description = "Parameter to find out whether or not the intermediate has been enabled")
   @NotNull
   private Boolean enabled;
 }

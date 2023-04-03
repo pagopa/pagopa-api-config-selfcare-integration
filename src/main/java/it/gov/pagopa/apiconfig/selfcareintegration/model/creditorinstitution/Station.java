@@ -25,26 +25,26 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
   @JsonProperty("station_code")
-  @Schema(example = "1234567890100")
+  @Schema(example = "1234567890100", description = "Unique code to identify the station")
   @NotBlank
   @Size(max = 35)
   private String idStazione;
 
   @JsonProperty("enabled")
-  @Schema(description = "station enabled", defaultValue = "true")
+  @Schema(description = "Parameter to find out whether or not the station has been enabled", defaultValue = "true")
   @NotNull
   private Boolean enabled;
 
   @JsonProperty("broker_description")
   @Schema(
-      description = "Broker description. Read only field",
-      example = "Lorem ipsum dolor sit amet")
+      description = "A description of the intermediate EC",
+      example = "Regione Lazio")
   private String brokerDescription;
 
   @Min(1)
   @Max(2)
   @JsonProperty("version")
-  @Schema(description = "number version")
+  @Schema(description = "The version of the station")
   @NotNull
   private Long versione;
 }
