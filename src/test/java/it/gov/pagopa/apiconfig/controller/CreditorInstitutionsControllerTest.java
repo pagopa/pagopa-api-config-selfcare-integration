@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockCreditorInstitutionStationDetailsList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -27,7 +29,7 @@ class CreditorInstitutionsControllerTest {
   @MockBean private CreditorInstitutionsService creditorInstitutionsService;
 
   @BeforeEach
-  void setUp() {
+  void setUp() throws IOException {
     when(creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234"))
         .thenReturn(getMockCreditorInstitutionStationDetailsList());
   }
