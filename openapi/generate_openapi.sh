@@ -9,10 +9,6 @@ if [[ "$(pwd)" =~ .*"openapi".* ]]; then
     cd ..
 fi
 
-if [ $(npm list -g | grep -c api-spec-converter) -eq 0 ]; then
-  npm install -g api-spec-converter
-fi
-
 if ! $(curl --output /dev/null --silent --head --fail http://localhost:8080/info); then
   mvn spring-boot:run -Dmaven.test.skip=true -Dspring-boot.run.profiles=h2 &
 fi
@@ -35,4 +31,3 @@ echo 'Service Started'
 
 
 curl http://127.0.0.1:8080/v3/api-docs > ./openapi/openapi.json
-api-spec-converter  --from=openapi_3 --to=swagger_2 ./openapi/openapi.json > ./openapi/swagger.json
