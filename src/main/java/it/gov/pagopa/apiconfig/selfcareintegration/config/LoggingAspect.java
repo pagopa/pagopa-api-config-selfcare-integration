@@ -39,12 +39,12 @@ public class LoggingAspect {
     // all rest controllers
   }
 
-  @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.repository..*.*(..))")
+  @Pointcut("execution(* it.gov.pagopa.apiconfig.repository..*.*(..))")
   public void repository() {
     // all repository methods
   }
 
-  @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.service..*.*(..))")
+  @Pointcut("execution(* it.gov.pagopa.apiconfig.service..*.*(..))")
   public void service() {
     // all service methods
   }

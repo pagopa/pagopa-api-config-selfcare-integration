@@ -1,0 +1,10 @@
+{
+  "objId": 1,
+  "idDominio": 168480242,
+  "enabled": true,
+  "ragioneSociale": "Comune di Bassano del Grappa",
+  "capDomicilioFiscale": 111,
+  "pagamentoPressoPsp": true,
+  "rendicontazioneFtp": false,
+  "rendicontazioneZip": false
+}

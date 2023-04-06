@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.selfcareintegration.controller;
+package it.gov.pagopa.apiconfig.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.Application;
+import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 
 @SpringBootTest(classes = Application.class)

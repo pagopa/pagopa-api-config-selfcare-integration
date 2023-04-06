@@ -1,14 +1,14 @@
-package it.gov.pagopa.apiconfig.selfcareintegration.service;
+package it.gov.pagopa.apiconfig.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.Application;
-import it.gov.pagopa.apiconfig.selfcareintegration.repository.HealthCheckRepository;
-
+import it.gov.pagopa.apiconfig.Application;
 import java.util.Optional;
+import it.gov.pagopa.apiconfig.selfcareintegration.repository.HealthCheckRepository;
+import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
