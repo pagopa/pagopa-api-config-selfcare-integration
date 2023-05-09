@@ -14,7 +14,7 @@
    },
    "redirectIp": "paygov.collaudo.regione.veneto.it",
    "redirectPath": "nodo-regionale-fesp/paaInviaRispostaPagamento.html",
-   "redirectPort": 443,
+   "redirectPorta": 443,
    "redirectProtocollo": "HTTPS",
    "servizio": "openspcoop/PD/RT6TPDREGVENETO",
    "servizioPof": "openspcoop/PD/CCP6TPDREGVENETO",

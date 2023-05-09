@@ -2,7 +2,7 @@ package it.gov.pagopa.apiconfig.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.repository.HealthCheckRepository;
+import it.gov.pagopa.apiconfig.starter.repository.HealthCheckRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
