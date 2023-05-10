@@ -27,3 +27,15 @@ data "azurerm_key_vault_secret" "key_vault_bot_token" {
   name = "bot-token-github"
   key_vault_id = data.azurerm_key_vault.key_vault[0].id
 }
+
+data "azurerm_key_vault_secret" "key_vault_cucumber_token" {
+  count  = var.env_short == "d" ? 1 : 0
+
+  name = "cucumber-token"
+  key_vault_id = data.azurerm_key_vault.key_vault[0].id
+}
+
+data "github_organization_teams" "all" {
+  root_teams_only = true
+  summary_only    = true
+}
