@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockBrokerStationDetailsList;
+import static it.gov.pagopa.apiconfig.util.TestUtil.getMockStationDetailsList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,8 +31,8 @@ class BrokersControllerTest {
 
   @BeforeEach
   void setup() throws IOException {
-    when(brokersService.getStationsDetailsFromBroker("1234", null, PageRequest.of(0, 50))).thenReturn(getMockBrokerStationDetailsList());
-    when(brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", PageRequest.of(0, 50))).thenReturn(getMockBrokerStationDetailsList());
+    when(brokersService.getStationsDetailsFromBroker("1234", null, PageRequest.of(0, 50))).thenReturn(getMockStationDetailsList());
+    when(brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", PageRequest.of(0, 50))).thenReturn(getMockStationDetailsList());
   }
 
   @ParameterizedTest

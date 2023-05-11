@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -52,7 +52,7 @@ public class CreditorInstitutionController {
               content =
               @Content(
                   mediaType = MediaType.APPLICATION_JSON_VALUE,
-                  schema = @Schema(implementation = CreditorInstitutionStationDetailsList.class))),
+                  schema = @Schema(implementation = StationDetailsList.class))),
           @ApiResponse(
               responseCode = "401",
               description = "Unauthorized",
@@ -80,7 +80,7 @@ public class CreditorInstitutionController {
   @GetMapping(
       value = "/{creditorInstitutionCode}/stationsdetails",
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<CreditorInstitutionStationDetailsList> getStationsDetailsFromCreditorInstitution(
+  public ResponseEntity<StationDetailsList> getStationsDetailsFromCreditorInstitution(
       @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.", required = true)
       @PathVariable("creditorInstitutionCode")
       String creditorInstitutionCode) {

@@ -61,7 +61,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/BrokerStationDetailsList"
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             },
@@ -179,7 +179,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CreditorInstitutionStationDetailsList"
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             },
@@ -436,32 +436,6 @@
         },
         "description" : "Details of the intermediate EC of the station"
       },
-      "BrokerStationDetailsList" : {
-        "required" : [ "stations" ],
-        "type" : "object",
-        "properties" : {
-          "stations" : {
-            "type" : "array",
-            "description" : "List of stations associated to the same broker",
-            "items" : {
-              "$ref" : "#/components/schemas/StationDetails"
-            }
-          }
-        }
-      },
-      "CreditorInstitutionStationDetailsList" : {
-        "required" : [ "stations" ],
-        "type" : "object",
-        "properties" : {
-          "stations" : {
-            "type" : "array",
-            "description" : "List of stations associated to the same EC",
-            "items" : {
-              "$ref" : "#/components/schemas/StationDetails"
-            }
-          }
-        }
-      },
       "ProblemJson" : {
         "type" : "object",
         "properties" : {
@@ -671,7 +645,20 @@
             "format" : "int64"
           }
         },
-        "description" : "List of stations associated to the same broker"
+        "description" : "List of stations associated to the same entity"
+      },
+      "StationDetailsList" : {
+        "required" : [ "stations" ],
+        "type" : "object",
+        "properties" : {
+          "stations" : {
+            "type" : "array",
+            "description" : "List of stations associated to the same entity",
+            "items" : {
+              "$ref" : "#/components/schemas/StationDetails"
+            }
+          }
+        }
       }
     },
     "securitySchemes" : {

@@ -2,8 +2,8 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.BrokerStationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
@@ -27,7 +27,7 @@ public class BrokersService {
 
   @Autowired private ModelMapper modelMapper;
 
-  public BrokerStationDetailsList getStationsDetailsFromBroker(@NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
+  public StationDetailsList getStationsDetailsFromBroker(@NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
     IntermediariPa broker = getBrokerIfExists(brokerId);
     Page<Stazioni> queryResult;
     if (stationId == null) {
@@ -38,7 +38,7 @@ public class BrokersService {
     List<StationDetails> stations = queryResult.stream()
         .map(station -> modelMapper.map(station, StationDetails.class))
         .collect(Collectors.toList());
-    return BrokerStationDetailsList.builder().stationsDetailsList(stations).build();
+    return StationDetailsList.builder().stationsDetailsList(stations).build();
   }
 
   protected IntermediariPa getBrokerIfExists(String brokerId) throws AppException {

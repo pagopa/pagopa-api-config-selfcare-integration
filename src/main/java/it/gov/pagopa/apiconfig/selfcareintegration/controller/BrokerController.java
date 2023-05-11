@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.BrokerStationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +54,7 @@ public class BrokerController {
               content =
               @Content(
                   mediaType = MediaType.APPLICATION_JSON_VALUE,
-                  schema = @Schema(implementation = BrokerStationDetailsList.class))),
+                  schema = @Schema(implementation = StationDetailsList.class))),
           @ApiResponse(
               responseCode = "401",
               description = "Unauthorized",
@@ -82,7 +82,7 @@ public class BrokerController {
   @GetMapping(
       value = "/{brokerId}/stations",
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<BrokerStationDetailsList> getStationsDetailsFromBroker(
+  public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
       @Parameter(description = "The identifier of the broker.", required = true)
       @PathVariable("brokerId")
       String brokerId,

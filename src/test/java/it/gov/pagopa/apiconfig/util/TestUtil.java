@@ -2,8 +2,7 @@ package it.gov.pagopa.apiconfig.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.BrokerStationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetails;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
@@ -22,16 +21,9 @@ public class TestUtil {
 
   @Autowired
   private ObjectMapper objectMapper;
-  public static CreditorInstitutionStationDetailsList getMockCreditorInstitutionStationDetailsList()
+  public static StationDetailsList getMockStationDetailsList()
       throws IOException {
-    return CreditorInstitutionStationDetailsList.builder()
-        .stationsDetailsList(List.of(getMockStationDetails()))
-        .build();
-  }
-
-  public static BrokerStationDetailsList getMockBrokerStationDetailsList()
-      throws IOException {
-    return BrokerStationDetailsList.builder()
+    return StationDetailsList.builder()
         .stationsDetailsList(List.of(getMockStationDetails()))
         .build();
   }

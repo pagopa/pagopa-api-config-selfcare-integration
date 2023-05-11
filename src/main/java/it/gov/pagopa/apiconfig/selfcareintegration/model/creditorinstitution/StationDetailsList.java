@@ -16,10 +16,10 @@ import java.util.List;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreditorInstitutionStationDetailsList {
+public class StationDetailsList {
 
   @JsonProperty("stations")
   @NotNull
-  @Schema(description = "List of stations associated to the same EC")
+  @Schema(description = "List of stations associated to the same entity")
   private List<StationDetails> stationsDetailsList;
 }

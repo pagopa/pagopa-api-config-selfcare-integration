@@ -2,7 +2,7 @@ package it.gov.pagopa.apiconfig.service;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.BrokerStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
@@ -55,7 +55,7 @@ class BrokersServiceTest {
     when(intermediariPaRepository.findByIdIntermediarioPa("1234")).thenReturn(Optional.of(mockedBroker));
     when(stazioniRepository.findAllByFiltersOrderById(anyLong(), anyString(), any())).thenReturn(page);
 
-    BrokerStationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
+    StationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
@@ -69,7 +69,7 @@ class BrokersServiceTest {
     when(intermediariPaRepository.findByIdIntermediarioPa("1234")).thenReturn(Optional.of(getMockBroker()));
     when(stazioniRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(page);
 
-    BrokerStationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", null, pageable);
+    StationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", null, pageable);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);

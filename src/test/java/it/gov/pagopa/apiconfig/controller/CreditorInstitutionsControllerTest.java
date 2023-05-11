@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockCreditorInstitutionStationDetailsList;
+import static it.gov.pagopa.apiconfig.util.TestUtil.getMockStationDetailsList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,7 +31,7 @@ class CreditorInstitutionsControllerTest {
   @BeforeEach
   void setUp() throws IOException {
     when(creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234"))
-        .thenReturn(getMockCreditorInstitutionStationDetailsList());
+        .thenReturn(getMockStationDetailsList());
   }
 
   @ParameterizedTest

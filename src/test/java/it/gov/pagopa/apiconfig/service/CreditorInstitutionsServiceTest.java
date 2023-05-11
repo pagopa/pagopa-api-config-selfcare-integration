@@ -2,14 +2,10 @@ package it.gov.pagopa.apiconfig.service;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
-import it.gov.pagopa.apiconfig.starter.repository.CodifichePaRepository;
-import it.gov.pagopa.apiconfig.starter.repository.CodificheRepository;
-import it.gov.pagopa.apiconfig.starter.repository.IbanValidiPerPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
-import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import it.gov.pagopa.apiconfig.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
@@ -46,7 +42,7 @@ class CreditorInstitutionsServiceTest {
     when(paStazionePaRepository.findAllByFkPa(anyLong()))
         .thenReturn(Lists.newArrayList(getMockPaStazionePa()));
 
-    CreditorInstitutionStationDetailsList result =
+    StationDetailsList result =
         creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234");
     String actual = TestUtil.toJson(result);
     String expected =
