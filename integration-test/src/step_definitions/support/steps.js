@@ -1,31 +1,56 @@
-const {Given, When, Then} = require('@cucumber/cucumber')
-const assert = require("assert");
-const {call, post} = require("./common");
-const fs = require("fs");
+const { Before, Given, Then, When } = require('@cucumber/cucumber');
+const {
+    assertEmptyList,
+    assertErrorMessage,
+    assertNonEmptyList,
+    assertStatusCode
+} = require('./logic/common_logic');
+const { executeHealthCheckForAPIConfig } = require('./logic/health_checks_logic');
+const {
+  assertStationIncludedInResponse,
+  checkNonExistingBroker,
+  checkNonExistingCreditorInstitution,
+  retrieveBroker,
+  retrieveCreditorInstitution,
+  retrieveStationsByBroker,
+  retrieveStationsByCreditorInstitution
+} = require('./logic/selfcare_integration_test');
 
-let rawdata = fs.readFileSync('./config/properties.json');
-let properties = JSON.parse(rawdata);
-const app_host = properties.app_host;
+/*
+ *  'Given' precondition for health checks on various services.
+ */
+Given('APIConfig service running', () => executeHealthCheckForAPIConfig());
 
-let body;
-let responseToCheck;
+/*
+ *  'Given' precondition for validating the entities to be used.
+ */
+Given('a broker with id {string}', (brokerId) => retrieveBroker(bundle, brokerID));
+Given('a broker with id {string} with no stations related', (brokerId) => retrieveBroker(bundle, brokerID));
+Given('no broker with id {string}', (brokerId) => checkNonExistingBroker(brokerID));
+Given('a creditor institution with id {string}', (creditorInstitutionId) => retrieveCreditorInstitution(bundle, creditorInstitutionId));
+Given('a creditor institution with id {string} with no stations related', (creditorInstitutionId) => retrieveCreditorInstitution(bundle, creditorInstitutionId));
+Given('no creditor institution with id {string}', (creditorInstitutionId) => checkNonExistingCreditorInstitution(creditorInstitutionId));
 
-Given(/^initial json$/, function (payload) {
-  body = JSON.parse(payload);
-});
+/*
+ *  'When' clauses for executing actions.
+ */
+When('the client requests the list of stations related to the broker', () => retrieveStationsByBroker(bundle));
+When('the client requests the list of stations related to the creditor institution', () => retrieveStationsByCreditorInstitution(bundle));
 
-When(/^the client send (GET|POST|PUT|DELETE) to (.*)$/,
-    async function (method, url) {
-      responseToCheck = await call(method, afm_host + url, body)
-    });
+/*
+ *  'Then' clauses for assering retrieved data
+ */
+Then('the client receives status code {int}', (statusCode) => assertStatusCode(bundle.response, statusCode));
+Then('the client receives a non-empty list', () => assertNonEmptyList(bundle.response));
+Then('the client receives an empty list', () => assertEmptyList(bundle.response));
+Then('the client receives an error message', () => assertErrorMessage(bundle.response));
+Then('the station is included in the result list', () => assertStationIncludedInResponse(bundle.response));
 
-Then(/^check statusCode is (\d+)$/, function (status) {
-  assert.strictEqual(responseToCheck.status, status);
 
-});
-
-Then(/^check response body is$/, function (payload) {
-  console.log(responseToCheck.data)
-
-  assert.deepStrictEqual(responseToCheck.data, JSON.parse(payload));
+Before(function(scenario) {
+    const header = `| Starting scenario "${scenario.pickle.name}" |`;
+    let h = "-".repeat(header.length);
+    console.log(`\n${h}`);
+    console.log(`${header}`);
+    console.log(`${h}`);
 });
