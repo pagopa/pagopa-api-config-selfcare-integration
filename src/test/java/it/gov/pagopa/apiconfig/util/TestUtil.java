@@ -28,13 +28,6 @@ public class TestUtil {
         .build();
   }
 
-  public static BrokerStationDetailsList getMockBrokerStationDetailsList()
-      throws IOException {
-    return BrokerStationDetailsList.builder()
-        .stationsDetailsList(List.of(getMockStationDetails()))
-        .build();
-  }
-
   public static StationDetails getMockStationDetails() throws IOException {
     String mockPa = readJsonFromFile("request/get_station_details_ok1.json");
     return new ObjectMapper().readValue(mockPa, StationDetails.class);
