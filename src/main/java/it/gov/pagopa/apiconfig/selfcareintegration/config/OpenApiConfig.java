@@ -35,7 +35,17 @@ public class OpenApiConfig {
                 .description("The API key to access this function app.")
                 .name("Ocp-Apim-Subscription-Key")
                 .in(SecurityScheme.In.HEADER))
+            .addSecuritySchemes(
+                "Authorization",
+                new SecurityScheme()
+                    .type(SecurityScheme.Type.HTTP)
+                    .description("JWT token get after Azure Login")
+                    .name("Authorization")
+                    .scheme("bearer")
+                    .bearerFormat("JWT")
+                    .in(SecurityScheme.In.HEADER))
         )
+
         .info(new Info()
             .title(appName)
             .version(appVersion)
