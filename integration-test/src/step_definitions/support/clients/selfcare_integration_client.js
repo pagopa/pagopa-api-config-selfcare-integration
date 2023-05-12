@@ -1,10 +1,10 @@
 const { get } = require("../utility/axios_common");
 const { debugLog } = require("../utility/helpers");
 
-const api_host = process.env.API_HOST;
+const app_host = process.env.APP_HOST;
 
 function getStationsByBroker(brokerId, limit, pageNumber) {
-    const host = `${api_host}/brokers/${brokerId}/stations&limit=${limit}&pageNumber=${pageNumber}`;
+    const host = `${app_host}/brokers/${brokerId}/stations?limit=${limit}&page=${pageNumber}`;
     debugLog(`Calling endpoint: [${host}]`);
     return get(host, {
         headers: {
@@ -14,7 +14,7 @@ function getStationsByBroker(brokerId, limit, pageNumber) {
 }
 
 function getStationsByCreditorInstitution(creditorInstitutionCode) {
-    const host = `${api_host}/creditorinstitutions/${creditorInstitutionCode}/stationsdetails`;
+    const host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/stationsdetails`;
     debugLog(`Calling endpoint: [${host}]`);
     return get(host, {
         headers: {

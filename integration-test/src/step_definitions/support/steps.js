@@ -60,9 +60,9 @@ When('the client requests the list of stations related to the creditor instituti
  *  'Then' clauses for assering retrieved data
  */
 Then('the client receives status code {int}', (statusCode) => assertStatusCode(bundle.response, statusCode));
-Then('the client receives a non-empty list', () => assertNonEmptyList(bundle.response));
-Then('the client receives an empty list', () => assertEmptyList(bundle.response));
-Then('the client receives an error message', () => assertErrorMessage(bundle.response));
+Then('the client receives a non-empty list of stations', () => assertNonEmptyList(bundle.response?.data.stations));
+Then('the client receives an empty list of stations', () => assertEmptyList(bundle.response?.data?.stations));
+Then('the client receives an error message', () => assertErrorMessage(bundle.response?.data));
 Then('the station is included in the result list', () => assertStationIncludedInResponse(bundle.stationId, bundle.response));
 
 

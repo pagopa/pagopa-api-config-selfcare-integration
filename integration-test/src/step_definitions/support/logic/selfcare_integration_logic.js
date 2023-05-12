@@ -38,7 +38,7 @@ async function retrieveNonExistingBroker(bundle) {
 }
 
 async function retrieveCreditorInstitution(bundle) {
-    console.log(` - a creditor institution with id ${brokerId} ${suffixString}`);
+    console.log(` - a creditor institution`);
     bundle.creditorInstitutionId = process.env.valid_ci;    
     retrieveCIExecuteAPICall(bundle);
 }
