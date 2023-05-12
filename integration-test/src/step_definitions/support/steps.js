@@ -8,13 +8,30 @@ const {
 const { executeHealthCheckForAPIConfig } = require('./logic/health_checks_logic');
 const {
   assertStationIncludedInResponse,
-  checkNonExistingBroker,
-  checkNonExistingCreditorInstitution,
+
   retrieveBroker,
+  retrieveBrokerWithNoStation,
+  retrieveNonExistingBroker,
   retrieveCreditorInstitution,
+  retrieveCreditorInstitutionWithNoStation,
+  retrieveNonExistingCreditorInstitution,
   retrieveStationsByBroker,
-  retrieveStationsByCreditorInstitution
-} = require('./logic/selfcare_integration_test');
+  retrieveStationsByCreditorInstitution,
+  retrieveStationRelatedToBroker,
+  retrieveStationRelatedToCI
+} = require('./logic/selfcare_integration_logic');
+
+let bundle = {
+  brokerId: undefined,
+  creditorInstitutionId: undefined,
+  stationId: undefined,
+  broker: undefined,
+  creditorInstitution: undefined,
+  station: undefined,
+  response: undefined,
+  limit: 100,
+  pageNumber: 0
+}
 
 /*
  *  'Given' precondition for health checks on various services.
@@ -24,12 +41,14 @@ Given('APIConfig service running', () => executeHealthCheckForAPIConfig());
 /*
  *  'Given' precondition for validating the entities to be used.
  */
-Given('a broker with id {string}', (brokerId) => retrieveBroker(bundle, brokerID));
-Given('a broker with id {string} with no stations related', (brokerId) => retrieveBroker(bundle, brokerID));
-Given('no broker with id {string}', (brokerId) => checkNonExistingBroker(brokerID));
-Given('a creditor institution with id {string}', (creditorInstitutionId) => retrieveCreditorInstitution(bundle, creditorInstitutionId));
-Given('a creditor institution with id {string} with no stations related', (creditorInstitutionId) => retrieveCreditorInstitution(bundle, creditorInstitutionId));
-Given('no creditor institution with id {string}', (creditorInstitutionId) => checkNonExistingCreditorInstitution(creditorInstitutionId));
+Given('an existing broker', () => retrieveBroker(bundle));
+Given('an existing broker with no stations related', () => retrieveBrokerWithNoStation(bundle));
+Given('a non-existing broker', () => retrieveNonExistingBroker(bundle));
+Given('an existing creditor institution', () => retrieveCreditorInstitution(bundle));
+Given('an existing creditor institution with no stations related', () => retrieveCreditorInstitutionWithNoStation(bundle));
+Given('a non-existing creditor institution', () => retrieveNonExistingCreditorInstitution(bundle));
+Given('a station related to broker', () => retrieveStationRelatedToBroker(bundle));
+Given('a station related to creditor institution', () => retrieveStationRelatedToCI(bundle));
 
 /*
  *  'When' clauses for executing actions.
@@ -44,7 +63,7 @@ Then('the client receives status code {int}', (statusCode) => assertStatusCode(b
 Then('the client receives a non-empty list', () => assertNonEmptyList(bundle.response));
 Then('the client receives an empty list', () => assertEmptyList(bundle.response));
 Then('the client receives an error message', () => assertErrorMessage(bundle.response));
-Then('the station is included in the result list', () => assertStationIncludedInResponse(bundle.response));
+Then('the station is included in the result list', () => assertStationIncludedInResponse(bundle.stationId, bundle.response));
 
 
 Before(function(scenario) {

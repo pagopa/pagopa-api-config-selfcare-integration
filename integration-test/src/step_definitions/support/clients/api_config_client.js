@@ -24,16 +24,6 @@ function readBroker(brokerId) {
     })
 }
 
-function readCIStationAssociation(stationId, organizationFiscalCode) {   
-    const host = `${api_config_host}/stations/${stationId}/creditorinstitutions/${organizationFiscalCode}`;
-    debugLog(`Calling endpoint: [${host}]`);     
-    return get(host, {
-        headers: {
-            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
-        }
-    })
-}
-
 function readCreditorInstitution(organizationFiscalCode) {
     const host = `${api_config_host}/creditorinstitutions/${organizationFiscalCode}`;
     debugLog(`Calling endpoint: [${host}]`);
@@ -44,9 +34,19 @@ function readCreditorInstitution(organizationFiscalCode) {
     })
 }
 
+function readStation(stationId, organizationFiscalCode) {   
+    const host = `${api_config_host}/stations/${stationId}`;
+    debugLog(`Calling endpoint: [${host}]`);     
+    return get(host, {
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
+        }
+    })
+}
+
 module.exports = {
     apiConfigHealthCheck,
-    readCreditorInstitution,
     readBroker,
-    readCIStationAssociation
+    readCreditorInstitution,
+    readStation
 }

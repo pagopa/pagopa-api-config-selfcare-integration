@@ -22,3 +22,10 @@ function getStationsByCreditorInstitution(creditorInstitutionCode) {
         }
     })
 }
+
+
+
+module.exports = {
+    getStationsByBroker,
+    getStationsByCreditorInstitution
+}
