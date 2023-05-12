@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    container_name: 'app'
+    container_name: 'selfcare-integration'
     image: ${image}
     build:
       dockerfile: Dockerfile
@@ -11,48 +11,5 @@ services:
       - ./config/.env
     ports:
       - "8080:8080"
-    depends_on:
-      flyway:
-        condition: service_completed_successfully
     networks:
       - api-conf-net
-
-
-  flyway:
-    container_name: 'flyway'
-    image: flyway/flyway:8.5.11
-    command: migrate
-    volumes:
-      - ./database/sql:/flyway/sql
-      - ./database/drivers:/flyway/drivers
-      - ./database/conf:/flyway/conf
-    depends_on:
-      oracle:
-        condition: service_healthy
-    networks:
-      - api-conf-net
-
-  oracle:
-    container_name: 'oracle-db-12c'
-    image: pagopadcommonacr.azurecr.io/dboracle-ee-12.2.0.1-slim:latest
-    volumes:
-      - './database/volume:/ORCL'
-    healthcheck:
-      test: [ "CMD", "/home/oracle/setup/healthcheck.sh"]
-      interval: 45s
-      timeout: 15s
-      retries: 60
-    ports:
-      - "1521:1521"
-      - "5500:5500"
-    networks:
-      - api-conf-net
-
-
-networks:
-  api-conf-net:
-    driver: bridge
-    driver_opts:
-      com.docker.network.driver.mtu: 1450
-
-
