@@ -1,4 +1,4 @@
-# sh run_performance_test.sh <local|dev|uat|prod> <load|stress|spike|soak|...> <script-name> <db-name> <subkey>
+# sh run_performance_test.sh <local|dev|uat|prod> <load|stress|spike|soak|...> <script-name> <k6-db-name> <subkey>
 
 ENVIRONMENT=$1
 TYPE=$2

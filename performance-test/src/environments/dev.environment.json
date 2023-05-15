@@ -1,0 +1,11 @@
+{
+  "environment": [
+    {
+      "env": "dev",
+      "app_host": "https://api.dev.platform.pagopa.it/apiconfig-selfcare-integration/v1",
+      "id_broker": "11111111111",
+      "id_station": "11111111111_01",
+      "id_ci": "09633951000"
+    }
+  ]
+}
