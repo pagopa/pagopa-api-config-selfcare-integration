@@ -148,12 +148,12 @@ stages:
                 echo "[INFO] Image version: $(pomversion.next)"
                 
                 echo $(GITHUB_TOKEN) > ./secrets
-                DOCKER_BUILDKIT=1 docker build -t $(dockerNamespace)/$(imageRepository):$(pomversion.next) --secret id=GH_TOKEN,src=./secrets .
-                DOCKER_BUILDKIT=1 docker build -t $(dockerNamespace)/$(imageRepository):latest --secret id=GH_TOKEN,src=./secrets .
-                DOCKER_BUILDKIT=1 docker build -t $(dockerNamespace)/$(imageRepository):$(Build.BuildId) --secret id=GH_TOKEN,src=./secrets .
-                docker push $(dockerNamespace)/$(imageRepository):$(pomversion.next)
-                docker push $(dockerNamespace)/$(imageRepository):latest
-                docker push $(dockerNamespace)/$(imageRepository):$(Build.BuildId)
+                DOCKER_BUILDKIT=1 docker build -t $(dockerRegistryFqdn)/$(imageRepository):$(pomversion.next) --secret id=GH_TOKEN,src=./secrets .
+                DOCKER_BUILDKIT=1 docker build -t $(dockerRegistryFqdn)/$(imageRepository):latest --secret id=GH_TOKEN,src=./secrets .
+                DOCKER_BUILDKIT=1 docker build -t $(dockerRegistryFqdn)/$(imageRepository):$(Build.BuildId) --secret id=GH_TOKEN,src=./secrets .
+                docker push $(dockerRegistryFqdn)/$(imageRepository):$(pomversion.next)
+                docker push $(dockerRegistryFqdn)/$(imageRepository):latest
+                docker push $(dockerRegistryFqdn)/$(imageRepository):$(Build.BuildId)
 
 
   # Testing the docker image
