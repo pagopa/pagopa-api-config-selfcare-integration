@@ -2,8 +2,9 @@ package it.gov.pagopa.apiconfig.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetails;
+import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
@@ -20,9 +21,9 @@ public class TestUtil {
 
   @Autowired
   private ObjectMapper objectMapper;
-  public static CreditorInstitutionStationDetailsList getMockCreditorInstitutionStationDetailsList()
+  public static StationDetailsList getMockStationDetailsList()
       throws IOException {
-    return CreditorInstitutionStationDetailsList.builder()
+    return StationDetailsList.builder()
         .stationsDetailsList(List.of(getMockStationDetails()))
         .build();
   }
@@ -42,13 +43,17 @@ public class TestUtil {
     return new ObjectMapper().readValue(mockStation, Stazioni.class);
   }
 
+  public static IntermediariPa getMockBroker() throws IOException {
+    String mockStation = readJsonFromFile("request/get_broker_ok1.json");
+    return new ObjectMapper().readValue(mockStation, IntermediariPa.class);
+  }
+
   public static PaStazionePa getMockPaStazionePa() throws IOException {
     return PaStazionePa.builder()
         .objId(1L)
         .pa(getMockPa())
         .fkPa(getMockPa().getObjId())
-        .fkStazione(getMockStazioni().getObjId())
-        .stazione(getMockStazioni())
+        .fkStazione(getMockStazioni())
         .broadcast(false)
         .auxDigit(1L)
         .progressivo(2L)

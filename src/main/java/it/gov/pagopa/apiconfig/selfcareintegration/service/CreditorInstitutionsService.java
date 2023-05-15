@@ -2,7 +2,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetails;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
@@ -25,13 +25,13 @@ public class CreditorInstitutionsService {
 
   @Autowired private ModelMapper modelMapper;
 
-  public CreditorInstitutionStationDetailsList getStationsDetailsFromCreditorInstitution(@NotNull String creditorInstitutionCode){
+  public StationDetailsList getStationsDetailsFromCreditorInstitution(@NotNull String creditorInstitutionCode){
     Pa pa = getPaIfExists(creditorInstitutionCode);
     List<PaStazionePa> queryResult = paStazionePaRepository.findAllByFkPa(pa.getObjId());
     List<StationDetails> stations = queryResult.stream()
-        .map(paStazionePa -> modelMapper.map(paStazionePa.getStazione(), StationDetails.class))
+        .map(paStazionePa -> modelMapper.map(paStazionePa.getFkStazione(), StationDetails.class))
         .collect(Collectors.toList());
-    return CreditorInstitutionStationDetailsList.builder().stationsDetailsList(stations).build();
+    return StationDetailsList.builder().stationsDetailsList(stations).build();
   }
 
   /**

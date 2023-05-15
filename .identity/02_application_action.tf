@@ -1,28 +1,26 @@
-resource "azuread_application" "action" {
-  display_name = "github-${local.github.org}-${local.github.repository}-${var.env}"
+# Create service principal for the action
+module "github_runner_aks" {
+  source = "git::https://github.com/pagopa/github-actions-tf-modules.git//app-github-runner-creator?ref=main"
+
+  app_name = local.app_name
+
+  subscription_id = data.azurerm_subscription.current.id
+
+  github_org              = local.github.org
+  github_repository       = local.github.repository
+  github_environment_name = var.env
+
+  container_app_github_runner_env_rg = local.container_app_environment.resource_group
 }
 
-resource "azuread_service_principal" "action" {
-  application_id = azuread_application.action.application_id
+resource "azurerm_role_assignment" "environment_terraform_storage_account_tfstate_app" {
+  scope                = data.azurerm_storage_account.tfstate_app.id
+  role_definition_name = "Contributor"
+  principal_id         = module.github_runner_aks.object_id
 }
 
-resource "azuread_application_federated_identity_credential" "environment" {
-  application_object_id = azuread_application.action.object_id
-  display_name          = "github-federated"
-  description           = "github-federated"
-  audiences             = ["api://AzureADTokenExchange"]
-  issuer                = "https://token.actions.githubusercontent.com"
-  subject               = "repo:${local.github.org}/${local.github.repository}:environment:${var.env}"
-}
-
-output "azure_action_client_id" {
-  value = azuread_service_principal.action.application_id
-}
-
-output "azure_action_application_id" {
-  value = azuread_service_principal.action.application_id
-}
-
-output "azure_action_object_id" {
-  value = azuread_service_principal.action.object_id
+resource "azurerm_role_assignment" "environment_terraform_resource_group_dashboards" {
+  scope                = data.azurerm_resource_group.dashboards.id
+  role_definition_name = "Contributor"
+  principal_id         = module.github_runner_aks.object_id
 }

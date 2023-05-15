@@ -63,7 +63,7 @@ public class StationDetails extends Station {
   @Max(65535)
   @JsonProperty("redirect_port")
   @Schema(description = "Redirect port address of the station")
-  private Long redirectPort;
+  private Long redirectPorta;
 
   @JsonProperty("redirect_query_string")
   @Schema(description = "Redirect query string of the station")

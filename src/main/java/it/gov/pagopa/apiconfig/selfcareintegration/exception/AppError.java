@@ -11,7 +11,14 @@ public enum AppError {
   CREDITOR_INSTITUTION_NOT_FOUND(
       HttpStatus.NOT_FOUND,
       "Creditor Institution not found",
-      "No Creditor Institution found with code: %s");
+      "No Creditor Institution found with code: %s"),
+
+  BROKER_NOT_FOUND(
+      HttpStatus.NOT_FOUND,
+      "Broker not found",
+          "No Broker found with code: %s"),
+
+  ;
 
   public final HttpStatus httpStatus;
   public final String title;

@@ -1,6 +1,6 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.repository.HealthCheckRepository;
+import it.gov.pagopa.apiconfig.starter.repository.HealthCheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;

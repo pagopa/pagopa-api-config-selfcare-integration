@@ -4,7 +4,7 @@
     "description" : "Spring application exposes APIs for SelfCare",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "title" : "API-Config - SelfCare Integration",
-    "version" : "0.0.1"
+    "version" : "1.0.0-PAGOPA-930-creare-per-le-ec-get-broker-id-stations"
   },
   "servers" : [ {
     "url" : "http://127.0.0.1:8080",
@@ -13,8 +13,159 @@
   "tags" : [ {
     "description" : "Everything about Creditor Institution",
     "name" : "Creditor Institutions"
+  }, {
+    "description" : "Everything about brokers",
+    "name" : "Brokers"
   } ],
   "paths" : {
+    "/brokers/{brokerId}/stations" : {
+      "get" : {
+        "operationId" : "getStationsDetailsFromBroker",
+        "parameters" : [ {
+          "description" : "The identifier of the broker.",
+          "in" : "path",
+          "name" : "brokerId",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "The identifier of the station.",
+          "in" : "query",
+          "name" : "stationId",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "The number of elements to be included in the page.",
+          "in" : "query",
+          "name" : "limit",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "description" : "The index of the page, starting from 0.",
+          "in" : "query",
+          "name" : "page",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StationDetailsList"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get broker's station list",
+        "tags" : [ "Brokers" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
     "/creditorinstitutions/{creditorInstitutionCode}/stationsdetails" : {
       "get" : {
         "operationId" : "getStationsDetailsFromCreditorInstitution",
@@ -32,7 +183,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CreditorInstitutionStationDetailsList"
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             },
@@ -289,19 +440,6 @@
         },
         "description" : "Details of the intermediate EC of the station"
       },
-      "CreditorInstitutionStationDetailsList" : {
-        "required" : [ "stations" ],
-        "type" : "object",
-        "properties" : {
-          "stations" : {
-            "type" : "array",
-            "description" : "List of stations associated to the same EC",
-            "items" : {
-              "$ref" : "#/components/schemas/StationDetails"
-            }
-          }
-        }
-      },
       "ProblemJson" : {
         "type" : "object",
         "properties" : {
@@ -511,7 +649,20 @@
             "format" : "int64"
           }
         },
-        "description" : "List of stations associated to the same EC"
+        "description" : "List of stations associated to the same entity"
+      },
+      "StationDetailsList" : {
+        "required" : [ "stations" ],
+        "type" : "object",
+        "properties" : {
+          "stations" : {
+            "type" : "array",
+            "description" : "List of stations associated to the same entity",
+            "items" : {
+              "$ref" : "#/components/schemas/StationDetails"
+            }
+          }
+        }
       }
     },
     "securitySchemes" : {
@@ -520,6 +671,12 @@
         "in" : "header",
         "name" : "Ocp-Apim-Subscription-Key",
         "type" : "apiKey"
+      },
+      "Authorization" : {
+        "bearerFormat" : "JWT",
+        "description" : "JWT token get after Azure Login",
+        "scheme" : "bearer",
+        "type" : "http"
       }
     }
   }

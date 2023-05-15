@@ -10,39 +10,45 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
+import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 @RestController()
-@RequestMapping(path = "/creditorinstitutions")
-@Tag(name = "Creditor Institutions", description = "Everything about Creditor Institution")
+@RequestMapping(path = "/brokers")
+@Tag(name = "Brokers", description = "Everything about brokers")
 @Validated
-public class CreditorInstitutionController {
+public class BrokerController {
 
-  @Autowired private CreditorInstitutionsService creditorInstitutionsService;
+  @Autowired private BrokersService brokersService;
 
   /**
-   * GET /{creditorInstitutionCode}/stationsdetails : Get creditor institution station
+   * GET /{brokerId}/stations : Get broker stations
    *
-   * @param creditorInstitutionCode station code. (required)
+   * @param brokerId broker identifier. (required)
    * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
    *     code 500)
    */
   @Operation(
-      summary = "Get creditor institution station list",
+      summary = "Get broker's station list",
       security = {
           @SecurityRequirement(name = "ApiKey"),
           @SecurityRequirement(name = "Authorization")
       },
       tags = {
-          "Creditor Institutions",
+          "Brokers",
       })
   @ApiResponses(
       value = {
@@ -78,14 +84,24 @@ public class CreditorInstitutionController {
                   schema = @Schema(implementation = ProblemJson.class)))
       })
   @GetMapping(
-      value = "/{creditorInstitutionCode}/stationsdetails",
+      value = "/{brokerId}/stations",
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<StationDetailsList> getStationsDetailsFromCreditorInstitution(
-      @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.", required = true)
-      @PathVariable("creditorInstitutionCode")
-      String creditorInstitutionCode) {
-    return ResponseEntity.ok(
-        creditorInstitutionsService.getStationsDetailsFromCreditorInstitution(creditorInstitutionCode));
+  public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
+      @Parameter(description = "The identifier of the broker.", required = true)
+      @PathVariable("brokerId")
+      String brokerId,
+      @Parameter(description = "The identifier of the station.")
+      @RequestParam(required = false) String stationId,
+      @Valid
+      @Parameter(description = "The number of elements to be included in the page.", required = true)
+      @RequestParam(required = false, defaultValue = "10")
+      @Positive
+      @Max(999) Integer limit,
+      @Valid
+      @Parameter(description = "The index of the page, starting from 0.", required = true)
+      @Min(0)
+      @RequestParam(required = false, defaultValue = "0") Integer page) {
+    return ResponseEntity.ok(brokersService.getStationsDetailsFromBroker(brokerId, stationId, PageRequest.of(page, limit)));
   }
 
 }
