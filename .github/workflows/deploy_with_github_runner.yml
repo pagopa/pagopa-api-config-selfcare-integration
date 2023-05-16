@@ -58,7 +58,7 @@ jobs:
           client_id: ${{ secrets.CLIENT_ID }}
           subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
           tenant_id: ${{ secrets.TENANT_ID }}
-          env: ${{ vars.ENV }}
+          env: ${{ inputs.environment }}
           namespace: ${{ env.NAMESPACE }}
           cluster_name: ${{ vars.CLUSTER_NAME }}
           resource_group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
