@@ -41,12 +41,6 @@ resource "null_resource" "github_runner_app_permissions_to_namespace" {
   }
 }
 
-resource "azurerm_role_assignment" "environment_terraform_storage_account_tfstate_app" {
-  scope                = data.azurerm_storage_account.tfstate_app.id
-  role_definition_name = "Contributor"
-  principal_id         = module.github_runner_app.object_id
-}
-
 resource "azurerm_role_assignment" "environment_terraform_resource_group_dashboards" {
   scope                = data.azurerm_resource_group.dashboards.id
   role_definition_name = "Contributor"

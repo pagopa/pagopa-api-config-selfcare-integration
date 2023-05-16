@@ -3,7 +3,7 @@ microservice-chart:
   nameOverride: ""
   fullnameOverride: ""
   image:
-    repository: pagopadcommonacr.azurecr.io/pagopaapiconfigselfcareintegration
+    repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
     tag: "1.0.1-3-PAGOPA-930-creare-per-le-ec-get-broker-id-stations"
     pullPolicy: Always
   livenessProbe:
