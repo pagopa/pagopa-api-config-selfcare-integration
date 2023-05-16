@@ -228,7 +228,9 @@ jobs:
         if: ${{ (github.event.inputs.environment == null && matrix.environment == 'dev' ) || matrix.environment == github.event.inputs.environment || github.event.inputs.environment == 'all' }}
         uses: azure/login@89d153571fe9a34ed70fcf9f1d95ab8debea7a73
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }} # TODO:  az ad sp create-for-rbac --name github-action-dev --role contributor --scopes /subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86 --sdk-auth
+          client_id: ${{ secrets.CLIENT_ID }}
+          tenant_id: ${{ secrets.TENANT_ID }}
+          subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
 
       - name: Build image on ACR
         if: ${{ (github.event.inputs.environment == null && matrix.environment == 'dev' ) || matrix.environment == github.event.inputs.environment || github.event.inputs.environment == 'all' }}

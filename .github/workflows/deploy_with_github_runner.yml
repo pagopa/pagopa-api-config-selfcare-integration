@@ -39,7 +39,7 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         # from https://github.com/pagopa/eng-github-actions-iac-template/tree/main/azure/github-self-hosted-runner-azure-create-action
-        uses: pagopa/eng-github-actions-iac-template/azure/github-self-hosted-runner-azure-create-action@0ee2f58fd46d10ac7f00bce4304b98db3dbdbe9a
+        uses: pagopa/eng-github-actions-iac-template/azure/github-self-hosted-runner-azure-create-action@main
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           tenant_id: ${{ secrets.TENANT_ID }}
@@ -57,17 +57,17 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: Deploy
-        uses: pagopa/github-actions-template/aks-deploy@aks-deploy
+        uses: pagopa/github-actions-template/aks-blueprint-helm-deploy@dd79d69bbc777cd4f79e14e332267b9c728e2d63
         with:
-          branch: ${{ github.ref_name }}
-          client_id: ${{ secrets.CLIENT_ID }}
-          tenant_id: ${{ secrets.TENANT_ID }}
-          subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
-          env: ${{ inputs.environment }}
           namespace: ${{ env.NAMESPACE }}
-          app_name: ${{ env.APP_NAME }}
-          cluster_name: ${{ vars.CLUSTER_NAME }}
-          resource_group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
+          release-name: ${{ env.APP_NAME }}
+          chart-path: "${{ env.CHART_PATH }}"
+          values-file-name: values-${{ vars.ENV }}.yaml
+          aks-name: ${{ vars.CLUSTER_NAME }}
+          aks-resource-group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
           helm-upgrade-options: "--debug"
 
   cleanup_runner:
