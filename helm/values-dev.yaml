@@ -28,7 +28,7 @@ microservice-chart:
     port: 8080
   ingress:
     create: true
-    host: "weudev.apiconfigselfcareintegration.internal.dev.platform.pagopa.it"
+    host: "weudev.shared.internal.dev.platform.pagopa.it"
     path: /pagopa-api-config-selfcare-integration/(.*)
   serviceAccount:
     create: false
