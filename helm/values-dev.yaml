@@ -82,4 +82,4 @@ microservice-chart:
   canaryDelivery:
     deployment:
       image:
-        tag: 1.0.1-7-PAGOPA-930-creare-per-le-ec-get-broker-id-stations
+        tag: 1.0.1-8-PAGOPA-930-creare-per-le-ec-get-broker-id-stations
