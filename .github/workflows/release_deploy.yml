@@ -161,7 +161,6 @@ jobs:
     with:
       target: ${{ matrix.environment }}
       environment: ${{ needs.setup.outputs.environment }}
-      beta: ${{ inputs.beta }}
     secrets: inherit
 
   notify:
