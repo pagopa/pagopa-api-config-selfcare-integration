@@ -7,6 +7,16 @@ data "azurerm_resource_group" "dashboards" {
   name = "dashboards"
 }
 
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_cluster.name
+  resource_group_name = local.aks_cluster.resource_group_name
+}
+
+data "github_organization_teams" "all" {
+  root_teams_only = true
+  summary_only    = true
+}
+
 data "azurerm_key_vault" "key_vault" {
   count  = var.env_short == "d" ? 1 : 0
 
@@ -33,9 +43,4 @@ data "azurerm_key_vault_secret" "key_vault_cucumber_token" {
 
   name = "cucumber-token"
   key_vault_id = data.azurerm_key_vault.key_vault[0].id
-}
-
-data "github_organization_teams" "all" {
-  root_teams_only = true
-  summary_only    = true
 }
