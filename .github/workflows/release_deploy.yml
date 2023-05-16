@@ -148,7 +148,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
-            GITHUB_TOKEN=${{ secrets.BOT_TOKEN_GITHUB }}
+            GH_TOKEN=${{ secrets.BOT_TOKEN_GITHUB }}
 
   deploy_aks:
     name: Deploy on AKS
