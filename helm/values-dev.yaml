@@ -65,11 +65,13 @@ microservice-chart:
     APP_LOGGING_LEVEL: 'DEBUG'
     DEFAULT_LOGGING_LEVEL: 'INFO'
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
-    SPRING_DATASOURCE_URL: '' #TODO
+    SPRING_DATASOURCE_URL: 'jdbc:oracle:thin:@db-nodo-pagamenti.d.db-nodo-pagamenti.com:1522/NDPSPCT_PP_NODO4_CFG'
+    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
+    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
   envSecret:
     # required
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-d-connection-string'
-    SPRING_DATASOURCE_USERNAME: '' #TODO
+    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-core-oracle"
+    SPRING_DATASOURCE_USERNAME: 'NODO4_CFG'
     SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
   keyvault:
     name: "pagopa-d-apiconfig-kv"
