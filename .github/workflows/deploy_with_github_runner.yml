@@ -56,7 +56,6 @@ jobs:
         with:
           namespace: ${{ env.NAMESPACE }}
           release-name: ${{ env.APP_NAME }}
-          chart-path: "helm"
           values-file-name: values-${{ vars.ENV }}.yaml
           aks-name: ${{ vars.CLUSTER_NAME }}
           aks-resource-group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
