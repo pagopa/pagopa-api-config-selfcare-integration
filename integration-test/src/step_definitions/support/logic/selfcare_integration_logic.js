@@ -12,9 +12,14 @@ const { debugLog } = require("../utility/helpers");
 
 
 async function assertStationIncludedInResponse(stationId, response) {
-    console.log(` - ..`);
-    // TODO
-    debugLog(``);
+    console.log(` - Then the station is included in the result list`);
+    let stations = response.data?.stations;
+    let exists = false;
+    let stationCount = stations.length;
+    for (i = 0; i < stationCount && !exists; i ++) {
+      exists = stationId === stations[i].station_code;
+    }
+    assert.strictEqual(true, exists);
 }
 
 async function retrieveBroker(bundle) {
