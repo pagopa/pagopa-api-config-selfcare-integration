@@ -12,7 +12,7 @@
 
   <groupId>it.gov.pagopa.api-config</groupId>
   <artifactId>selfcareintegration</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.0-1-PAGOPA-957-bug-connettivita-db-oracle</version>
   <name>API-Config - SelfCare Integration</name>
   <description>Spring application exposes APIs for SelfCare</description>
 

@@ -84,4 +84,4 @@ microservice-chart:
   canaryDelivery:
     deployment:
       image:
-        tag: 1.1.0
+        tag: 1.1.0-1-PAGOPA-957-bug-connettivita-db-oracle
