@@ -2,8 +2,8 @@ package it.gov.pagopa.apiconfig.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;

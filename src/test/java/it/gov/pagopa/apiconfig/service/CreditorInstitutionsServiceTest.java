@@ -2,7 +2,7 @@ package it.gov.pagopa.apiconfig.service;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.StationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
