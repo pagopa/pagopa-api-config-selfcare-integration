@@ -1,0 +1,20 @@
+{
+  "idCanale": "LU30726739_02",
+  "enabled": true,
+  "descrizione": "Satispay Europe SA",
+  "password": "Sati02Test",
+  "protocollo": "HTTP",
+  "ip": "10.250.39.162",
+  "porta": 8080,
+  "fkIntermediarioPsp": {
+    "idIntermediarioPsp": "LU30726739"
+  },
+  "proxyEnabled": true,
+  "proxyHost": "10.101.1.95",
+  "proxyPort": 8080,
+  "numThread": 2,
+  "timeoutA": 15,
+  "timeoutB": 30,
+  "timeoutC": 120,
+  "useNewFaultCode": false
+}
