@@ -4,8 +4,10 @@
       "env": "uat",
       "app_host": "https://api.uat.platform.pagopa.it/apiconfig-selfcare-integration/v1",
       "id_broker": "11111111111",
+      "id_broker_psp": "LU30726739",
       "id_station": "11111111111_01",
-      "id_ci": "09633951000"
+      "id_ci": "09633951000",
+      "id_channel": "LU30726739_02"
     }
   ]
 }
