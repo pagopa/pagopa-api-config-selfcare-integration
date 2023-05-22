@@ -16,7 +16,9 @@ const app_host = `${vars.app_host}`;
 const subkey = `${__ENV.sub_key}`;
 
 const brokerId = `${vars.id_broker}`;
+const brokerPspId = `${vars.id_broker_psp}`;
 const stationId = `${vars.id_station}`;
+const channelId = `${vars.id_channel}`;
 const creditorInstitutionId = `${vars.id_ci}`;
 
 
@@ -61,9 +63,16 @@ export default function () {
   response = http.get(`${app_host}/brokers/${brokerId}/stations?page=0&limit=50&stationId=${stationId}`, params);
   check(response, { 'check status is 200': (resp) => resp.status === 200 });
 
-  const tag = { gpdMethod: "CreateDebtPosition" };
   // Testing: creditorinstitutions/:creditorInstitutionId/stationsdetails
   response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/stationsdetails`, params);
+  check(response, { 'check status is 200': (response) => response.status === 200 });
+
+  // Testing: brokerPsps/:brokerPspId/channels?page=0&limit=50
+  response = http.get(`${app_host}/brokerPsps/${brokerPspsId}/channels?page=0&limit=50`, params);
+  check(response, { 'check status is 200': (resp) => resp.status === 200 });
+
+  // Testing: brokerPsps/:brokerPspId/channels?page=0&limit=50&channelId=:channelId
+  response = http.get(`${app_host}/brokerPsps/${brokerPspsId}/channels?page=0&limit=50&channelId=${channelId}`, params);
   check(response, { 'check status is 200': (response) => response.status === 200 });
 
   // ending the execution
