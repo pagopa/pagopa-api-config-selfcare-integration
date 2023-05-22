@@ -171,15 +171,16 @@ values (1, 'idPsp1', null, 'profilo=$identificativoIntermediarioPA$~$identificat
 insert into NODO4_CFG.CANALI_NODO (OBJ_ID, REDIRECT_IP, REDIRECT_PATH, REDIRECT_PORTA, REDIRECT_QUERY_STRING,
                                    MODELLO_PAGAMENTO, MULTI_PAYMENT, RAGIONE_SOCIALE, RPT_RT_COMPLIANT, WSAPI,
                                    REDIRECT_PROTOCOLLO, ID_SERV_PLUGIN, ID_CLUSTER, ID_FESP_INSTANCE, LENTO, RT_PUSH,
-                                   AGID_CHANNEL, ON_US, CARRELLO_CARTE, RECOVERY, MARCA_BOLLO_DIGITALE, FLAG_IO, VERSIONE_PRIMITIVE)
+                                   AGID_CHANNEL, ON_US, CARRELLO_CARTE, RECOVERY, MARCA_BOLLO_DIGITALE, FLAG_IO, VERSIONE_PRIMITIVE,
+                                   FLAG_PSP_CP)
 values (1, null, null, null, null, 'ATTIVATO_PRESSO_PSP', 'N', null, 'N', null, 'HTTP', null, 'CL_1', null, 'N', 'Y',
-        'N', 'N', 'N', 'Y', 'N', 'N', 1);
+        'N', 'N', 'N', 'Y', 'N', 'N', 1, 'N');
 
 
 insert into NODO4_CFG.CANALI (OBJ_ID, ID_CANALE, ENABLED, IP, NEW_PASSWORD, PASSWORD, PORTA, PROTOCOLLO, SERVIZIO,
                               DESCRIZIONE, FK_INTERMEDIARIO_PSP, PROXY_ENABLED, PROXY_HOST, PROXY_PASSWORD, PROXY_PORT,
                               PROXY_USERNAME, CANALE_NODO, CANALE_AVV, FK_CANALI_NODO, TIMEOUT, NUM_THREAD,
-                              USE_NEW_FAULT_CODE, TIMEOUT_A, TIMEOUT_B, TIMEOUT_C, SERVIZIO_NMP, TARGET_HOST, TARGET_PORT, TARGET_PATH)
+                              USE_NEW_FAULT_CODE, TIMEOUT_A, TIMEOUT_B, TIMEOUT_C, SERVIZIO_NMP, TARGET_HOST_NMP, TARGET_PORT_NMP, TARGET_PATH_NMP)
 values (1, '00001060966_01', 'Y', '1.1.1.1', null, 'FakePay', 443, 'HTTPS', 'basepath/services/fake', null, 6, 'Y',
         '2.2.2.2', null, 8080, null, 'Y', 'N', 1, 120, 2, 'Y', 15, 30, 120, null, 'localhost', 443, '/');
 
