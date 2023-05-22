@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import java.io.IOException;
@@ -42,18 +43,18 @@ class BrokersServiceTest {
 
   @MockBean private IntermediariPaRepository intermediariPaRepository;
 
-  @Mock private Pageable pageable;
-
   @Autowired @InjectMocks private BrokersService brokersService;
+
+  private Pageable pageable = PageRequest.of(0, 10);
 
   @Test
   void getStationsDetailsCI_withStationId_200() throws IOException, JSONException {
 
     IntermediariPa mockedBroker = getMockBroker();
-    Page<Stazioni> page = new PageImpl<>(Lists.newArrayList(getMockStazioni()));
+    Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
 
     when(intermediariPaRepository.findByIdIntermediarioPa("1234")).thenReturn(Optional.of(mockedBroker));
-    when(stazioniRepository.findAllByFiltersOrderById(anyLong(), anyString(), any())).thenReturn(page);
+    when(stazioniRepository.findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class))).thenReturn(page);
 
     StationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
     String actual = TestUtil.toJson(result);
@@ -64,7 +65,7 @@ class BrokersServiceTest {
   @Test
   void getStationsDetailsCI_withoutStationId_200() throws IOException, JSONException {
 
-    Page<Stazioni> page = new PageImpl<>(Lists.newArrayList(getMockStazioni()));
+    Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
 
     when(intermediariPaRepository.findByIdIntermediarioPa("1234")).thenReturn(Optional.of(getMockBroker()));
     when(stazioniRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(page);

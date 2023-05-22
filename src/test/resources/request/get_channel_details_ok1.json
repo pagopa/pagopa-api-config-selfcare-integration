@@ -1,0 +1,23 @@
+{
+  "channel_code": "LU30726739_02",
+  "enabled": true,
+  "broker_description": "Satispay Europe SA",
+  "password": "Sati02Test",
+  "protocol": "HTTP",
+  "ip": "10.250.39.162",
+  "port": 8080,
+  "broker_psp_code": "LU30726739",
+  "proxy_enabled": true,
+  "proxy_host": "10.101.1.95",
+  "proxy_port": 8080,
+  "thread_number": 2,
+  "timeout_a": 15,
+  "timeout_b": 30,
+  "timeout_c": 120,
+  "new_fault_code": false,
+  "redirect_protocol": "HTTP",
+  "serv_plugin": "wpl05",
+  "flag_io": false,
+  "primitive_version": 1,
+  "agid": true
+}
