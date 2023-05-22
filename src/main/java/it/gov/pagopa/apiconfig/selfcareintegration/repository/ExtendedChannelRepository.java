@@ -22,9 +22,9 @@ public interface ExtendedChannelRepository extends CanaliRepository {
 
   @Query(
       value =
-          "select distinct c from Canali c join c.fkIntermediarioPsp where (:fkIntermediario is null or c.fkIntermediarioPsp.idIntermediarioPsp"
-              + " = :fkIntermediario) and (:idCanale is null or upper(c.idCanale) like"
-              + " concat('%', upper(:idCanale), '%')) order by c.idCanale")
+          "SELECT DISTINCT c FROM Canali c WHERE (:fkIntermediario IS NULL OR c.fkIntermediarioPsp.objId"
+              + " = :fkIntermediario) AND (:idCanale IS NULL OR UPPER(c.idCanale) LIKE"
+              + " CONCAT('%', UPPER(:idCanale), '%')) ORDER BY c.idCanale")
   Page<Canali> findAllByFiltersOrderById(
       @Param("fkIntermediario") Long brokerId,
       @Param("idCanale") String channelId,
