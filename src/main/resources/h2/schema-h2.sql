@@ -370,6 +370,7 @@ create table NODO4_CFG.CANALI_NODO
     MARCA_BOLLO_DIGITALE  char         not null,
     FLAG_IO               char                  default 'N',
     VERSIONE_PRIMITIVE    numeric(2)            default 1,
+    FLAG_PSP_CP           char         not null,
     constraint PK_CANALI_NODO
         primary key (OBJ_ID),
     constraint FK_CANALI_SERV_PLUGIN
@@ -390,34 +391,37 @@ create table NODO4_CFG.CANALI
     SERVIZIO                                     varchar(100),
     DESCRIZIONE                                  varchar(70),
     FK_INTERMEDIARIO_PSP                         numeric      not null,
-                                  PROXY_ENABLED char(1) not null,
-                                  PROXY_HOST varchar(100),
-                                  PROXY_PASSWORD varchar(15),
-                                  PROXY_PORT numeric,
-                                  PROXY_USERNAME varchar(15),
-                                  CANALE_NODO char(1) not null default 'N',
-                                  CANALE_AVV char(1) not null default 'N',
-                                  FK_CANALI_NODO numeric,
-                                  TIMEOUT numeric not null default 120,
-                                  NUM_THREAD numeric not null,
-                                  USE_NEW_FAULT_CODE char not null,
-                                  TIMEOUT_A numeric(19) not null,
-                                  TIMEOUT_B numeric(19) not null,
-                                  TIMEOUT_C numeric(19) not null,
-                                  SERVIZIO_NMP varchar(255),
-                                  TARGET_HOST            varchar(100),
-                                  TARGET_PORT            numeric,
-                                  TARGET_PATH            varchar(100),
-                                  constraint PK_CANALI
-                                      primary key (OBJ_ID),
-                                  constraint UQ_ID_CANALE
-                                      unique (ID_CANALE),
-                                  constraint FK_CANALI_INTERMEDIARI_PSP
-                                      foreign key (FK_INTERMEDIARIO_PSP)
-                                          references NODO4_CFG.INTERMEDIARI_PSP,
-                                  constraint FK_CANALI_NODO
-                                      foreign key (FK_CANALI_NODO)
-                                          references NODO4_CFG.CANALI_NODO
+    PROXY_ENABLED char(1) not null,
+    PROXY_HOST varchar(100),
+    PROXY_PASSWORD varchar(15),
+    PROXY_PORT numeric,
+    PROXY_USERNAME varchar(15),
+    TARGET_HOST varchar(100),
+    TARGET_PORT numeric,
+    TARGET_PATH varchar(100),
+    CANALE_NODO char(1) not null default 'N',
+    CANALE_AVV char(1) not null default 'N',
+    FK_CANALI_NODO numeric,
+    TIMEOUT numeric not null default 120,
+    NUM_THREAD numeric not null,
+    USE_NEW_FAULT_CODE char not null,
+    TIMEOUT_A numeric(19) not null,
+    TIMEOUT_B numeric(19) not null,
+    TIMEOUT_C numeric(19) not null,
+    SERVIZIO_NMP varchar(255),
+    TARGET_HOST_NMP varchar(100),
+    TARGET_PORT_NMP numeric,
+    TARGET_PATH_NMP varchar(100),
+    constraint PK_CANALI
+      primary key (OBJ_ID),
+    constraint UQ_ID_CANALE
+      unique (ID_CANALE),
+    constraint FK_CANALI_INTERMEDIARI_PSP
+      foreign key (FK_INTERMEDIARIO_PSP)
+      references NODO4_CFG.INTERMEDIARI_PSP,
+    constraint FK_CANALI_NODO
+      foreign key (FK_CANALI_NODO)
+      references NODO4_CFG.CANALI_NODO
 );
 
 create table NODO4_CFG.ELENCO_SERVIZI (
