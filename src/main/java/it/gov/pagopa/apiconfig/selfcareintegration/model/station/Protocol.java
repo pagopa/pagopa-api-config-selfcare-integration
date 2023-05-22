@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution;
+package it.gov.pagopa.apiconfig.selfcareintegration.model.station;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import java.util.Arrays;

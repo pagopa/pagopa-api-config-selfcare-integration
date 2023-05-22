@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution;
+package it.gov.pagopa.apiconfig.selfcareintegration.model.station;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
