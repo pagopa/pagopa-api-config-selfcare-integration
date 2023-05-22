@@ -5,6 +5,7 @@ import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedChannelRepository;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPsp;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPspRepository;
@@ -41,7 +42,10 @@ public class BrokerPSPsService {
         queryResult.stream()
             .map(station -> modelMapper.map(station, ChannelDetails.class))
             .collect(Collectors.toList());
-    return ChannelDetailsList.builder().channelsDetailsList(channels).build();
+    return ChannelDetailsList.builder()
+        .pageInfo(Utility.buildPageInfo(queryResult))
+        .channelsDetailsList(channels)
+        .build();
   }
 
   protected IntermediariPsp getBrokerIfExists(String brokerId) throws AppException {

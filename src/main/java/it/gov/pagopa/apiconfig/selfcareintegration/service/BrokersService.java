@@ -4,19 +4,20 @@ import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BrokersService {
@@ -27,18 +28,24 @@ public class BrokersService {
 
   @Autowired private ModelMapper modelMapper;
 
-  public StationDetailsList getStationsDetailsFromBroker(@NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
+  public StationDetailsList getStationsDetailsFromBroker(
+      @NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
     IntermediariPa broker = getBrokerIfExists(brokerId);
     Page<Stazioni> queryResult;
     if (stationId == null) {
       queryResult = stazioniRepository.findAllByFiltersOrderById(broker.getObjId(), pageable);
     } else {
-      queryResult = stazioniRepository.findAllByFiltersOrderById(broker.getObjId(), stationId, pageable);
+      queryResult =
+          stazioniRepository.findAllByFiltersOrderById(broker.getObjId(), stationId, pageable);
     }
-    List<StationDetails> stations = queryResult.stream()
-        .map(station -> modelMapper.map(station, StationDetails.class))
-        .collect(Collectors.toList());
-    return StationDetailsList.builder().stationsDetailsList(stations).build();
+    List<StationDetails> stations =
+        queryResult.stream()
+            .map(station -> modelMapper.map(station, StationDetails.class))
+            .collect(Collectors.toList());
+    return StationDetailsList.builder()
+        .pageInfo(Utility.buildPageInfo(queryResult))
+        .stationsDetailsList(stations)
+        .build();
   }
 
   protected IntermediariPa getBrokerIfExists(String brokerId) throws AppException {
@@ -48,5 +55,4 @@ public class BrokersService {
     }
     return result.get();
   }
-
 }
