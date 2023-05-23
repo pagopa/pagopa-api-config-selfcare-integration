@@ -24,9 +24,29 @@ function readBroker(brokerId) {
     })
 }
 
+function readChannel(channelId) {
+    const host = `${api_config_host}/channels/${channelId}`;
+    debugLog(`Calling endpoint: [${host}]`);  
+    return get(host, {
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
+        }
+    })
+}
+
 function readCreditorInstitution(organizationFiscalCode) {
     const host = `${api_config_host}/creditorinstitutions/${organizationFiscalCode}`;
     debugLog(`Calling endpoint: [${host}]`);
+    return get(host, {
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
+        }
+    })
+}
+
+function readPSPBroker(pspBrokerId) {
+    const host = `${api_config_host}/brokerspsp/${pspBrokerId}`;
+    debugLog(`Calling endpoint: [${host}]`);  
     return get(host, {
         headers: {
             "Ocp-Apim-Subscription-Key": process.env.SUBKEY
@@ -47,6 +67,8 @@ function readStation(stationId, organizationFiscalCode) {
 module.exports = {
     apiConfigHealthCheck,
     readBroker,
+    readChannel,
     readCreditorInstitution,
+    readPSPBroker,
     readStation
 }

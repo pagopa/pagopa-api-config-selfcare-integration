@@ -1,15 +1,29 @@
 const assert = require("assert");
 const {
     readBroker,
+    readChannel,
     readCreditorInstitution,
+    readPSPBroker,
     readStation
 } = require("../clients/api_config_client");
 const {
+    getChannelsByPSPBroker,
     getStationsByBroker,
     getStationsByCreditorInstitution
 } = require("../clients/selfcare_integration_client.js");
 const { debugLog } = require("../utility/helpers");
 
+
+async function assertChannelIncludedInResponse(channelId, response) {
+    console.log(` - Then the channel is included in the result list`);
+    let channels = response.data?.channels;
+    let exists = false;
+    let channelCount = channels.length;
+    for (i = 0; i < channelCount && !exists; i ++) {
+      exists = channelId === channels[i].channel_code;
+    }
+    assert.strictEqual(true, exists);
+}
 
 async function assertStationIncludedInResponse(stationId, response) {
     console.log(` - Then the station is included in the result list`);
@@ -62,6 +76,27 @@ async function retrieveNonExistingCreditorInstitution(bundle) {
     assert.strictEqual(response.status, 404);    
 }
 
+
+async function retrievePSPBroker(bundle) {
+    console.log(` - Given an existing PSP broker`);
+    bundle.pspBrokerId = process.env.valid_pspbroker;
+    retrievePSPBrokerExecuteAPICall(bundle);    
+}
+
+async function retrievePSPBrokerWithNoChannel(bundle) {
+    bundle.pspBrokerId = process.env.valid_pspbroker_with_no_channel;
+    console.log(` - Given an existing PSP broker with no channel related`);
+    retrievePSPBrokerExecuteAPICall(bundle);    
+}
+
+async function retrieveNonExistingPSPBroker(bundle) {
+    console.log(` - Given a non-existing PSP broker`);
+    bundle.pspBrokerId = process.env.invalid_pspbroker;
+    let response = await readPSPBroker(bundle.pspBrokerId);
+    debugLog(`Broker retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
+    assert.strictEqual(response.status, 404);    
+}
+
 async function retrieveStationRelatedToBroker(bundle) {
     console.log(` - Given a station related to broker`);
     bundle.stationId = process.env.station_related_to_broker;
@@ -74,6 +109,14 @@ async function retrieveStationRelatedToCI(bundle) {
     retrieveStationExecuteAPICall(bundle);
 }
 
+async function retrieveChannelRelatedToPSPBroker(bundle) {
+    console.log(` - Given a channel related to PSP broker`);
+    bundle.channelId = process.env.channel_related_to_pspbroker;
+    let response = await readChannel(bundle.channelId);
+    debugLog(`Channel retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
+    assert.strictEqual(response.status, 200);
+    bundle.channel = response.data;
+}
 
 async function retrieveStationsByBroker(bundle) {
     console.log(` - When the client requests the list of stations related to the broker`);
@@ -85,6 +128,12 @@ async function retrieveStationsByCreditorInstitution(bundle) {
     console.log(` - When the client requests the list of stations related to the creditor institution`);
     bundle.response = await getStationsByCreditorInstitution(bundle.creditorInstitutionId);
     debugLog(`Station retrieving by creditor institution API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
+}
+
+async function retrieveChannelsByPSPBroker(bundle) {
+    console.log(` - When the client requests the list of channels related to the PSP broker`);
+    bundle.response = await getChannelsByPSPBroker(bundle.pspBrokerId, bundle.limit, bundle.pageNumber);
+    debugLog(`Channel retrieving by PSP broker API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
 }
 
 async function retrieveBrokerExecuteAPICall(bundle) {
@@ -101,6 +150,13 @@ async function retrieveCIExecuteAPICall(bundle) {
     bundle.creditorInstitution = response.data;
 }
 
+async function retrievePSPBrokerExecuteAPICall(bundle) {
+    let response = await readPSPBroker(bundle.pspBrokerId);
+    debugLog(`PSP Broker retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
+    assert.strictEqual(response.status, 200);
+    bundle.pspBroker = response.data;
+}
+
 async function retrieveStationExecuteAPICall(bundle) {
     let response = await readStation(bundle.stationId);
     debugLog(`Station retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
@@ -111,6 +167,7 @@ async function retrieveStationExecuteAPICall(bundle) {
 
 
 module.exports = {
+    assertChannelIncludedInResponse,
     assertStationIncludedInResponse,
     retrieveBroker,
     retrieveBrokerWithNoStation,
@@ -118,8 +175,13 @@ module.exports = {
     retrieveCreditorInstitution,
     retrieveCreditorInstitutionWithNoStation,
     retrieveNonExistingCreditorInstitution,
+    retrievePSPBroker,
+    retrievePSPBrokerWithNoChannel,
+    retrieveNonExistingPSPBroker,
     retrieveStationsByBroker,
     retrieveStationsByCreditorInstitution,
+    retrieveChannelsByPSPBroker,
     retrieveStationRelatedToBroker,
-    retrieveStationRelatedToCI
+    retrieveStationRelatedToCI,
+    retrieveChannelRelatedToPSPBroker
 }
