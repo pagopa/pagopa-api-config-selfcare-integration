@@ -126,7 +126,7 @@ async function retrieveStationsByBroker(bundle) {
 
 async function retrieveStationsByCreditorInstitution(bundle) {
     console.log(` - When the client requests the list of stations related to the creditor institution`);
-    bundle.response = await getStationsByCreditorInstitution(bundle.creditorInstitutionId);
+    bundle.response = await getStationsByCreditorInstitution(bundle.creditorInstitutionId, bundle.limit, bundle.pageNumber);
     debugLog(`Station retrieving by creditor institution API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
 }
 

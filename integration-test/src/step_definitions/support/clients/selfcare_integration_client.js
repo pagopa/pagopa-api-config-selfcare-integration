@@ -4,7 +4,7 @@ const { debugLog } = require("../utility/helpers");
 const app_host = process.env.APP_HOST;
 
 function getChannelsByPSPBroker(pspBrokerId, limit, pageNumber) {
-    const host = `${app_host}/brokerPsps/${pspBrokerId}/channels?limit=${limit}&page=${pageNumber}`;
+    const host = `${app_host}/brokerspsp/${pspBrokerId}/channels?limit=${limit}&page=${pageNumber}`;
     debugLog(`Calling endpoint: [${host}]`);
     return get(host, {
         headers: {
@@ -23,8 +23,8 @@ function getStationsByBroker(brokerId, limit, pageNumber) {
     })
 }
 
-function getStationsByCreditorInstitution(creditorInstitutionCode) {
-    const host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/stationsdetails`;
+function getStationsByCreditorInstitution(creditorInstitutionCode, limit, pageNumber) {
+    const host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/stations?limit=${limit}&page=${pageNumber}`;
     debugLog(`Calling endpoint: [${host}]`);
     return get(host, {
         headers: {
