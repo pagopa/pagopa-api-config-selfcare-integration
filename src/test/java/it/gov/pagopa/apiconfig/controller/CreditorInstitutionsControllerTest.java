@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,13 +31,12 @@ class CreditorInstitutionsControllerTest {
 
   @BeforeEach
   void setUp() throws IOException {
-    when(creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234"))
-        .thenReturn(getMockStationDetailsList());
+    when(creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234", PageRequest.of(0, 50))).thenReturn(getMockStationDetailsList());
   }
 
   @ParameterizedTest
   @CsvSource({
-    "/creditorinstitutions/1234/stationsdetails",
+    "/creditorinstitutions/1234/stations?limit=50&page=0",
   })
   void testGets(String url) throws Exception {
     mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))

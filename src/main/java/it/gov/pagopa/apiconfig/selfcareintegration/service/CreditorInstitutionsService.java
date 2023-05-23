@@ -4,12 +4,15 @@ import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedCreditorInstitutionStationRepository;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
-import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -19,19 +22,26 @@ import java.util.Optional;
 @Service
 public class CreditorInstitutionsService {
 
-  @Autowired private PaStazionePaRepository paStazionePaRepository;
+  @Autowired private ExtendedCreditorInstitutionStationRepository ciStationRepository;
 
   @Autowired private PaRepository paRepository;
 
   @Autowired private ModelMapper modelMapper;
 
-  public StationDetailsList getStationsDetailsFromCreditorInstitution(@NotNull String creditorInstitutionCode){
+  public StationDetailsList getStationsDetailsFromCreditorInstitution(
+      @NotNull String creditorInstitutionCode, Pageable pageable) {
     Pa pa = getPaIfExists(creditorInstitutionCode);
-    List<PaStazionePa> queryResult = paStazionePaRepository.findAllByFkPa(pa.getObjId());
-    List<StationDetails> stations = queryResult.stream()
-        .map(paStazionePa -> modelMapper.map(paStazionePa.getFkStazione(), StationDetails.class))
-        .collect(Collectors.toList());
-    return StationDetailsList.builder().stationsDetailsList(stations).build();
+    Page<PaStazionePa> queryResult =
+        ciStationRepository.findAllByFilter(pa.getObjId(), pageable);
+    List<StationDetails> stations =
+        queryResult.stream()
+            .map(
+                paStazionePa -> modelMapper.map(paStazionePa.getFkStazione(), StationDetails.class))
+            .collect(Collectors.toList());
+    return StationDetailsList.builder()
+        .pageInfo(Utility.buildPageInfo(queryResult))
+        .stationsDetailsList(stations)
+        .build();
   }
 
   /**
@@ -46,5 +56,4 @@ public class CreditorInstitutionsService {
     }
     return result.get();
   }
-
 }

@@ -38,5 +38,11 @@
       "target_path_pof": "/",
       "primitive_version": 1
     }
-  ]
+  ],
+  "page_info": {
+    "page": 0,
+    "limit": 10,
+    "items_found": 1,
+    "total_pages": 1
+  }
 }

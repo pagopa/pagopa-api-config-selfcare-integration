@@ -12,13 +12,19 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 @RestController()
 @RequestMapping(path = "/creditorinstitutions")
@@ -78,14 +84,23 @@ public class CreditorInstitutionController {
                   schema = @Schema(implementation = ProblemJson.class)))
       })
   @GetMapping(
-      value = "/{creditorInstitutionCode}/stationsdetails",
+      value = "/{creditorInstitutionCode}/stations",
       produces = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<StationDetailsList> getStationsDetailsFromCreditorInstitution(
       @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.", required = true)
       @PathVariable("creditorInstitutionCode")
-      String creditorInstitutionCode) {
+      String creditorInstitutionCode,
+      @Valid
+      @Parameter(description = "The number of elements to be included in the page.", required = true)
+      @RequestParam(required = false, defaultValue = "10")
+      @Positive
+      @Max(999) Integer limit,
+      @Valid
+      @Parameter(description = "The index of the page, starting from 0.", required = true)
+      @Min(0)
+      @RequestParam(required = false, defaultValue = "0") Integer page) {
     return ResponseEntity.ok(
-        creditorInstitutionsService.getStationsDetailsFromCreditorInstitution(creditorInstitutionCode));
+        creditorInstitutionsService.getStationsDetailsFromCreditorInstitution(creditorInstitutionCode, PageRequest.of(page, limit)));
   }
 
 }
