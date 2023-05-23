@@ -36,7 +36,7 @@ class BrokerPspsControllerTest {
 
   @ParameterizedTest
   @CsvSource({
-    "/brokerPsps/LU30726739/channels?limit=10&page=0",
+    "/brokerspsp/LU30726739/channels?limit=10&page=0",
   })
   void testGetWithoutChannelId(String url) throws Exception {
     mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))

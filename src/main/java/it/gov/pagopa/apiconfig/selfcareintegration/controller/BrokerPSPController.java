@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping(path = "/brokerPsps")
+@RequestMapping(path = "/brokerspsp")
 @Tag(name = "PSP Brokers", description = "Everything about PSP's brokers")
 @Validated
 public class BrokerPSPController {
