@@ -8,8 +8,6 @@ services:
       dockerfile: Dockerfile
       context: ../
     env_file:
-      - ./config/.env
+      - ./.env
     ports:
       - "8080:8080"
-    networks:
-      - api-conf-net
