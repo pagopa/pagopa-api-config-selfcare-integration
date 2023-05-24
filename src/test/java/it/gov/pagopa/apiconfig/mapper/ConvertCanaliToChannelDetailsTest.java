@@ -1,6 +1,5 @@
 package it.gov.pagopa.apiconfig.mapper;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannel;
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannelMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +10,6 @@ import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.util.TestUtil;
 import java.io.IOException;
 import org.json.JSONException;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -26,18 +24,16 @@ class ConvertCanaliToChannelDetailsTest {
 
     ModelMapper mapper = new ModelMapper();
     mapper.addConverter(new ConvertCanaliToChannelDetails());
-    Canali x = getMockChannelMapping();
 
-    ChannelDetails y =
+    ChannelDetails channelDetailsFromFile =
         new ObjectMapper()
             .readValue(
                 TestUtil.readJsonFromFile("response/channels_details_ok1.json"),
                 ChannelDetails.class);
-
-    ChannelDetails z = mapper.map(x, ChannelDetails.class);
-    String ay = TestUtil.toJson(y);
-    String az = TestUtil.toJson(z);
-    JSONAssert.assertEquals(ay, az, JSONCompareMode.STRICT);
+    ChannelDetails channelDetails = mapper.map(getMockChannelMapping(), ChannelDetails.class);
+    String channelDetailsFromFileJSON = TestUtil.toJson(channelDetailsFromFile);
+    String channelDetailsJSON = TestUtil.toJson(channelDetails);
+    JSONAssert.assertEquals(channelDetailsFromFileJSON, channelDetailsJSON, JSONCompareMode.STRICT);
   }
 
   @Test
@@ -45,18 +41,18 @@ class ConvertCanaliToChannelDetailsTest {
 
     ModelMapper mapper = new ModelMapper();
     mapper.addConverter(new ConvertCanaliToChannelDetails());
-    Canali x = getMockChannelMapping();
-    x.setFkCanaliNodo(null);
+    Canali channelMapping = getMockChannelMapping();
+    channelMapping.setFkCanaliNodo(null);
 
-    ChannelDetails y =
+    ChannelDetails channelDetailsFromFile =
         new ObjectMapper()
             .readValue(
                 TestUtil.readJsonFromFile("response/channels_details_ok2.json"),
                 ChannelDetails.class);
 
-    ChannelDetails z = mapper.map(x, ChannelDetails.class);
-    String ay = TestUtil.toJson(y);
-    String az = TestUtil.toJson(z);
-    JSONAssert.assertEquals(ay, az, JSONCompareMode.STRICT);
+    ChannelDetails channelDetails = mapper.map(channelMapping, ChannelDetails.class);
+    String channelDetailsFromFileJSON = TestUtil.toJson(channelDetailsFromFile);
+    String channelDetailsJSON = TestUtil.toJson(channelDetails);
+    JSONAssert.assertEquals(channelDetailsFromFileJSON, channelDetailsJSON, JSONCompareMode.STRICT);
   }
 }

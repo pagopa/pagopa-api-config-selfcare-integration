@@ -18,6 +18,7 @@
   "redirect_protocol": "HTTP",
   "serv_plugin": "wpl05",
   "flag_io": false,
+  "flag_psp_cp": false,
   "primitive_version": 1,
   "agid": true
 }
