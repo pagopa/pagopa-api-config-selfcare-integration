@@ -19,7 +19,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = Application.class)
-public class ConvertCanaliToChannelDetailsTest {
+class ConvertCanaliToChannelDetailsTest {
 
   @Test
   void testSimpleEquality() throws IOException, JSONException {
