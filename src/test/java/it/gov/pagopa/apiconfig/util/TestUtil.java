@@ -71,43 +71,35 @@ public class TestUtil {
   }
 
   public static StationDetails getMockStationDetails() throws IOException {
-    String mockPa = readJsonFromFile("request/get_station_details_ok1.json");
-    return new ObjectMapper().readValue(mockPa, StationDetails.class);
+    return getMockRequest("request/get_station_details_ok1.json", StationDetails.class);
   }
 
   public static ChannelDetails getMockChannelDetails() throws IOException {
-    String mockChannel = readJsonFromFile("request/get_channel_details_ok1.json");
-    return new ObjectMapper().readValue(mockChannel, ChannelDetails.class);
+    return getMockRequest("request/get_channel_details_ok1.json", ChannelDetails.class);
   }
 
   public static Pa getMockPa() throws IOException {
-    String mockPa = readJsonFromFile("request/get_pa_ok1.json");
-    return new ObjectMapper().readValue(mockPa, Pa.class);
+    return getMockRequest("request/get_pa_ok1.json", Pa.class);
   }
 
   public static Stazioni getMockStazioni() throws IOException {
-    String mockStation = readJsonFromFile("request/get_station_ok1.json");
-    return new ObjectMapper().readValue(mockStation, Stazioni.class);
+    return getMockRequest("request/get_station_ok1.json", Stazioni.class);
   }
 
   public static Canali getMockChannel() throws IOException {
-    String mockChannel = readJsonFromFile("request/get_channel_ok1.json");
-    return new ObjectMapper().readValue(mockChannel, Canali.class);
+    return getMockRequest("request/get_channel_ok1.json", Canali.class);
   }
 
   public static Canali getMockChannelMapping() throws IOException {
-    String mockChannel = readJsonFromFile("request/get_channel_ok2.json");
-    return new ObjectMapper().readValue(mockChannel, Canali.class);
+    return getMockRequest("request/get_channel_ok2.json", Canali.class);
   }
 
   public static IntermediariPa getMockBroker() throws IOException {
-    String mockStation = readJsonFromFile("request/get_broker_ok1.json");
-    return new ObjectMapper().readValue(mockStation, IntermediariPa.class);
+    return getMockRequest("request/get_broker_ok1.json", IntermediariPa.class);
   }
 
   public static IntermediariPsp getMockPSPBroker() throws IOException {
-    String mockStation = readJsonFromFile("request/get_broker_ok2.json");
-    return new ObjectMapper().readValue(mockStation, IntermediariPsp.class);
+    return getMockRequest("request/get_broker_ok2.json", IntermediariPsp.class);
   }
 
   public static PaStazionePa getMockPaStazionePa() throws IOException {
@@ -122,6 +114,11 @@ public class TestUtil {
         .quartoModello(true)
         .segregazione(3L)
         .build();
+  }
+
+  public static <T> T getMockRequest(String requestPath, Class<T> clazz) throws IOException {
+    String mockChannel = readJsonFromFile(requestPath);
+    return new ObjectMapper().readValue(mockChannel, clazz);
   }
 
   /**

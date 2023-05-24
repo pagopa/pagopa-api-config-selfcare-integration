@@ -13,12 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExtendedChannelRepository extends CanaliRepository {
 
-  @Query(
-      value =
-          "SELECT DISTINCT c FROM Canali c WHERE (c.fkIntermediarioPsp.objId = :fkIntermediario) ORDER"
-              + " BY c.idCanale")
-  Page<Canali> findAllByFiltersOrderById(
-      @Param("fkIntermediario") Long brokerId, Pageable pageable);
+  Page<Canali> findByFkIntermediarioPsp_objIdOrderByIdCanale(@Param("fkIntermediario") Long brokerId, Pageable pageable);
 
   @Query(
       value =

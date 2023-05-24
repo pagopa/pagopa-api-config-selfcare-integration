@@ -152,7 +152,6 @@
         <version>0.8.7</version>
         <configuration>
           <excludes>
-            <exclude>/src/main/java/it/gov/pagopa/apiconfig/selfcareintegration/model/**/*</exclude>
           </excludes>
         </configuration>
         <executions>
