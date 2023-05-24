@@ -32,7 +32,7 @@ public class CreditorInstitutionsService {
       @NotNull String creditorInstitutionCode, Pageable pageable) {
     Pa pa = getPaIfExists(creditorInstitutionCode);
     Page<PaStazionePa> queryResult =
-        ciStationRepository.findAllByFilter(pa.getObjId(), pageable);
+        ciStationRepository.findByFkPa(pa.getObjId(), pageable);
     List<StationDetails> stations =
         queryResult.stream()
             .map(

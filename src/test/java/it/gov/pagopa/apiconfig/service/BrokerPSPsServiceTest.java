@@ -2,7 +2,6 @@ package it.gov.pagopa.apiconfig.service;
 
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannel;
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPSPBroker;
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockStazioni;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,7 +16,6 @@ import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedChannelRep
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokerPSPsService;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPsp;
-import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPspRepository;
 import it.gov.pagopa.apiconfig.util.TestUtil;
 import java.io.IOException;
@@ -69,7 +67,7 @@ class BrokerPSPsServiceTest {
     Page<Canali> page = TestUtil.mockPage(Lists.newArrayList(getMockChannel()), 10, 0);
 
     when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(getMockPSPBroker()));
-    when(channelRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(page);
+    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any())).thenReturn(page);
 
     ChannelDetailsList result = brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", null, pageable);
     String actual = TestUtil.toJson(result);
@@ -105,7 +103,7 @@ class BrokerPSPsServiceTest {
   @Test
   void getStationsDetailsCI_withoutChannelId_404() throws IOException, JSONException {
     when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(getMockPSPBroker()));
-    when(channelRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(new PageImpl<>(Lists.newArrayList()));
+    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any())).thenReturn(new PageImpl<>(Lists.newArrayList()));
     try {
       brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", null, pageable);
     } catch (AppException e) {

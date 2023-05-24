@@ -47,7 +47,7 @@ class CreditorInstitutionsServiceTest {
     Page<PaStazionePa> page = TestUtil.mockPage(Lists.newArrayList(getMockPaStazionePa()), 10, 0);
 
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
-    when(ciStationRepository.findAllByFilter(anyLong(), any(Pageable.class))).thenReturn(page);
+    when(ciStationRepository.findByFkPa(anyLong(), any(Pageable.class))).thenReturn(page);
 
     StationDetailsList result =
         creditorInstitutionsService.getStationsDetailsFromCreditorInstitution("1234", pageable);
