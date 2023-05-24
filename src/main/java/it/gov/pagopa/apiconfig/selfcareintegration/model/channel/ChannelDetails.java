@@ -194,6 +194,9 @@ public class ChannelDetails {
   @JsonProperty("flag_io")
   private Boolean flagIo;
 
+  @JsonProperty("flag_psp_cp")
+  private Boolean flagPspCp;
+
   @JsonProperty("agid")
   @Schema(required = true)
   @NotNull

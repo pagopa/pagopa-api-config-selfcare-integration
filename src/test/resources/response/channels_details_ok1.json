@@ -22,5 +22,6 @@
   "on_us": true,
   "payment_model": "ACTIVATED_AT_PSP",
   "recovery": true,
+  "flag_psp_cp": false,
   "rt_push": true
 }
