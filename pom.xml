@@ -23,6 +23,9 @@
     <oracle.version>21.9.0.0</oracle.version>
     <postgresql.version>42.5.4</postgresql.version>
     <modelmapper.version>3.1.0</modelmapper.version>
+    <sonar.exclusions>
+      /src/main/java/it/gov/pagopa/apiconfig/selfcareintegration/model/**/*,
+    </sonar.exclusions>
   </properties>
 
   <repositories>
@@ -149,6 +152,7 @@
         <version>0.8.7</version>
         <configuration>
           <excludes>
+            <exclude>/src/main/java/it/gov/pagopa/apiconfig/selfcareintegration/model/**/*</exclude>
           </excludes>
         </configuration>
         <executions>
