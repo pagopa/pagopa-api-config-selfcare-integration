@@ -32,5 +32,6 @@ hs_err_pid*
 /docker/database/volume/*
 /target/
 **/node_modules
+/helm/charts/*
 
 .identity/.terraform/*
