@@ -19,23 +19,23 @@ data "azurerm_key_vault" "key_vault" {
   resource_group_name = "pagopa-${var.env_short}-sec-rg"
 }
 
-data "azurerm_key_vault_secret" "key_vault_sonar" {
-  count  = var.env_short != "p" ? 1 : 0
+# data "azurerm_key_vault_secret" "key_vault_sonar" {
+#   count  = var.env_short != "p" ? 1 : 0
 
-  name = "sonar-token"
-  key_vault_id = data.azurerm_key_vault.key_vault[0].id
-}
+#   name = "sonar-token"
+#   key_vault_id = data.azurerm_key_vault.key_vault[0].id
+# }
 
-data "azurerm_key_vault_secret" "key_vault_bot_token" {
-  count  = var.env_short != "p" ? 1 : 0
+# data "azurerm_key_vault_secret" "key_vault_bot_token" {
+#   count  = var.env_short != "p" ? 1 : 0
 
-  name = "bot-token-github"
-  key_vault_id = data.azurerm_key_vault.key_vault[0].id
-}
+#   name = "bot-token-github"
+#   key_vault_id = data.azurerm_key_vault.key_vault[0].id
+# }
 
-data "azurerm_key_vault_secret" "key_vault_cucumber_token" {
-  count  = var.env_short != "p" ? 1 : 0
+# data "azurerm_key_vault_secret" "key_vault_cucumber_token" {
+#   count  = var.env_short != "p" ? 1 : 0
 
-  name = "cucumber-token"
-  key_vault_id = data.azurerm_key_vault.key_vault[0].id
-}
+#   name = "cucumber-token"
+#   key_vault_id = data.azurerm_key_vault.key_vault[0].id
+# }
