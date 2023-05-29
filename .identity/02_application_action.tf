@@ -65,13 +65,13 @@ resource "azurerm_role_assignment" "environment_terraform_subscription" {
 }
 
 resource "azurerm_role_assignment" "environment_key_vault" {
-  scope                = data.azurerm_key_vault.key_vault[0].id
+  scope                = data.azurerm_key_vault.key_vault.id
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.action.object_id
 }
 
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  key_vault_id = data.azurerm_key_vault.key_vault[0].id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = azuread_service_principal.action.object_id

@@ -66,27 +66,23 @@ resource "github_actions_environment_variable" "github_environment_runner_variab
 
  #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
  resource "github_actions_secret" "secret_sonar_token" {
-   count  = var.env_short == "d" ? 1 : 0
-
    repository       = local.github.repository
    secret_name      = "SONAR_TOKEN"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar[0].value
+   plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar.value
  }
 
  #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
  resource "github_actions_secret" "secret_bot_token" {
-   count  = var.env_short == "d" ? 1 : 0
 
    repository       = local.github.repository
    secret_name      = "BOT_TOKEN_GITHUB"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_bot_token[0].value
+   plaintext_value  = data.azurerm_key_vault_secret.key_vault_bot_token.value
  }
 
  #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
  resource "github_actions_secret" "secret_cucumber_token" {
-   count  = var.env_short == "d" ? 1 : 0
 
    repository       = local.github.repository
    secret_name      = "CUCUMBER_PUBLISH_TOKEN"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_cucumber_token[0].value
+   plaintext_value  = data.azurerm_key_vault_secret.key_vault_cucumber_token.value
  }
