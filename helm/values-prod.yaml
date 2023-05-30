@@ -69,10 +69,9 @@ microservice-chart:
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
     SPRING_DATASOURCE_USERNAME: 'cfg'
     SPRING_DATASOURCE_URL: 'jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0&currentSchema=cfg'
-    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
-    DB_CONFIG_DRIVER: 'oracle.jdbc.OracleDriver'
+    DB_CONFIG_DRIVER: 'org.postgresql.Driver'
     DATABASE_SCHEMA: 'cfg'
-    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
+    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.PostgreSQLDialect'
   envSecret:
     SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
   keyvault:
