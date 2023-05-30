@@ -108,10 +108,9 @@ jobs:
 
       - name: Run Service on Docker
         shell: bash
-        run: |
+        run: |          
           cd ./docker
-          chmod +x ./run_docker.sh
-          ./run_docker.sh dev
+          ./run_docker.sh dev --skip-recreate
 
       - name: Run Integration Tests
         shell: bash
