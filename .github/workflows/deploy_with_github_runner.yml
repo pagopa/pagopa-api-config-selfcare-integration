@@ -67,7 +67,7 @@ jobs:
           cluster_name: ${{ vars.CLUSTER_NAME }}
           resource_group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
           app_name: ${{ env.APP_NAME }}
-          helm_upgrade_options: ${{ (inputs.beta && '--set stable.enabled=false') || '--set postgresql.canaryDelivery.create=false' }}
+          helm_upgrade_options: "--debug"
 
   cleanup_runner:
     name: Cleanup Runner
