@@ -19,7 +19,7 @@ on:
       deploy_uat:
         required: false
         type: boolean
-        description: deploy beta version on AKS
+        description: deploy on UAT
         default: false
 
 
