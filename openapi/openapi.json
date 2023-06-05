@@ -329,13 +329,13 @@
             "type" : "string"
           }
         }, {
-          "description" : "The flag that permits to retrieve the codes already used. Default: false",
+          "description" : "The flag that permits to show the codes already used. Default: true",
           "in" : "query",
-          "name" : "getUsed",
+          "name" : "showUsedCodes",
           "required" : false,
           "schema" : {
             "type" : "boolean",
-            "default" : false
+            "default" : true
           }
         } ],
         "responses" : {
