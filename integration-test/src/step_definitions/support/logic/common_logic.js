@@ -20,9 +20,16 @@ async function assertStatusCode(response, statusCode) {
     assert.strictEqual(response.status, statusCode);
 }
 
+async function assertUndefined(response, field) {
+    console.log(` - the client does not receives the field [${field}]..`);
+    assert.ok(response[field] === undefined);
+}
+assertUndefined
+
 module.exports = {
     assertEmptyList,
     assertErrorMessage,
     assertNonEmptyList,
     assertStatusCode,
+    assertUndefined
 }
