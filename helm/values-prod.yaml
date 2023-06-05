@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: "apiconfig-selfcare-integration"
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.2.3-4-canary"
+    tag: "1.2.3-6-canary"
     pullPolicy: Always
   livenessProbe:
     httpGet:
