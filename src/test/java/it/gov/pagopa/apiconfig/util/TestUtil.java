@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
@@ -52,6 +54,14 @@ public class TestUtil {
         .build();
   }
 
+  public static CIAssociatedCodeList getMockApplicationCodesList()
+      throws IOException {
+    return CIAssociatedCodeList.builder()
+        .usedCodes(List.of(getMockUsedApplicationCodesList()))
+        .unusedCodes(List.of(getMockUnusedApplicationCodesList()))
+        .build();
+  }
+
   public static ChannelDetailsList getMockChannelDetailsList()
       throws IOException {
     List<ChannelDetails> channelDetails = List.of(getMockChannelDetails());
@@ -72,6 +82,14 @@ public class TestUtil {
 
   public static StationDetails getMockStationDetails() throws IOException {
     return getMockRequest("request/get_station_details_ok1.json", StationDetails.class);
+  }
+
+  public static CIAssociatedCode getMockUnusedApplicationCodesList() throws IOException {
+    return getMockRequest("request/get_application_codes_ok1.json", CIAssociatedCode.class);
+  }
+
+  public static CIAssociatedCode getMockUsedApplicationCodesList() throws IOException {
+    return getMockRequest("request/get_application_codes_ok2.json", CIAssociatedCode.class);
   }
 
   public static ChannelDetails getMockChannelDetails() throws IOException {
