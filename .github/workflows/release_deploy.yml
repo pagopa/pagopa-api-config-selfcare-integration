@@ -98,7 +98,7 @@ jobs:
     steps:
       - name: Make Release
         id: release
-        uses: pagopa/github-actions-template/maven-release@v1.4.2
+        uses: pagopa/github-actions-template/maven-release@canary
         with:
           semver: ${{ needs.setup.outputs.semver }}
           github_token: ${{ secrets.BOT_TOKEN_GITHUB }}
@@ -161,6 +161,7 @@ jobs:
     with:
       environment: ${{ matrix.environment }}
       target: ${{ needs.setup.outputs.environment }}
+      beta: ${{ inputs.beta }}
     secrets: inherit
 
   notify:

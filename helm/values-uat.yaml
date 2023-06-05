@@ -89,3 +89,22 @@ microservice-chart:
                 operator: In
                 values:
                   - user
+  canaryDelivery:
+    create: false
+    ingress:
+      create: true
+      canary:
+        type: header
+        headerName: X-Canary
+        headerValue: pagopa
+        weightPercent: 0
+    service:
+      create: true
+    deployment:
+      create: true
+      image:
+        repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
+        tag: "1.2.3-2"
+        pullPolicy: Always
+      envConfig:
+      envSecret:
