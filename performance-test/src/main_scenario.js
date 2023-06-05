@@ -75,6 +75,14 @@ export default function () {
   response = http.get(`${app_host}/brokerspsp/${brokersPspId}/channels?page=0&limit=50&channelId=${channelId}`, params);
   check(response, { 'check status is 200': (response) => response.status === 200 });
 
+  // Testing: creditorinstitutions/:creditorInstitutionId/applicationcodes
+  response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/applicationcodes`, params);
+  check(response, { 'check status is 200': (response) => response.status === 200 });
+
+  // Testing: creditorinstitutions/:creditorInstitutionId/applicationcodes?showUsedCodes=false
+  response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/applicationcodes?showUsedCodes=false`, params);
+  check(response, { 'check status is 200': (response) => response.status === 200 });
+
   // ending the execution
   postcondition();
 
