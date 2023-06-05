@@ -61,7 +61,6 @@ microservice-chart:
           value: "75"
   envConfig:
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-d-connection-string'
     APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
     ENV: 'azure-dev'
     APP_LOGGING_LEVEL: 'DEBUG'
@@ -75,6 +74,7 @@ microservice-chart:
     SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
   envSecret:
     SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
+    APPLICATIONINSIGHTS_CONNECTION_STRING: "ai-d-connection-string"
   keyvault:
     name: "pagopa-d-apiconfig-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
