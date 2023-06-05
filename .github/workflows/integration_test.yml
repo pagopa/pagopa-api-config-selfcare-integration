@@ -16,11 +16,12 @@ on:
           - dev
           - uat
           - prod
-  workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
+      deploy_uat:
+        required: false
+        type: boolean
+        description: deploy beta version on AKS
+        default: false
+
 
 
 jobs:
@@ -38,3 +39,13 @@ jobs:
           cd ./integration-test
           export CUCUMBER_PUBLISH_TOKEN=${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
           sh run_integration_test.sh ${{( github.event.inputs == null && 'dev') || inputs.environment }} ${{ secrets.SUBKEY }}
+
+  deploy_aks:
+    name: Deploy on AKS
+    needs: [ test ]
+    if: ${{ inputs.deploy_uat }}
+    uses: ./.github/workflows/deploy_with_github_runner.yml
+    with:
+      environment: uat
+      target: uat
+    secrets: inherit

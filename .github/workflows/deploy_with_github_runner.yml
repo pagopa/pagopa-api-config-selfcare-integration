@@ -11,10 +11,6 @@ on:
         required: true
         description: The environment target of the job
         type: string
-      beta:
-        required: false
-        description: deploy beta version on AKS
-        type: boolean
 
 env:
   NAMESPACE: apiconfig
