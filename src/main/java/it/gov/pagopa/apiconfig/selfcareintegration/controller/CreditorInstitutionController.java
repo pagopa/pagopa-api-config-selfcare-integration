@@ -160,9 +160,9 @@ public class CreditorInstitutionController {
       @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.", required = true)
       @PathVariable("creditorInstitutionCode")
       String creditorInstitutionCode,
-      @Parameter(description = "The flag that permits to retrieve the codes already used. Default: true")
-      @RequestParam(required = false, defaultValue = "true") Boolean getUsed) {
+      @Parameter(description = "The flag that permits to show the codes already used. Default: true")
+      @RequestParam(required = false, defaultValue = "true") boolean showUsedCodes) {
     return ResponseEntity.ok(
-        creditorInstitutionsService.getApplicationCodesFromCreditorInstitution(creditorInstitutionCode, getUsed));
+        creditorInstitutionsService.getApplicationCodesFromCreditorInstitution(creditorInstitutionCode, showUsedCodes));
   }
 }
