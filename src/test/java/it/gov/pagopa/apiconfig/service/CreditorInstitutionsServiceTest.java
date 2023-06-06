@@ -73,7 +73,10 @@ class CreditorInstitutionsServiceTest {
 
   @Test
   void getApplicationCodes_noUsedIncluded_200() throws IOException, JSONException {
-    List<PaStazionePa> stations = List.of(getMockPaStazionePa());
+    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
+    stationWithoutApplicationCode.setProgressivo(null);
+    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
 
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
@@ -86,7 +89,10 @@ class CreditorInstitutionsServiceTest {
 
   @Test
   void getApplicationCodes_usedIncluded_200() throws IOException, JSONException {
-    List<PaStazionePa> stations = List.of(getMockPaStazionePa());
+    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
+    stationWithoutApplicationCode.setProgressivo(null);
+    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
 
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
