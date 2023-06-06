@@ -1,7 +1,7 @@
 microservice-chart:
   namespace: "apiconfig"
   nameOverride: ""
-  fullnameOverride: "apiconfig-selfcare-integration"
+  fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
     tag: "1.2.3-6-canary"
