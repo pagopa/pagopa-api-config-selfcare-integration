@@ -63,6 +63,7 @@ public class CreditorInstitutionsService {
     Pa pa = getPaIfExists(creditorInstitutionCode);
     List<PaStazionePa> queryResult = ciStationRepository.findByFkPa(pa.getObjId());
     Map<Long, PaStazionePa> alreadyUsedApplicationCodes = queryResult.stream()
+        .filter(station -> station.getProgressivo() != null)
         .collect(Collectors.toMap(PaStazionePa::getProgressivo, station -> station));
 
     List<CIAssociatedCode> usedCodes = new LinkedList<>();
