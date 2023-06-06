@@ -12,7 +12,7 @@
 
   <groupId>it.gov.pagopa.api-config</groupId>
   <artifactId>selfcareintegration</artifactId>
-  <version>1.2.3-3-PAGOPA-974-get-application-code-disponibili-per-ec</version>
+  <version>1.2.3-4-PAGOPA-974-get-application-code-disponibili-per-ec</version>
   <name>API-Config - SelfCare Integration</name>
   <description>Spring application exposes APIs for SelfCare</description>
 

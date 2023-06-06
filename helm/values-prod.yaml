@@ -4,7 +4,7 @@ microservice-chart:
   fullnameOverride: ""
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.2.3-3-PAGOPA-974-get-application-code-disponibili-per-ec"
+    tag: "1.2.3-4-PAGOPA-974-get-application-code-disponibili-per-ec"
     pullPolicy: Always
   livenessProbe:
     httpGet:
