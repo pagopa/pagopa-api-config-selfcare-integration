@@ -104,7 +104,7 @@ microservice-chart:
       create: true
       image:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-        tag: "1.2.3-4-canary"
+        tag: "1.2.3-8-canary"
         pullPolicy: Always
       envConfig:
       envSecret:
