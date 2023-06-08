@@ -9,7 +9,8 @@ const {
 const {
     getChannelsByPSPBroker,
     getStationsByBroker,
-    getStationsByCreditorInstitution
+    getStationsByCreditorInstitution,
+    getApplicationCodesByCreditorInstitution
 } = require("../clients/selfcare_integration_client.js");
 const { debugLog } = require("../utility/helpers");
 
@@ -136,6 +137,12 @@ async function retrieveChannelsByPSPBroker(bundle) {
     debugLog(`Channel retrieving by PSP broker API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
 }
 
+async function retrieveApplicationCodesByCreditorInstitution(bundle, showUsedCodes) {
+    console.log(` - When the client requests the list of application codes related to the creditor institution`);
+    bundle.response = await getApplicationCodesByCreditorInstitution(bundle.creditorInstitutionId, showUsedCodes);
+    debugLog(`Channel retrieving by PSP broker API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
+}
+
 async function retrieveBrokerExecuteAPICall(bundle) {
     let response = await readBroker(bundle.brokerId);
     debugLog(`Broker retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
@@ -181,6 +188,7 @@ module.exports = {
     retrieveStationsByBroker,
     retrieveStationsByCreditorInstitution,
     retrieveChannelsByPSPBroker,
+    retrieveApplicationCodesByCreditorInstitution,
     retrieveStationRelatedToBroker,
     retrieveStationRelatedToCI,
     retrieveChannelRelatedToPSPBroker

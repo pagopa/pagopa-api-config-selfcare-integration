@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,4 +104,65 @@ public class CreditorInstitutionController {
         creditorInstitutionsService.getStationsDetailsFromCreditorInstitution(creditorInstitutionCode, PageRequest.of(page, limit)));
   }
 
+  /**
+   * GET /{creditorInstitutionCode}/stationsdetails : Get creditor institution station
+   *
+   * @param creditorInstitutionCode station code. (required)
+   * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
+   *     code 500)
+   */
+  @Operation(
+      summary = "Get application code associations with creditor institution",
+      security = {
+          @SecurityRequirement(name = "ApiKey"),
+          @SecurityRequirement(name = "Authorization")
+      },
+      tags = {
+          "Creditor Institutions",
+      })
+  @ApiResponses(
+      value = {
+          @ApiResponse(
+              responseCode = "200",
+              description = "OK",
+              content =
+              @Content(
+                  mediaType = MediaType.APPLICATION_JSON_VALUE,
+                  schema = @Schema(implementation = CIAssociatedCodeList.class))),
+          @ApiResponse(
+              responseCode = "401",
+              description = "Unauthorized",
+              content = @Content(schema = @Schema())),
+          @ApiResponse(
+              responseCode = "403",
+              description = "Forbidden",
+              content = @Content(schema = @Schema())),
+          @ApiResponse(
+              responseCode = "404",
+              description = "Not Found",
+              content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+          @ApiResponse(
+              responseCode = "429",
+              description = "Too many requests",
+              content = @Content(schema = @Schema())),
+          @ApiResponse(
+              responseCode = "500",
+              description = "Service unavailable",
+              content =
+              @Content(
+                  mediaType = MediaType.APPLICATION_JSON_VALUE,
+                  schema = @Schema(implementation = ProblemJson.class)))
+      })
+  @GetMapping(
+      value = "/{creditorInstitutionCode}/applicationcodes",
+      produces = {MediaType.APPLICATION_JSON_VALUE})
+  public ResponseEntity<CIAssociatedCodeList> getApplicationCodesFromCreditorInstitution(
+      @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.", required = true)
+      @PathVariable("creditorInstitutionCode")
+      String creditorInstitutionCode,
+      @Parameter(description = "The flag that permits to show the codes already used. Default: true")
+      @RequestParam(required = false, defaultValue = "true") boolean showUsedCodes) {
+    return ResponseEntity.ok(
+        creditorInstitutionsService.getApplicationCodesFromCreditorInstitution(creditorInstitutionCode, showUsedCodes));
+  }
 }

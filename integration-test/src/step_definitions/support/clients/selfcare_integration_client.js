@@ -33,10 +33,19 @@ function getStationsByCreditorInstitution(creditorInstitutionCode, limit, pageNu
     })
 }
 
-
+function getApplicationCodesByCreditorInstitution(creditorInstitutionCode, showUsedCodes) {
+    const host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/applicationcodes?showUsedCodes=${showUsedCodes}`;
+    debugLog(`Calling endpoint: [${host}]`);
+    return get(host, {
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
+        }
+    })
+}
 
 module.exports = {
     getChannelsByPSPBroker,
     getStationsByBroker,
-    getStationsByCreditorInstitution
+    getStationsByCreditorInstitution,
+    getApplicationCodesByCreditorInstitution
 }

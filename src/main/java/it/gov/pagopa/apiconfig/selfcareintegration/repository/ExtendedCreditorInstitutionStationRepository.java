@@ -6,12 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @SuppressWarnings(
     "java:S100") // Disabled naming convention rule for method name to use Spring Data interface
 @Repository
 public interface ExtendedCreditorInstitutionStationRepository extends PaStazionePaRepository {
 
-  Page<PaStazionePa> findByFkPa(@Param("fkPa") Long creditorInstitutionId, Pageable pageable);
+  List<PaStazionePa> findByFkPa(@Param("fkPa") Long creditorInstitutionId);
 
+  Page<PaStazionePa> findByFkPa(@Param("fkPa") Long creditorInstitutionId, Pageable pageable);
 }

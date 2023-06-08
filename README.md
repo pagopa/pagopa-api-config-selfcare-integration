@@ -1,18 +1,31 @@
-# Template for Java Spring Microservice project
+# pagoPa Api Config - SelfCare integration
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=TODO-set-your-id&metric=alert_status)](https://sonarcloud.io/dashboard?id=TODO-set-your-id)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pagopa_pagopa-api-config-selfcare-integration&metric=alert_status)](https://sonarcloud.io/dashboard?id=pagopa_pagopa-api-config-selfcare-integration)
 
-TODO: add a description
+Spring Application that exposes a subset of the APIs to manage configuration for EC/PSP on the _Nodo dei Pagamenti_, needed by PagoPA SelfCare application.
 
-TODO: generate a index with this tool: https://ecotrust-canada.github.io/markdown-toc/
-
-TODO: resolve all the TODOs in this template
+- [pagoPa Api Config - SelfCare integration](#pagopa-api-config---selfcare-integration)
+    * [Api Documentation 📖](#api-documentation---)
+    * [Technology Stack](#technology-stack)
+    * [Start Project Locally 🚀](#start-project-locally---)
+        + [Prerequisites](#prerequisites)
+        + [Run docker container](#run-docker-container)
+    * [Develop Locally 💻](#develop-locally---)
+        + [Prerequisites](#prerequisites-1)
+        + [Run the project](#run-the-project)
+        + [Spring Profiles](#spring-profiles)
+        + [Testing 🧪](#testing---)
+            - [Unit testing](#unit-testing)
+            - [Integration testing](#integration-testing)
+            - [Performance testing](#performance-testing)
+    * [Contributors 👥](#contributors---)
+        + [Mainteiners](#mainteiners)
 
 ---
 
 ## Api Documentation 📖
 
-See the [OpenApi 3 here.](TODO: set your url)
+See the [OpenApi 3 here.](https://editor.swagger.io/?url=https://raw.githubusercontent.com/pagopa/pagopa-api-config-selfcare-integration/main/openapi/openapi.json)
 
 ---
 
@@ -23,8 +36,6 @@ See the [OpenApi 3 here.](TODO: set your url)
 - Spring Web
 - Hibernate
 - JPA
-- ...
-- TODO
 
 ---
 
@@ -54,13 +65,18 @@ from `./docker` directory
 
 ### Run the project
 
-Start the springboot application with this command:
+Start the springboot application with this command for local test:
 
 `mvn spring-boot:run -Dspring-boot.run.profiles=local`
 
+or, for H2 tests:
+
+`mvn spring-boot:run -Dspring-boot.run.profiles=h2`
+
 ### Spring Profiles
 
-- **local**: to develop locally.
+- **local**: to develop locally, pointing to DEV database.
+- **h2**: to develop locally, pointing to local H2 database.
 - _default (no profile set)_: The application gets the properties from the environment (for Azure).
 
 ### Testing 🧪

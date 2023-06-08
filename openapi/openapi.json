@@ -4,7 +4,7 @@
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
     "title": "API-Config - SelfCare Integration",
-    "version": "1.2.3-4"
+    "version": "1.2.3-5-PAGOPA-974-get-application-code-disponibili-per-ec"
   },
   "servers": [
     {
@@ -347,6 +347,143 @@
         }
       ]
     },
+    "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
+      "get": {
+        "operationId": "getApplicationCodesFromCreditorInstitution",
+        "parameters": [
+          {
+            "description": "Organization fiscal code, the fiscal code of the Organization.",
+            "in": "path",
+            "name": "creditorInstitutionCode",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The flag that permits to show the codes already used. Default: true",
+            "in": "query",
+            "name": "showUsedCodes",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CIAssociatedCodeList"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get application code associations with creditor institution",
+        "tags": [
+          "Creditor Institutions"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/creditorinstitutions/{creditorInstitutionCode}/stations": {
       "get": {
         "operationId": "getStationsDetailsFromCreditorInstitution",
@@ -666,6 +803,47 @@
         },
         "description": "Details of the intermediate EC of the station"
       },
+      "CIAssociatedCode": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 2,
+            "minLength": 2,
+            "type": "string",
+            "description": "The code that bound uniquely a creditor institution to a station"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the station associated to the creditor institution, if exists"
+          }
+        },
+        "description": "List of codes not used for existing associations"
+      },
+      "CIAssociatedCodeList": {
+        "required": [
+          "unused"
+        ],
+        "type": "object",
+        "properties": {
+          "unused": {
+            "type": "array",
+            "description": "List of codes not used for existing associations",
+            "items": {
+              "$ref": "#/components/schemas/CIAssociatedCode"
+            }
+          },
+          "used": {
+            "type": "array",
+            "description": "List of codes already used for existing associations",
+            "items": {
+              "$ref": "#/components/schemas/CIAssociatedCode"
+            }
+          }
+        }
+      },
       "ChannelDetails": {
         "required": [
           "agid",
@@ -713,6 +891,9 @@
             "type": "boolean"
           },
           "flag_io": {
+            "type": "boolean"
+          },
+          "flag_psp_cp": {
             "type": "boolean"
           },
           "ip": {

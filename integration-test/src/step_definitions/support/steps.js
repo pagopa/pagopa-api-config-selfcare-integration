@@ -3,7 +3,8 @@ const {
     assertEmptyList,
     assertErrorMessage,
     assertNonEmptyList,
-    assertStatusCode
+    assertStatusCode,
+    assertUndefined
 } = require('./logic/common_logic');
 const { executeHealthCheckForAPIConfig } = require('./logic/health_checks_logic');
 const {
@@ -23,6 +24,7 @@ const {
   retrieveChannelsByPSPBroker,
   retrieveStationRelatedToBroker,
   retrieveStationRelatedToCI,
+  retrieveApplicationCodesByCreditorInstitution,
   retrieveChannelRelatedToPSPBroker
 } = require('./logic/selfcare_integration_logic');
 
@@ -69,6 +71,9 @@ Given('a channel related to PSP broker', () => retrieveChannelRelatedToPSPBroker
 When('the client requests the list of stations related to the broker', () => retrieveStationsByBroker(bundle));
 When('the client requests the list of stations related to the creditor institution', () => retrieveStationsByCreditorInstitution(bundle));
 When('the client requests the list of channels related to the PSP broker', () => retrieveChannelsByPSPBroker(bundle));
+When('the client requests the list of application codes related to the creditor institution', () => retrieveApplicationCodesByCreditorInstitution(bundle, true));
+When('the client requests the list of application codes related to the creditor institution without used ones', () => retrieveApplicationCodesByCreditorInstitution(bundle, false));
+
 
 /*
  *  'Then' clauses for assering retrieved data
@@ -76,8 +81,12 @@ When('the client requests the list of channels related to the PSP broker', () =>
 Then('the client receives status code {int}', (statusCode) => assertStatusCode(bundle.response, statusCode));
 Then('the client receives a non-empty list of stations', () => assertNonEmptyList(bundle.response?.data.stations));
 Then('the client receives a non-empty list of channels', () => assertNonEmptyList(bundle.response?.data.channels));
+Then('the client receives a non-empty list of unused codes', () => assertNonEmptyList(bundle.response?.data.unused));
+Then('the client receives a non-empty list of used codes', () => assertNonEmptyList(bundle.response?.data.used));
 Then('the client receives an empty list of stations', () => assertEmptyList(bundle.response?.data?.stations));
 Then('the client receives an empty list of channels', () => assertEmptyList(bundle.response?.data?.channels));
+Then('the client receives an empty list of used codes', () => assertEmptyList(bundle.response?.data.used));
+Then('the client does not receives the field {string}', (fieldName) => assertUndefined(bundle.response?.data, fieldName));
 Then('the client receives an error message', () => assertErrorMessage(bundle.response?.data));
 Then('the station is included in the result list', () => assertStationIncludedInResponse(bundle.stationId, bundle.response));
 Then('the channel is included in the result list', () => assertChannelIncludedInResponse(bundle.channelId, bundle.response));
