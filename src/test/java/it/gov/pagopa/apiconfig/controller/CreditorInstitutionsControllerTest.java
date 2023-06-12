@@ -57,4 +57,14 @@ class CreditorInstitutionsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
+
+  @ParameterizedTest
+  @CsvSource({
+      "/creditorinstitutions/1234/segregationcodes",
+  })
+  void testGetSegregationCodes(String url) throws Exception {
+    mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+  }
 }

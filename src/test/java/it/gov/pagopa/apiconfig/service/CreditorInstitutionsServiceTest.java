@@ -114,4 +114,49 @@ class CreditorInstitutionsServiceTest {
       fail();
     }
   }
+
+
+  @Test
+  void getSegregationCodes_noUsedIncluded_200() throws IOException, JSONException {
+    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
+    stationWithoutApplicationCode.setSegregazione(null);
+    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
+
+    when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
+    when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
+    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", false);
+    String actual = TestUtil.toJson(result);
+    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
+    JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+  }
+
+  @Test
+  void getSegregationCodes_usedIncluded_200() throws IOException, JSONException {
+    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
+    stationWithoutApplicationCode.setSegregazione(null);
+    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
+
+    when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
+    when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
+    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true);
+    String actual = TestUtil.toJson(result);
+    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok2.json");
+    JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+  }
+
+  @Test
+  void getSegregationCodes_404() throws IOException, JSONException {
+    when(paRepository.findByIdDominio("12345")).thenReturn(Optional.empty());
+    try {
+      creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("12345", false);
+    } catch (AppException e) {
+      assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
+    } catch (Exception e) {
+      fail();
+    }
+  }
 }
