@@ -31,6 +31,9 @@ public class CreditorInstitutionsService {
   @Value("${sc-int.application_code.max_value}")
   private Integer applicationCodeMaxValue;
 
+  @Value("${sc-int.segregation_code.max_value}")
+  private Integer segregationCodeMaxValue;
+
   @Autowired
   private ExtendedCreditorInstitutionStationRepository ciStationRepository;
 
@@ -56,7 +59,6 @@ public class CreditorInstitutionsService {
         .build();
   }
 
-
   public CIAssociatedCodeList getApplicationCodesFromCreditorInstitution(
       @NotNull String creditorInstitutionCode,
       boolean getUsed) {
@@ -65,23 +67,39 @@ public class CreditorInstitutionsService {
     Map<Long, PaStazionePa> alreadyUsedApplicationCodes = queryResult.stream()
         .filter(station -> station.getProgressivo() != null)
         .collect(Collectors.toMap(PaStazionePa::getProgressivo, station -> station));
+    return extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, applicationCodeMaxValue, getUsed);
+  }
 
+  public CIAssociatedCodeList getSegregationCodesFromCreditorInstitution(
+      @NotNull String creditorInstitutionCode,
+      boolean getUsed) {
+    Pa pa = getPaIfExists(creditorInstitutionCode);
+    List<PaStazionePa> queryResult = ciStationRepository.findByFkPa(pa.getObjId());
+    Map<Long, PaStazionePa> alreadyUsedApplicationCodes = queryResult.stream()
+        .filter(station -> station.getSegregazione() != null)
+        .collect(Collectors.toMap(PaStazionePa::getSegregazione, station -> station));
+    return extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, segregationCodeMaxValue, getUsed);
+  }
+
+  private CIAssociatedCodeList extractUsedAndUnusedCodes(Map<Long, PaStazionePa> alreadyUsedCodes,
+      long codeMaxValue, boolean includeUsed) {
     List<CIAssociatedCode> usedCodes = new LinkedList<>();
     List<CIAssociatedCode> unusedCodes = new LinkedList<>();
-
-    LongStream.rangeClosed(0, applicationCodeMaxValue)
+    // extracting the used and unused code analyzing a sequence of N values and filtering by existing association to station
+    LongStream.rangeClosed(0, codeMaxValue)
         .boxed()
         .forEach(
-            applicationCodeFromSequence -> {
+            codeFromSequence -> {
               // generate model to be added
               CIAssociatedCode ciAssociatedCode = CIAssociatedCode.builder()
-                  .code(String.valueOf(applicationCodeFromSequence < 10 ? "0".concat(
-                      String.valueOf(applicationCodeFromSequence)) : applicationCodeFromSequence))
+                  .code(String.valueOf(codeFromSequence < 10
+                      ? "0" .concat(String.valueOf(codeFromSequence))
+                      : codeFromSequence))
                   .build();
-              // choose the list where add the model object
-              if (alreadyUsedApplicationCodes.containsKey(applicationCodeFromSequence)) {
+              // choose the list where must be added the model object
+              if (alreadyUsedCodes.containsKey(codeFromSequence)) {
                 ciAssociatedCode.setStationName(
-                    alreadyUsedApplicationCodes.get(applicationCodeFromSequence).getFkStazione()
+                    alreadyUsedCodes.get(codeFromSequence).getFkStazione()
                         .getIdStazione());
                 usedCodes.add(ciAssociatedCode);
               } else {
@@ -89,9 +107,9 @@ public class CreditorInstitutionsService {
               }
             }
         );
-
+    // generate final object
     return CIAssociatedCodeList.builder()
-        .usedCodes(getUsed ? usedCodes : null)
+        .usedCodes(includeUsed ? usedCodes : null)
         .unusedCodes(unusedCodes)
         .build();
   }
