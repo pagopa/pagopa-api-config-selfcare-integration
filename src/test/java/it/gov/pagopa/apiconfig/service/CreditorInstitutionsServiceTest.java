@@ -118,15 +118,15 @@ class CreditorInstitutionsServiceTest {
 
   @Test
   void getSegregationCodes_noUsedIncluded_200() throws IOException, JSONException {
-    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
-    stationWithoutApplicationCode.setSegregazione(null);
-    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
-    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
+    PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
+    stationWithoutSegregationCode.setSegregazione(null);
+    stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutSegregationCode);
 
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", false);
+    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", false, null);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
@@ -134,17 +134,38 @@ class CreditorInstitutionsServiceTest {
 
   @Test
   void getSegregationCodes_usedIncluded_200() throws IOException, JSONException {
-    PaStazionePa stationWithoutApplicationCode = getMockPaStazionePa();
-    stationWithoutApplicationCode.setSegregazione(null);
-    stationWithoutApplicationCode.getFkStazione().setIdStazione("noappcodestation");
-    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutApplicationCode);
+    PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
+    stationWithoutSegregationCode.setSegregazione(null);
+    stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
+    List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutSegregationCode);
 
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true);
+    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, null);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok2.json");
+    JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+  }
+
+  @Test
+  void getSegregationCodes_filterByService_200() throws IOException, JSONException {
+    PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
+    stationWithoutSegregationCode.setSegregazione(null);
+    stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
+
+    PaStazionePa stationMock = getMockPaStazionePa();
+    stationMock.getFkStazione().setServizio("mockedService");
+    stationMock.getFkStazione().setIdStazione("fakestation");
+    stationMock.setSegregazione(15L);
+
+    List<PaStazionePa> stations = List.of(stationMock, stationWithoutSegregationCode);
+    when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
+    when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
+    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "mockedser");
+    String actual = TestUtil.toJson(result);
+    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
@@ -152,7 +173,7 @@ class CreditorInstitutionsServiceTest {
   void getSegregationCodes_404() throws IOException, JSONException {
     when(paRepository.findByIdDominio("12345")).thenReturn(Optional.empty());
     try {
-      creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("12345", false);
+      creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("12345", false, null);
     } catch (AppException e) {
       assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
     } catch (Exception e) {

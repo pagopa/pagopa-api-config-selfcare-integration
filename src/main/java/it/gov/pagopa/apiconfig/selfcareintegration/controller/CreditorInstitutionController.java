@@ -172,6 +172,7 @@ public class CreditorInstitutionController {
    *
    * @param creditorInstitutionCode station code. (required)
    * @param showUsedCodes The flag that permits to show the codes already used
+   * @param service The service endpoint, to be used as a search filter to obtain only the segregation codes used by the CI for stations using same endpoint service.
    * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
    *     code 500)
    */
@@ -225,8 +226,10 @@ public class CreditorInstitutionController {
       @PathVariable("creditorInstitutionCode")
       String creditorInstitutionCode,
       @Parameter(description = "The flag that permits to show the codes already used. Default: true")
-      @RequestParam(required = false, defaultValue = "true") boolean showUsedCodes) {
+      @RequestParam(required = false, defaultValue = "true") boolean showUsedCodes,
+      @Parameter(description = "The service endpoint, to be used as a search filter to obtain only the segregation codes used by the CI for stations using same endpoint service. Default: null")
+      @RequestParam(required = false) String service) {
     return ResponseEntity.ok(
-        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(creditorInstitutionCode, showUsedCodes));
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(creditorInstitutionCode, showUsedCodes, service));
   }
 }

@@ -72,11 +72,22 @@ public class CreditorInstitutionsService {
 
   public CIAssociatedCodeList getSegregationCodesFromCreditorInstitution(
       @NotNull String creditorInstitutionCode,
-      boolean getUsed) {
+      boolean getUsed,
+      String service) {
+    String serviceSubstringToBeSearched = service != null ? service.toLowerCase() : null;
     Pa pa = getPaIfExists(creditorInstitutionCode);
     List<PaStazionePa> queryResult = ciStationRepository.findByFkPa(pa.getObjId());
     Map<Long, PaStazionePa> alreadyUsedApplicationCodes = queryResult.stream()
-        .filter(station -> station.getSegregazione() != null)
+        .filter(station -> {
+          /*
+           * Filter stations only if its segregation code exists and, if 'service' query parameter is passed,
+           * its station's service endpoint match as substring the one passed as parameter.
+           */
+          String serviceEndpoint = station.getFkStazione().getServizio();
+          return station.getSegregazione() != null &&
+              (serviceSubstringToBeSearched == null ||
+              (serviceEndpoint != null && serviceEndpoint.toLowerCase().contains(serviceSubstringToBeSearched)));
+        })
         .collect(Collectors.toMap(PaStazionePa::getSegregazione, station -> station));
     return extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, segregationCodeMaxValue, getUsed);
   }
