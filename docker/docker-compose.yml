@@ -7,11 +7,13 @@ services:
     build:
       dockerfile: Dockerfile
       context: ../
+      secrets:
+        - GH_TOKEN
     env_file:
       - ./.env
     ports:
       - "8080:8080"
 
 secrets:
-  secrets:
+  GH_TOKEN:
     file: ./secrets

@@ -14,7 +14,6 @@ pip3 install yq
 
 if [ "$ENV" = "local" ]; then
   image="service-local:latest"
-  ENV="dev"
 else
   if [ "$ENV" = "dev" ]; then
     containerRegistry="pagopadcommonacr.azurecr.io"
