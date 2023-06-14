@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.stream.LongStream;
@@ -78,18 +79,25 @@ public class CreditorInstitutionsService {
     Pa pa = getPaIfExists(creditorInstitutionCode);
     List<PaStazionePa> queryResult = ciStationRepository.findByFkPa(pa.getObjId());
     Map<Long, PaStazionePa> alreadyUsedApplicationCodes = queryResult.stream()
-        .filter(station -> {
-          /*
-           * Filter stations only if its segregation code exists and, if 'service' query parameter is passed,
-           * its station's service endpoint match as substring the one passed as parameter.
-           */
-          String serviceEndpoint = station.getFkStazione().getServizio();
-          return station.getSegregazione() != null &&
-              (serviceSubstringToBeSearched == null ||
-              (serviceEndpoint != null && serviceEndpoint.toLowerCase().contains(serviceSubstringToBeSearched)));
-        })
+        .filter(station -> station.getSegregazione() != null)
         .collect(Collectors.toMap(PaStazionePa::getSegregazione, station -> station));
-    return extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, segregationCodeMaxValue, getUsed);
+    // get the set of codes to be obfuscated by service search. If passed service is null, the set is empty and all the element will be returned.
+    Set<String> codesToBeObfuscated = queryResult.stream()
+        .filter(station -> {
+          String serviceEndpoint = station.getFkStazione().getServizio();
+          return serviceSubstringToBeSearched != null && (serviceEndpoint == null || !serviceEndpoint.toLowerCase().contains(serviceSubstringToBeSearched));
+        })
+        .map(station -> station.getFkStazione().getIdStazione())
+        .collect(Collectors.toSet());
+    // retrieving the data removing the ones to be obfuscated
+    CIAssociatedCodeList ciAssociatedCodeList = extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, segregationCodeMaxValue, getUsed);
+    if (ciAssociatedCodeList.getUsedCodes() != null) {
+      ciAssociatedCodeList.setUsedCodes(
+          ciAssociatedCodeList.getUsedCodes().stream()
+              .filter(usedCode -> !codesToBeObfuscated.contains(usedCode.getStationName()))
+              .collect(Collectors.toList()));
+    }
+    return ciAssociatedCodeList;
   }
 
   private CIAssociatedCodeList extractUsedAndUnusedCodes(Map<Long, PaStazionePa> alreadyUsedCodes,

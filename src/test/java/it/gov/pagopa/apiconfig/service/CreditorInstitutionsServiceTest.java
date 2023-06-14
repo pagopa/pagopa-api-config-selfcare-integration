@@ -173,6 +173,15 @@ class CreditorInstitutionsServiceTest {
     actual = TestUtil.toJson(result);
     expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+
+    // check if null service are ignored
+    stationMock.getFkStazione().setServizio(null);
+    stations = List.of(stationMock, stationWithoutSegregationCode);
+    when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+    result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "MOCKEDSERVICE");
+    actual = TestUtil.toJson(result);
+    expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok4.json");
+    JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
   @Test
