@@ -1,7 +1,8 @@
-# sh ./run_docker.sh <local|dev|uat|prod> --skip-recreate
+# sh ./run_docker.sh <local|dev|uat|prod> <GH_TOKEN> --skip-recreate
 
 ENV=$1
-RECREATE=$2
+GH_TOKEN=$2
+RECREATE=$3
 
 if [ -z "$ENV" ]
 then
