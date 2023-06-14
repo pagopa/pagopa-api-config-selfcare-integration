@@ -9,13 +9,12 @@ then
   echo "No environment specified: local is used."
 fi
 
+pip3 install yq
 
 if [ "$ENV" = "local" ]; then
-  containerRegistry="pagopadcommonacr.azurecr.io"
   image="service-local:latest"
-  echo "Running local image and dev dependencies"
+  ENV="dev"
 else
-
   if [ "$ENV" = "dev" ]; then
     containerRegistry="pagopadcommonacr.azurecr.io"
     echo "Running all dev images"
@@ -30,7 +29,6 @@ else
     exit 1
   fi
 
-  pip3 install yq
   repository=$(yq -r '."microservice-chart".image.repository' ../helm/values-$ENV.yaml)
   image="${repository}:latest"
 fi
