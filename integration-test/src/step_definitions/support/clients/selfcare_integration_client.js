@@ -43,9 +43,25 @@ function getApplicationCodesByCreditorInstitution(creditorInstitutionCode, showU
     })
 }
 
+function getSegregationCodesByCreditorInstitution(creditorInstitutionCode, showUsedCodes, stationSubstring) {
+    let host = ``;
+    if (stationSubstring === undefined) {
+        host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/segregationcodes?showUsedCodes=${showUsedCodes}`;
+    } else {
+        host = `${app_host}/creditorinstitutions/${creditorInstitutionCode}/segregationcodes?showUsedCodes=${showUsedCodes}&service=${stationSubstring}`;
+    }
+    debugLog(`Calling endpoint: [${host}]`);
+    return get(host, {
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.SUBKEY
+        }
+    })
+}
+
 module.exports = {
     getChannelsByPSPBroker,
     getStationsByBroker,
     getStationsByCreditorInstitution,
-    getApplicationCodesByCreditorInstitution
+    getApplicationCodesByCreditorInstitution,
+    getSegregationCodesByCreditorInstitution
 }
