@@ -13,7 +13,6 @@ fi
 if [ "$ENV" = "local" ]; then
   containerRegistry="pagopadcommonacr.azurecr.io"
   image="service-local:latest"
-  ENV="dev"
   echo "Running local image and dev dependencies"
 else
 
