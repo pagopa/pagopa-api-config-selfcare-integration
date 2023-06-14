@@ -167,6 +167,12 @@ class CreditorInstitutionsServiceTest {
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+
+    // check if lower case check works
+    result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "MOCKEDSERVICE");
+    actual = TestUtil.toJson(result);
+    expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
+    JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
   @Test
