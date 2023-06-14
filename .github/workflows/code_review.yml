@@ -66,6 +66,7 @@ jobs:
         shell: bash
         id: run_service_docker
         run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           cd ./docker
           chmod +x ./run_docker.sh
           ./run_docker.sh local
