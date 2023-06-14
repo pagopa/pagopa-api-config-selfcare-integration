@@ -55,6 +55,7 @@ for line in $(echo $secret | jq -r '. | to_entries[] | select(.key) | "\(.key)=\
 done
 
 echo $GH_TOKEN > ./secrets
+echo $GH_TOKEN > ./GH_TOKEN
 
 stack_name=$(cd .. && basename "$PWD")
 if [ "$RECREATE" = "--skip-recreate" ]; then
