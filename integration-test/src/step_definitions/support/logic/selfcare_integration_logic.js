@@ -10,7 +10,8 @@ const {
     getChannelsByPSPBroker,
     getStationsByBroker,
     getStationsByCreditorInstitution,
-    getApplicationCodesByCreditorInstitution
+    getApplicationCodesByCreditorInstitution,
+    getSegregationCodesByCreditorInstitution
 } = require("../clients/selfcare_integration_client.js");
 const { debugLog } = require("../utility/helpers");
 
@@ -143,6 +144,17 @@ async function retrieveApplicationCodesByCreditorInstitution(bundle, showUsedCod
     debugLog(`Channel retrieving by PSP broker API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
 }
 
+async function retrieveSegregationCodesByCreditorInstitution(bundle, showUsedCodes, includeService) {
+    console.log(` - When the client requests the list of application codes related to the creditor institution`);
+    let serviceSubstring = undefined;
+    if (includeService === true) {
+      serviceSubstring = process.env.service_for_segregationcodes;
+    }
+    bundle.response = await getSegregationCodesByCreditorInstitution(bundle.creditorInstitutionId, showUsedCodes, serviceSubstring);
+    debugLog(`Channel retrieving by PSP broker API invocation returned HTTP status code: ${bundle.response.status} with body: ${JSON. stringify(bundle.response.data)}`);
+}
+
+
 async function retrieveBrokerExecuteAPICall(bundle) {
     let response = await readBroker(bundle.brokerId);
     debugLog(`Broker retrieving API invocation returned HTTP status code: ${response.status} with body: ${JSON.stringify(response.data)}`);
@@ -189,6 +201,7 @@ module.exports = {
     retrieveStationsByCreditorInstitution,
     retrieveChannelsByPSPBroker,
     retrieveApplicationCodesByCreditorInstitution,
+    retrieveSegregationCodesByCreditorInstitution,
     retrieveStationRelatedToBroker,
     retrieveStationRelatedToCI,
     retrieveChannelRelatedToPSPBroker

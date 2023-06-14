@@ -25,6 +25,7 @@ const {
   retrieveStationRelatedToBroker,
   retrieveStationRelatedToCI,
   retrieveApplicationCodesByCreditorInstitution,
+  retrieveSegregationCodesByCreditorInstitution,
   retrieveChannelRelatedToPSPBroker
 } = require('./logic/selfcare_integration_logic');
 
@@ -73,7 +74,9 @@ When('the client requests the list of stations related to the creditor instituti
 When('the client requests the list of channels related to the PSP broker', () => retrieveChannelsByPSPBroker(bundle));
 When('the client requests the list of application codes related to the creditor institution', () => retrieveApplicationCodesByCreditorInstitution(bundle, true));
 When('the client requests the list of application codes related to the creditor institution without used ones', () => retrieveApplicationCodesByCreditorInstitution(bundle, false));
-
+When('the client requests the list of segregation codes related to the creditor institution', () => retrieveSegregationCodesByCreditorInstitution(bundle, true, false));
+When('the client requests the list of segregation codes related to the creditor institution without used ones', () => retrieveSegregationCodesByCreditorInstitution(bundle, false, false));
+When('the client requests the list of segregation codes related to the creditor institution filtering by service', () => retrieveSegregationCodesByCreditorInstitution(bundle, true, true));
 
 /*
  *  'Then' clauses for assering retrieved data

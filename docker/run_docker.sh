@@ -1,7 +1,8 @@
-# sh ./run_docker.sh <local|dev|uat|prod> --skip-recreate
+# sh ./run_docker.sh <local|dev|uat|prod> <GH_TOKEN> --skip-recreate
 
 ENV=$1
-RECREATE=$2
+GH_TOKEN=$2
+RECREATE=$3
 
 if [ -z "$ENV" ]
 then
@@ -9,13 +10,12 @@ then
   echo "No environment specified: local is used."
 fi
 
+pip3 install yq
 
 if [ "$ENV" = "local" ]; then
-  containerRegistry="pagopadcommonacr.azurecr.io"
   image="service-local:latest"
-  echo "Running local image and dev dependencies"
+  ENV="dev"
 else
-
   if [ "$ENV" = "dev" ]; then
     containerRegistry="pagopadcommonacr.azurecr.io"
     echo "Running all dev images"
@@ -30,7 +30,6 @@ else
     exit 1
   fi
 
-  pip3 install yq
   repository=$(yq -r '."microservice-chart".image.repository' ../helm/values-$ENV.yaml)
   image="${repository}:latest"
 fi
@@ -55,6 +54,8 @@ for line in $(echo $secret | jq -r '. | to_entries[] | select(.key) | "\(.key)=\
   value=$(echo $response | jq -r '.value')
   echo "${array[0]}=$value" >> .env
 done
+
+echo ${GH_TOKEN} > ./secrets
 
 stack_name=$(cd .. && basename "$PWD")
 if [ "$RECREATE" = "--skip-recreate" ]; then

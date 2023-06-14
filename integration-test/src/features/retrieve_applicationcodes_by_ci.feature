@@ -3,7 +3,7 @@ Feature: All about API Config Selfcare integration workflow - Retrieve applicati
   Background:
     Given APIConfig service running
 
-  Scenario: Show used and unused codes for creditor institution
+  Scenario: Show used and unused application codes for creditor institution
     Given an existing creditor institution
     And a station related to creditor institution
     When the client requests the list of application codes related to the creditor institution
@@ -11,7 +11,7 @@ Feature: All about API Config Selfcare integration workflow - Retrieve applicati
     And the client receives a non-empty list of unused codes
     And the client receives a non-empty list of used codes
 
-  Scenario: Show only unused codes for creditor institution
+  Scenario: Show only unused application codes for creditor institution
     Given an existing creditor institution
     And a station related to creditor institution
     When the client requests the list of application codes related to the creditor institution without used ones
@@ -19,7 +19,7 @@ Feature: All about API Config Selfcare integration workflow - Retrieve applicati
     And the client receives a non-empty list of unused codes
     And the client does not receives the field "used"
 
-  Scenario: Show used and unused codes for creditor institution with no station
+  Scenario: Show used and unused application codes for creditor institution with no station
     Given an existing creditor institution with no stations related
     When the client requests the list of application codes related to the creditor institution
     Then the client receives status code 200

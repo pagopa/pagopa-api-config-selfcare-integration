@@ -62,6 +62,14 @@ public class TestUtil {
         .build();
   }
 
+  public static CIAssociatedCodeList getMockSegregationCodesList()
+      throws IOException {
+    return CIAssociatedCodeList.builder()
+        .usedCodes(List.of(getMockUsedSegregationCodesList()))
+        .unusedCodes(List.of(getMockUnusedSegregationCodesList()))
+        .build();
+  }
+
   public static ChannelDetailsList getMockChannelDetailsList()
       throws IOException {
     List<ChannelDetails> channelDetails = List.of(getMockChannelDetails());
@@ -90,6 +98,14 @@ public class TestUtil {
 
   public static CIAssociatedCode getMockUsedApplicationCodesList() throws IOException {
     return getMockRequest("request/get_application_codes_ok2.json", CIAssociatedCode.class);
+  }
+
+  public static CIAssociatedCode getMockUsedSegregationCodesList() throws IOException {
+    return getMockRequest("request/get_segregation_codes_ok2.json", CIAssociatedCode.class);
+  }
+
+  public static CIAssociatedCode getMockUnusedSegregationCodesList() throws IOException {
+    return getMockRequest("request/get_segregation_codes_ok1.json", CIAssociatedCode.class);
   }
 
   public static ChannelDetails getMockChannelDetails() throws IOException {
