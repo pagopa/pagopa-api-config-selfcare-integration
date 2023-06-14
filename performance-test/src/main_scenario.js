@@ -87,8 +87,8 @@ export default function () {
   response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/segregationcodes`, params);
   check(response, { 'check status is 200': (response) => response.status === 200 });
 
-  // Testing: creditorinstitutions/:creditorInstitutionId/segregationcodes?station=:station
-  response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/segregationcodes?station=payment`, params);
+  // Testing: creditorinstitutions/:creditorInstitutionId/segregationcodes?service=:service
+  response = http.get(`${app_host}/creditorinstitutions/${creditorInstitutionId}/segregationcodes?service=payment`, params);
   check(response, { 'check status is 200': (response) => response.status === 200 });
 
   // Testing: creditorinstitutions/:creditorInstitutionId/segregationcodes?showUsedCodes=false
