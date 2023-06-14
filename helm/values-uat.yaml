@@ -91,4 +91,4 @@ microservice-chart:
   canaryDelivery:
     deployment:
       image:
-        tag: 1.3.1
+        tag: 1.3.1-1-PAGOPA-973-get-segregation-code-disponibili-per-ec
