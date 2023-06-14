@@ -74,7 +74,7 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:8080/inf
       exit 1
     fi
 
-    printf '.'
+    echo '.'
     attempt_counter=$((attempt_counter+1))
     sleep 5
 done
