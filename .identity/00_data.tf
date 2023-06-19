@@ -1,3 +1,8 @@
+data "azurerm_storage_account" "tf_storage_account"{
+  name                = "pagopainfraterraform${var.env}"
+  resource_group_name = "io-infra-rg"
+}
+
 data "azurerm_resource_group" "dashboards" {
   name = "dashboards"
 }
