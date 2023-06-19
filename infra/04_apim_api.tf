@@ -1,6 +1,6 @@
 locals {
-  display_name = "API Config Selfcare Integration V1"
-  description  = "Management APIs to configure pagoPA for Selfcare V1"
+  display_name = "API Config Selfcare Integration"
+  description  = "Management APIs to configure pagoPA for Selfcare"
   host         = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   hostname     = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
 }
