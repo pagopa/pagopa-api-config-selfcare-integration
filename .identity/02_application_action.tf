@@ -53,6 +53,11 @@ resource "azurerm_role_assignment" "environment_terraform_storage_account" {
   principal_id         = module.github_runner_app.object_id
 }
 
+resource "azurerm_role_assignment" "environment_terraform_resource_group_apim" {
+  scope                = data.azurerm_resource_group.apim_resource_group.id
+  role_definition_name = "Contributor"
+  principal_id         = module.github_runner_app.object_id
+}
 
 resource "azuread_application" "action" {
   display_name = "github-${local.github.org}-${local.github.repository}-${var.env}"
