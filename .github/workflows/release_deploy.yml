@@ -163,7 +163,8 @@ jobs:
     needs: [ setup, deploy_aks ]
     runs-on: ubuntu-latest
     name: Update OpenAPI
-    environment: prod
+    environment:
+      name: ${{ needs.setup.outputs.environment }}
     steps:
       - name: Checkout
         id: checkout
