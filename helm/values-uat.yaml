@@ -66,6 +66,7 @@ microservice-chart:
     ENV: 'azure-uat'
     APP_LOGGING_LEVEL: 'DEBUG'
     DEFAULT_LOGGING_LEVEL: 'INFO'
+    CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
     SPRING_DATASOURCE_USERNAME: 'PP_NODO4_CFG'
     SPRING_DATASOURCE_URL: 'jdbc:oracle:thin:@db-nodo-pagamenti.u.db-nodo-pagamenti.com:1524/NDPSPCA_PP_NODO4_CFG'
     SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
