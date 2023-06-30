@@ -27,6 +27,11 @@ data "azurerm_key_vault" "key_vault" {
   resource_group_name = "pagopa-${var.env_short}-sec-rg"
 }
 
+data "azurerm_key_vault" "domain_key_vault" {
+  name                = "pagopa-${var.env_short}-${local.domain}-kv"
+  resource_group_name = "pagopa-${var.env_short}-${local.domain}-sec-rg"
+}
+
 data "azurerm_key_vault_secret" "key_vault_sonar" {
 
   name = "sonar-token"
