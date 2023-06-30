@@ -60,7 +60,7 @@ jobs:
 
           cd ./integration-test
           chmod +x ./run_integration_test.sh
-          ./run_integration_test.sh ${{( github.event.inputs == null && 'dev') || inputs.environment }}
+          sh run_integration_test.sh ${{( github.event.inputs == null && 'dev') || inputs.environment }} ${{ secrets.SUBKEY }}
 
   notify:
     needs: [ integration_test ]

@@ -1,5 +1,12 @@
 package it.gov.pagopa.apiconfig.service;
 
+import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPa;
+import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPaStazionePa;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
@@ -9,6 +16,9 @@ import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsS
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
 import it.gov.pagopa.apiconfig.util.TestUtil;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -22,16 +32,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPa;
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPaStazionePa;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = Application.class)
 class CreditorInstitutionsServiceTest {
@@ -81,9 +81,11 @@ class CreditorInstitutionsServiceTest {
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getApplicationCodesFromCreditorInstitution("1234", false);
+    CIAssociatedCodeList result =
+        creditorInstitutionsService.getApplicationCodesFromCreditorInstitution("1234", false);
     String actual = TestUtil.toJson(result);
-    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_applicationcodes_ok1.json");
+    String expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_applicationcodes_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
@@ -97,9 +99,11 @@ class CreditorInstitutionsServiceTest {
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getApplicationCodesFromCreditorInstitution("1234", true);
+    CIAssociatedCodeList result =
+        creditorInstitutionsService.getApplicationCodesFromCreditorInstitution("1234", true);
     String actual = TestUtil.toJson(result);
-    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_applicationcodes_ok2.json");
+    String expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_applicationcodes_ok2.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
@@ -115,7 +119,6 @@ class CreditorInstitutionsServiceTest {
     }
   }
 
-
   @Test
   void getSegregationCodes_noUsedIncluded_200() throws IOException, JSONException {
     PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
@@ -126,9 +129,11 @@ class CreditorInstitutionsServiceTest {
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", false, null);
+    CIAssociatedCodeList result =
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", false, null);
     String actual = TestUtil.toJson(result);
-    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
+    String expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
@@ -142,9 +147,11 @@ class CreditorInstitutionsServiceTest {
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, null);
+    CIAssociatedCodeList result =
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, null);
     String actual = TestUtil.toJson(result);
-    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok2.json");
+    String expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok2.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 
@@ -163,24 +170,33 @@ class CreditorInstitutionsServiceTest {
     when(paRepository.findByIdDominio("1234")).thenReturn(Optional.of(getMockPa()));
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
-    CIAssociatedCodeList result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "mockedser");
+    CIAssociatedCodeList result =
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
+            "1234", true, "mockedser");
     String actual = TestUtil.toJson(result);
-    String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
+    String expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
 
     // check if lower case check works
-    result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "MOCKEDSERVICE");
+    result =
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
+            "1234", true, "MOCKEDSERVICE");
     actual = TestUtil.toJson(result);
-    expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
+    expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok3.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
 
     // check if null service are ignored
     stationMock.getFkStazione().setServizio(null);
     stations = List.of(stationMock, stationWithoutSegregationCode);
     when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
-    result = creditorInstitutionsService.getSegregationCodesFromCreditorInstitution("1234", true, "MOCKEDSERVICE");
+    result =
+        creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
+            "1234", true, "MOCKEDSERVICE");
     actual = TestUtil.toJson(result);
-    expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok4.json");
+    expected =
+        TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok4.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
   }
 

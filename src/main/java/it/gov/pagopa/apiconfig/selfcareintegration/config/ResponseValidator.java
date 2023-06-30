@@ -1,5 +1,6 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.config;
 
+import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -12,23 +13,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-
 @Aspect
 @Component
 public class ResponseValidator {
 
-  @Autowired
-  private Validator validator;
-
+  @Autowired private Validator validator;
 
   /**
    * This method validates the response annotated with the {@link javax.validation.constraints}
    *
    * @param joinPoint not used
-   * @param result    the response to validate
+   * @param result the response to validate
    */
-  @AfterReturning(pointcut = "execution(* it.gov.pagopa.apiconfig.selfcareintegration.controller.*.*(..))", returning = "result")
+  @AfterReturning(
+      pointcut = "execution(* it.gov.pagopa.apiconfig.selfcareintegration.controller.*.*(..))",
+      returning = "result")
   public void validateResponse(JoinPoint joinPoint, Object result) {
     if (result instanceof ResponseEntity) {
       validateResponse((ResponseEntity<?>) result);

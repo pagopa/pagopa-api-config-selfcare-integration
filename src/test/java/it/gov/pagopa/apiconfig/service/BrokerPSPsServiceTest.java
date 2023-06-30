@@ -52,10 +52,13 @@ class BrokerPSPsServiceTest {
     IntermediariPsp mockedBroker = getMockPSPBroker();
     Page<Canali> page = TestUtil.mockPage(Lists.newArrayList(getMockChannel()), 10, 0);
 
-    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(mockedBroker));
-    when(channelRepository.findAllByFiltersOrderById(anyLong(), anyString(), any())).thenReturn(page);
+    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739"))
+        .thenReturn(Optional.of(mockedBroker));
+    when(channelRepository.findAllByFiltersOrderById(anyLong(), anyString(), any()))
+        .thenReturn(page);
 
-    ChannelDetailsList result = brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", "LU30726739_02", pageable);
+    ChannelDetailsList result =
+        brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", "LU30726739_02", pageable);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_broker_channels_details_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
@@ -66,10 +69,13 @@ class BrokerPSPsServiceTest {
 
     Page<Canali> page = TestUtil.mockPage(Lists.newArrayList(getMockChannel()), 10, 0);
 
-    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(getMockPSPBroker()));
-    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any())).thenReturn(page);
+    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739"))
+        .thenReturn(Optional.of(getMockPSPBroker()));
+    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any()))
+        .thenReturn(page);
 
-    ChannelDetailsList result = brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", null, pageable);
+    ChannelDetailsList result =
+        brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", null, pageable);
     String actual = TestUtil.toJson(result);
     String expected = TestUtil.readJsonFromFile("response/get_broker_channels_details_ok1.json");
     JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
@@ -89,8 +95,10 @@ class BrokerPSPsServiceTest {
 
   @Test
   void getStationsDetailsCI_withChannelId_404() throws IOException, JSONException {
-    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(getMockPSPBroker()));
-    when(channelRepository.findAllByFiltersOrderById(anyLong(), anyString(), any())).thenReturn(new PageImpl<>(Lists.newArrayList()));
+    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739"))
+        .thenReturn(Optional.of(getMockPSPBroker()));
+    when(channelRepository.findAllByFiltersOrderById(anyLong(), anyString(), any()))
+        .thenReturn(new PageImpl<>(Lists.newArrayList()));
     try {
       brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", "LU30726739_02", pageable);
     } catch (AppException e) {
@@ -102,8 +110,10 @@ class BrokerPSPsServiceTest {
 
   @Test
   void getStationsDetailsCI_withoutChannelId_404() throws IOException, JSONException {
-    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739")).thenReturn(Optional.of(getMockPSPBroker()));
-    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any())).thenReturn(new PageImpl<>(Lists.newArrayList()));
+    when(brokerPspRepository.findByIdIntermediarioPsp("LU30726739"))
+        .thenReturn(Optional.of(getMockPSPBroker()));
+    when(channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(anyLong(), any()))
+        .thenReturn(new PageImpl<>(Lists.newArrayList()));
     try {
       brokerPspsService.getChannelDetailsFromPSPBroker("LU30726739", null, pageable);
     } catch (AppException e) {
