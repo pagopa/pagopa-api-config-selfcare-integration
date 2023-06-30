@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
@@ -21,10 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 
 @RestController()
 @RequestMapping(path = "/brokers")
@@ -44,64 +44,69 @@ public class BrokerController {
   @Operation(
       summary = "Get broker's station list",
       security = {
-          @SecurityRequirement(name = "ApiKey"),
-          @SecurityRequirement(name = "Authorization")
+        @SecurityRequirement(name = "ApiKey"),
+        @SecurityRequirement(name = "Authorization")
       },
       tags = {
-          "Brokers",
+        "Brokers",
       })
   @ApiResponses(
       value = {
-          @ApiResponse(
-              responseCode = "200",
-              description = "OK",
-              content =
-              @Content(
-                  mediaType = MediaType.APPLICATION_JSON_VALUE,
-                  schema = @Schema(implementation = StationDetailsList.class))),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Unauthorized",
-              content = @Content(schema = @Schema())),
-          @ApiResponse(
-              responseCode = "403",
-              description = "Forbidden",
-              content = @Content(schema = @Schema())),
-          @ApiResponse(
-              responseCode = "404",
-              description = "Not Found",
-              content = @Content(schema = @Schema(implementation = ProblemJson.class))),
-          @ApiResponse(
-              responseCode = "429",
-              description = "Too many requests",
-              content = @Content(schema = @Schema())),
-          @ApiResponse(
-              responseCode = "500",
-              description = "Service unavailable",
-              content =
-              @Content(
-                  mediaType = MediaType.APPLICATION_JSON_VALUE,
-                  schema = @Schema(implementation = ProblemJson.class)))
+        @ApiResponse(
+            responseCode = "200",
+            description = "OK",
+            content =
+                @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = StationDetailsList.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Not Found",
+            content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+        @ApiResponse(
+            responseCode = "429",
+            description = "Too many requests",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Service unavailable",
+            content =
+                @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = ProblemJson.class)))
       })
   @GetMapping(
       value = "/{brokerId}/stations",
       produces = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
       @Parameter(description = "The identifier of the broker.", required = true)
-      @PathVariable("brokerId")
-      String brokerId,
-      @Parameter(description = "The identifier of the station.")
-      @RequestParam(required = false) String stationId,
+          @PathVariable("brokerId")
+          String brokerId,
+      @Parameter(description = "The identifier of the station.") @RequestParam(required = false)
+          String stationId,
       @Valid
-      @Parameter(description = "The number of elements to be included in the page.", required = true)
-      @RequestParam(required = false, defaultValue = "10")
-      @Positive
-      @Max(999) Integer limit,
+          @Parameter(
+              description = "The number of elements to be included in the page.",
+              required = true)
+          @RequestParam(required = false, defaultValue = "10")
+          @Positive
+          @Max(999)
+          Integer limit,
       @Valid
-      @Parameter(description = "The index of the page, starting from 0.", required = true)
-      @Min(0)
-      @RequestParam(required = false, defaultValue = "0") Integer page) {
-    return ResponseEntity.ok(brokersService.getStationsDetailsFromBroker(brokerId, stationId, PageRequest.of(page, limit)));
+          @Parameter(description = "The index of the page, starting from 0.", required = true)
+          @Min(0)
+          @RequestParam(required = false, defaultValue = "0")
+          Integer page) {
+    return ResponseEntity.ok(
+        brokersService.getStationsDetailsFromBroker(
+            brokerId, stationId, PageRequest.of(page, limit)));
   }
-
 }

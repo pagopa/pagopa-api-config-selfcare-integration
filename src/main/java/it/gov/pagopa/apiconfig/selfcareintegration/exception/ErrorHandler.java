@@ -1,8 +1,9 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.exception;
 
+import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import java.util.ArrayList;
 import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,9 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
-import lombok.extern.slf4j.Slf4j;
 
 /** All Exceptions are handled by this class */
 @ControllerAdvice

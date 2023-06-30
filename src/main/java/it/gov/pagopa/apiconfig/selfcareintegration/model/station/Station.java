@@ -31,14 +31,14 @@ public class Station {
   private String idStazione;
 
   @JsonProperty("enabled")
-  @Schema(description = "Parameter to find out whether or not the station has been enabled", defaultValue = "true")
+  @Schema(
+      description = "Parameter to find out whether or not the station has been enabled",
+      defaultValue = "true")
   @NotNull
   private Boolean enabled;
 
   @JsonProperty("broker_description")
-  @Schema(
-      description = "A description of the intermediate EC",
-      example = "Regione Lazio")
+  @Schema(description = "A description of the intermediate EC", example = "Regione Lazio")
   private String brokerDescription;
 
   @Min(1)

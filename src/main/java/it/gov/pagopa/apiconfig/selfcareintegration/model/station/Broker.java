@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /** BrokerDetails */
 @Data
@@ -30,7 +30,9 @@ public class Broker {
   private String idIntermediarioPa;
 
   @JsonProperty("broker_details")
-  @Schema(example = "Regione Veneto", description = "Name and generic details of the intermediate EC")
+  @Schema(
+      example = "Regione Veneto",
+      description = "Name and generic details of the intermediate EC")
   @NotBlank
   private String codiceIntermediario;
 

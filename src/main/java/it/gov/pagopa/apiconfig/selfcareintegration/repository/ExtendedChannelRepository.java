@@ -13,13 +13,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExtendedChannelRepository extends CanaliRepository {
 
-  Page<Canali> findByFkIntermediarioPsp_objIdOrderByIdCanale(@Param("fkIntermediario") Long brokerId, Pageable pageable);
+  Page<Canali> findByFkIntermediarioPsp_objIdOrderByIdCanale(
+      @Param("fkIntermediario") Long brokerId, Pageable pageable);
 
   @Query(
       value =
-          "SELECT DISTINCT c FROM Canali c WHERE (:fkIntermediario IS NULL OR c.fkIntermediarioPsp.objId"
-              + " = :fkIntermediario) AND (:idCanale IS NULL OR UPPER(c.idCanale) LIKE"
-              + " CONCAT('%', UPPER(:idCanale), '%')) ORDER BY c.idCanale")
+          "SELECT DISTINCT c FROM Canali c WHERE (:fkIntermediario IS NULL OR"
+              + " c.fkIntermediarioPsp.objId = :fkIntermediario) AND (:idCanale IS NULL OR"
+              + " UPPER(c.idCanale) LIKE CONCAT('%', UPPER(:idCanale), '%')) ORDER BY c.idCanale")
   Page<Canali> findAllByFiltersOrderById(
       @Param("fkIntermediario") Long brokerId,
       @Param("idCanale") String channelId,

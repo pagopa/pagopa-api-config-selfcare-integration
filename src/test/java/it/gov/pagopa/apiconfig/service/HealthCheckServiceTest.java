@@ -6,9 +6,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import it.gov.pagopa.apiconfig.Application;
-import java.util.Optional;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 import it.gov.pagopa.apiconfig.starter.repository.HealthCheckRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;

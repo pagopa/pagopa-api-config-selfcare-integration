@@ -33,7 +33,9 @@ public class BrokerPSPsService {
     IntermediariPsp broker = getBrokerIfExists(brokerId);
     Page<Canali> queryResult;
     if (channelId == null) {
-      queryResult = channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(broker.getObjId(), pageable);
+      queryResult =
+          channelRepository.findByFkIntermediarioPsp_objIdOrderByIdCanale(
+              broker.getObjId(), pageable);
     } else {
       queryResult =
           channelRepository.findAllByFiltersOrderById(broker.getObjId(), channelId, pageable);
