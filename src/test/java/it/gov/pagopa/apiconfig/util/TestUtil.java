@@ -1,5 +1,7 @@
 package it.gov.pagopa.apiconfig.util;
 
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
@@ -7,31 +9,28 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPsp;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
-import lombok.experimental.UtilityClass;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
-
-import static org.mockito.Mockito.when;
+import lombok.experimental.UtilityClass;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 @UtilityClass
 public class TestUtil {
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
   public <T> Page<T> mockPage(List<T> content, int limit, int pageNumber) {
     @SuppressWarnings("unchecked")
@@ -45,8 +44,7 @@ public class TestUtil {
     return page;
   }
 
-  public static StationDetailsList getMockStationDetailsList()
-      throws IOException {
+  public static StationDetailsList getMockStationDetailsList() throws IOException {
     List<StationDetails> stationDetails = List.of(getMockStationDetails());
     return StationDetailsList.builder()
         .stationsDetailsList(stationDetails)
@@ -54,24 +52,21 @@ public class TestUtil {
         .build();
   }
 
-  public static CIAssociatedCodeList getMockApplicationCodesList()
-      throws IOException {
+  public static CIAssociatedCodeList getMockApplicationCodesList() throws IOException {
     return CIAssociatedCodeList.builder()
         .usedCodes(List.of(getMockUsedApplicationCodesList()))
         .unusedCodes(List.of(getMockUnusedApplicationCodesList()))
         .build();
   }
 
-  public static CIAssociatedCodeList getMockSegregationCodesList()
-      throws IOException {
+  public static CIAssociatedCodeList getMockSegregationCodesList() throws IOException {
     return CIAssociatedCodeList.builder()
         .usedCodes(List.of(getMockUsedSegregationCodesList()))
         .unusedCodes(List.of(getMockUnusedSegregationCodesList()))
         .build();
   }
 
-  public static ChannelDetailsList getMockChannelDetailsList()
-      throws IOException {
+  public static ChannelDetailsList getMockChannelDetailsList() throws IOException {
     List<ChannelDetails> channelDetails = List.of(getMockChannelDetails());
     return ChannelDetailsList.builder()
         .channelsDetailsList(channelDetails)
@@ -80,12 +75,7 @@ public class TestUtil {
   }
 
   public static PageInfo getMockPageInfo(int page, int totalPages, int limit, int size) {
-    return PageInfo.builder()
-        .page(0)
-        .limit(limit)
-        .totalPages(totalPages)
-        .itemsFound(size)
-        .build();
+    return PageInfo.builder().page(0).limit(limit).totalPages(totalPages).itemsFound(size).build();
   }
 
   public static StationDetails getMockStationDetails() throws IOException {

@@ -1,4 +1,5 @@
 package it.gov.pagopa.apiconfig.exception;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -7,7 +8,6 @@ import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.ErrorHandler;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
-
 import java.sql.SQLException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;

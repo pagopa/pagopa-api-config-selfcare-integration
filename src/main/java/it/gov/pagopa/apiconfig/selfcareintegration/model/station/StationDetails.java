@@ -180,7 +180,9 @@ public class StationDetails extends Station {
   @Min(1)
   @Max(2)
   @NotNull
-  @Schema(description = "Primitive number version", allowableValues = {"1", "2"})
+  @Schema(
+      description = "Primitive number version",
+      allowableValues = {"1", "2"})
   @JsonProperty("primitive_version")
   private Integer versionePrimitive;
 }
