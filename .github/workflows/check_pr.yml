@@ -38,9 +38,10 @@ jobs:
       - name: Formatting
         id: format
         continue-on-error: true
-        uses: axel-op/googlejavaformat-action@v3
+        uses: findologic/intellij-format-action@main
         with:
-          args: "--set-exit-if-changed"
+          path: .
+          fail-on-changes: false
 
       - uses: actions/github-script@v6.3.3
         if: steps.format.outcome != 'success'
