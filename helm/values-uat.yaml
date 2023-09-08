@@ -92,7 +92,6 @@ microservice-chart:
   canaryDelivery:
     create: false
     ingress:
-      create: true
       canary:
         type: header
         headerName: X-Canary
