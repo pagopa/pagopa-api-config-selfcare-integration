@@ -90,7 +90,7 @@ microservice-chart:
                 values:
                   - user
   canaryDelivery:
-    create: false
+    create: true
     ingress:
       canary:
         type: header
@@ -103,7 +103,7 @@ microservice-chart:
       create: true
       image:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-        tag: 1.3.11
+        tag: 1.3.12
         pullPolicy: Always
       envConfig: {}
       envSecret: {}
