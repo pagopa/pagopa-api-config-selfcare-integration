@@ -23,7 +23,6 @@ jobs:
     runs-on: ubuntu-22.04
     environment:
       name: ${{ inputs.environment }}
-    if: ${{ inputs.target == inputs.environment || inputs.target == 'all' }}
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
