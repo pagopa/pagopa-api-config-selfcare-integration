@@ -10,7 +10,7 @@ on:
 
 env:
   NAMESPACE: apiconfig
-  APP_NAME: pagopaapiconfig
+  APP_NAME: apiconfig-selfcare-integration
 
 
 permissions:
