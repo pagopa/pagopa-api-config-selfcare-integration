@@ -92,5 +92,5 @@ microservice-chart:
   canaryDelivery:
     deployment:
       image:
-        tag: 1.3.6-2-chart
+        tag: 1.3.6-3-chart
     create: true
