@@ -8,7 +8,7 @@ microservice-chart:
       maxUnavailable: 0
       maxSurge: 1
   canaryDelivery:
-    create: true
+    create: false
     ingress:
       canary:
         type: header
