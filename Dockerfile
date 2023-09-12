@@ -23,4 +23,4 @@ COPY --chown=spring:spring  --from=builder application/ ./
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Djava.io.tmpdir=./tmp/","-javaagent:opentelemetry-javaagent.jar","--enable-preview","org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "-javaagent:opentelemetry-javaagent.jar","--enable-preview","org.springframework.boot.loader.JarLauncher"]
