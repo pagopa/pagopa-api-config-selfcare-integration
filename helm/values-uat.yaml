@@ -98,6 +98,11 @@ microservice-chart:
     DB_CONFIG_DRIVER: 'oracle.jdbc.OracleDriver'
     DATABASE_SCHEMA: 'NODO4_CFG'
     SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
+    OTEL_SERVICE_NAME: "pagopa-api-config-selfcare-integration"
+    OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=azure-uat"
+    OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-system.svc:4317"
+    OTEL_LOGS_EXPORTER: none
+    OTEL_TRACES_SAMPLER: "always_on"
   envSecret:
     SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
   keyvault:
