@@ -138,6 +138,11 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>co.elastic.logging</groupId>
+      <artifactId>logback-ecs-encoder</artifactId>
+      <version>1.5.0</version>
+    </dependency>
   </dependencies>
 
   <build>
