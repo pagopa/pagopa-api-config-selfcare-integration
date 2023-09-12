@@ -39,3 +39,4 @@ hs_err_pid*
 **/.terraform
 /docker/.env
 /.cache/
+/docker/secrets
