@@ -37,3 +37,5 @@ hs_err_pid*
 .identity/.terraform/*
 **/.terraform.lock.hcl
 **/.terraform
+/docker/.env
+/.cache/
