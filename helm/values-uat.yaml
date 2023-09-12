@@ -64,7 +64,11 @@ microservice-chart:
     seccompProfile:
       type: RuntimeDefault
   securityContext:
+    readOnlyRootFilesystem: false
     allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
   resources:
     requests:
       memory: "512Mi"
