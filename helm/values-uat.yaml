@@ -2,9 +2,20 @@ microservice-chart:
   namespace: "apiconfig"
   nameOverride: ""
   fullnameOverride: ""
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+      image:
+        repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
+        tag: "1.3.6"
+      pullPolicy: Always
+      envConfig: {}
+      envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.3.6"
+    tag: "1.3.6-11-chart"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -22,14 +33,25 @@ microservice-chart:
     periodSeconds: 10
   deployment:
     create: true
+  serviceMonitor:
+    create: true
+    endpoints:
+      - interval: 10s #jmx-exporter
+        targetPort: 12345
+        path: /metrics
+  ports:
+    - 80 #http
+    - 12345 #jmx-exporter
   service:
     create: true
     type: ClusterIP
-    port: 8080
+    ports:
+      - 8080
   ingress:
     create: true
     host: "weuuat.apiconfig.internal.uat.platform.pagopa.it"
     path: /pagopa-api-config-selfcare-integration/(.*)
+    servicePort: 8080
   serviceAccount:
     create: false
     annotations: {}
@@ -39,7 +61,11 @@ microservice-chart:
     seccompProfile:
       type: RuntimeDefault
   securityContext:
+    readOnlyRootFilesystem: false
     allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
   resources:
     requests:
       memory: "512Mi"
@@ -61,7 +87,6 @@ microservice-chart:
           value: "75"
   envConfig:
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-u-connection-string'
     APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
     ENV: 'azure-uat'
     APP_LOGGING_LEVEL: 'DEBUG'
@@ -73,8 +98,15 @@ microservice-chart:
     DB_CONFIG_DRIVER: 'oracle.jdbc.OracleDriver'
     DATABASE_SCHEMA: 'NODO4_CFG'
     SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
+    OTEL_SERVICE_NAME: "pagopa-api-config-selfcare-integration"
+    OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=azure-uat"
+    OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-system.svc:4317"
+    OTEL_LOGS_EXPORTER: none
+    OTEL_TRACES_SAMPLER: "always_on"
   envSecret:
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 'ai-u-connection-string'
     SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
+    OTEL_EXPORTER_OTLP_HEADERS: elastic-apm-secret-token
   keyvault:
     name: "pagopa-u-apiconfig-kv"
     tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
@@ -90,9 +122,8 @@ microservice-chart:
                 values:
                   - user
   canaryDelivery:
-    create: true
+    create: false
     ingress:
-      create: true
       canary:
         type: header
         headerName: X-Canary
@@ -104,7 +135,7 @@ microservice-chart:
       create: true
       image:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-        tag: 1.3.6
-        pullPolicy: Always
+        tag: 1.3.6-3-chart
+      pullPolicy: Always
       envConfig: {}
       envSecret: {}
