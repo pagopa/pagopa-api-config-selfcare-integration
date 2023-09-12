@@ -4,7 +4,7 @@
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
     "title": "API-Config - SelfCare Integration",
-    "version": "1.3.6-10-chart"
+    "version": "1.3.6-11-chart"
   },
   "servers": [
     {
