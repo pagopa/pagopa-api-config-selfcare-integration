@@ -44,7 +44,7 @@ done
 echo $GH_TOKEN > ./secrets
 
 DOCKER_BUILDKIT=1 docker build -t selfcare-integration --secret id=GH_TOKEN,src=./secrets ../
-docker run -p8080:8080 --env-file ./.env selfcare-integration
+docker run -d -p8080:8080 --env-file ./.env selfcare-integration
 
 
 # waiting the containers
