@@ -2,9 +2,14 @@ microservice-chart:
   namespace: "apiconfig"
   nameOverride: ""
   fullnameOverride: ""
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1  
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: 1.3.7
+    tag: "1.3.7"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -32,6 +37,7 @@ microservice-chart:
     - 80 #http
     - 12345 #jmx-exporter
   service:
+    create: true
     type: ClusterIP
     ports:
       - 8080
@@ -42,6 +48,8 @@ microservice-chart:
     servicePort: 8080
   serviceAccount:
     create: false
+    annotations: {}
+    name: ""
   podAnnotations: {}
   podSecurityContext:
     seccompProfile:
@@ -55,14 +63,14 @@ microservice-chart:
   resources:
     requests:
       memory: "512Mi"
-      cpu: "0.40"
+      cpu: "0.4"
     limits:
       memory: "512Mi"
       cpu: "0.5"
   autoscaling:
     enable: true
     minReplica: 1
-    maxReplica: 2
+    maxReplica: 1
     pollingInterval: 30 # seconds
     cooldownPeriod: 60 # seconds
     triggers:
@@ -73,6 +81,7 @@ microservice-chart:
           value: "75"
   envConfig:
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
+    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
     ENV: 'azure-dev'
     APP_LOGGING_LEVEL: 'DEBUG'
     DEFAULT_LOGGING_LEVEL: 'INFO'
@@ -125,5 +134,5 @@ microservice-chart:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
         tag: 1.3.6-3-chart
       pullPolicy: Always
-      envConfig:
-      envSecret:
+      envConfig: {}
+      envSecret: {}
