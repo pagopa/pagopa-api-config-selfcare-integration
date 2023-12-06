@@ -6,10 +6,10 @@ microservice-chart:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 0
-      maxSurge: 1  
+      maxSurge: 1
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.3.7"
+    tag: "1.3.8"
     pullPolicy: Always
   livenessProbe:
     httpGet:
