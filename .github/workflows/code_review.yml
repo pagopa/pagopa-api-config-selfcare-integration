@@ -68,7 +68,7 @@ jobs:
         run: |
           cd ./docker
           chmod +x ./run_docker.sh
-          ./run_docker.sh local ${{ secrets.READ_PACKAGES_TOKEN }}
+          ./run_docker.sh local
 
       - name: Run Integration Tests
         shell: bash
@@ -80,7 +80,7 @@ jobs:
           
           cd ./integration-test
           chmod +x ./run_integration_test.sh
-          ./run_integration_test.sh local ${{ secrets.SUBKEY }} 
+          ./run_integration_test.sh local
 
 
   delete_github_deployments:
