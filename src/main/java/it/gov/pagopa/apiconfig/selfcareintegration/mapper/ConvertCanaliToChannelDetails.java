@@ -59,7 +59,7 @@ public class ConvertCanaliToChannelDetails implements Converter<Canali, ChannelD
           .agid(source.getFkCanaliNodo().getAgidChannel())
           .primitiveVersion(source.getFkCanaliNodo().getVersionePrimitive())
           .flagIo(source.getFkCanaliNodo().getFlagIo())
-          .flagPspCp(source.getFkCanaliNodo().getFlagPspCp());
+          .flagPspCp(source.getFkCanaliNodo().getFlagTravaso());
       if (source.getFkCanaliNodo().getIdServPlugin() != null) {
         builder.servPlugin(source.getFkCanaliNodo().getIdServPlugin().getIdServPlugin());
       }
