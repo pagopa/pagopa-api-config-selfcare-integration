@@ -86,3 +86,11 @@ resource "github_actions_environment_variable" "github_environment_runner_variab
    secret_name      = "CUCUMBER_PUBLISH_TOKEN"
    plaintext_value  = data.azurerm_key_vault_secret.key_vault_cucumber_token.value
  }
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
+resource "github_actions_secret" "secret_read_package_token" {
+
+  repository       = local.github.repository
+  secret_name      = "READ_PACKAGES_TOKEN"
+  plaintext_value  = data.azurerm_key_vault_secret.key_vault_read_package_token.value
+}
