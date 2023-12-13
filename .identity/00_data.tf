@@ -49,3 +49,10 @@ data "azurerm_key_vault_secret" "key_vault_cucumber_token" {
   name = "cucumber-token"
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "key_vault_read_package_token" {
+
+  name = "github-token-read-packages-bot"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
