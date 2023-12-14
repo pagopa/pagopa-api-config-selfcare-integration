@@ -3,6 +3,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedIbanMasterRepository;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Constants;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
 import org.modelmapper.ModelMapper;
@@ -30,18 +31,13 @@ public class IbansService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public IbansList getIbans(@NotEmpty @Size(min = 1, max = 100) List<String> creditorInstitutions, @NotNull Pageable page) {
+    public IbansList getIbans(@NotEmpty @Size(min = 1, max = Constants.GET_IBANS_MAX_CI_PERMITTED_IN_REQ) List<String> creditorInstitutions, @NotNull Pageable page) {
         Page<IbanMaster> queryResult = extendedIbanMasterRepository.findAllByPa_idDominioIn(creditorInstitutions, page);
-
-        List<IbanDetails> details =
-                queryResult.stream()
-                        .map(iban -> modelMapper.map(iban, IbanDetails.class))
-                        .collect(Collectors.toList());
-
         return IbansList.builder()
                 .pageInfo(Utility.buildPageInfo(queryResult))
-                .ibans(details)
+                .ibans(queryResult.stream()
+                        .map(iban -> modelMapper.map(iban, IbanDetails.class))
+                        .collect(Collectors.toList()))
                 .build();
-
     }
 }
