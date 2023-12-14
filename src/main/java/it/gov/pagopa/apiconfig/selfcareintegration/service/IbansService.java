@@ -7,7 +7,6 @@ import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,6 @@ import java.util.stream.Collectors;
 @Validated
 @Transactional
 public class IbansService {
-
-    @Value("{}")
-    private Integer maxCreditorInstitutionsForFind;
 
     @Autowired
     private ExtendedIbanMasterRepository extendedIbanMasterRepository;

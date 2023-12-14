@@ -4,7 +4,7 @@
     "title" : "API-Config - SelfCare Integration",
     "description" : "Spring application exposes APIs for SelfCare",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version": "1.8.4"
+    "version" : "1.8.4"
   },
   "servers" : [ {
     "url" : "http://localhost",
@@ -13,6 +13,9 @@
   "tags" : [ {
     "name" : "PSP Brokers",
     "description" : "Everything about PSP's brokers"
+  }, {
+    "name" : "Ibans",
+    "description" : "Everything about IBANs"
   }, {
     "name" : "Creditor Institutions",
     "description" : "Everything about Creditor Institution"
@@ -719,6 +722,150 @@
         }
       } ]
     },
+    "/ibans" : {
+      "get" : {
+        "tags" : [ "Ibans" ],
+        "summary" : "Get the paginated list of all IBANs, filtering by creditor institution",
+        "operationId" : "getIbans",
+        "parameters" : [ {
+          "name" : "ci_list",
+          "in" : "query",
+          "description" : "The identifiers of the creditor institutions.",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbansList"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
     "/info" : {
       "get" : {
         "tags" : [ "Home" ],
@@ -870,6 +1017,94 @@
           }
         }
       },
+      "IbanDetails" : {
+        "type" : "object",
+        "properties" : {
+          "creditor_institution" : {
+            "type" : "string"
+          },
+          "iban" : {
+            "type" : "string"
+          },
+          "inserted_date" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "validity_date" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "due_date" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "owner_fiscal_code" : {
+            "type" : "string"
+          },
+          "labels" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanLabel"
+            }
+          }
+        },
+        "description" : "List of IBANs associated to the passed creditor institutions"
+      },
+      "IbanLabel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        }
+      },
+      "IbansList" : {
+        "required" : [ "ibans", "page_info" ],
+        "type" : "object",
+        "properties" : {
+          "ibans" : {
+            "type" : "array",
+            "description" : "List of IBANs associated to the passed creditor institutions",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanDetails"
+            }
+          },
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "PageInfo" : {
+        "type" : "object",
+        "properties" : {
+          "page" : {
+            "type" : "integer",
+            "description" : "Page number",
+            "format" : "int32"
+          },
+          "limit" : {
+            "type" : "integer",
+            "description" : "Required number of items per page",
+            "format" : "int32"
+          },
+          "items_found" : {
+            "type" : "integer",
+            "description" : "Number of items found. (The last page may have fewer elements than required)",
+            "format" : "int32"
+          },
+          "total_pages" : {
+            "type" : "integer",
+            "description" : "Total number of pages",
+            "format" : "int32"
+          }
+        }
+      },
       "BrokerDetails" : {
         "required" : [ "broker_code", "broker_details", "enabled", "extended_fault_bean" ],
         "type" : "object",
@@ -896,31 +1131,6 @@
           }
         },
         "description" : "Details of the intermediate EC of the station"
-      },
-      "PageInfo" : {
-        "type" : "object",
-        "properties" : {
-          "page" : {
-            "type" : "integer",
-            "description" : "Page number",
-            "format" : "int32"
-          },
-          "limit" : {
-            "type" : "integer",
-            "description" : "Required number of items per page",
-            "format" : "int32"
-          },
-          "items_found" : {
-            "type" : "integer",
-            "description" : "Number of items found. (The last page may have fewer elements than required)",
-            "format" : "int32"
-          },
-          "total_pages" : {
-            "type" : "integer",
-            "description" : "Total number of pages",
-            "format" : "int32"
-          }
-        }
       },
       "StationDetails" : {
         "required" : [ "broker_details", "enabled", "port", "primitive_version", "protocol", "station_code", "thread_number", "timeout_a", "timeout_b", "timeout_c", "version" ],
