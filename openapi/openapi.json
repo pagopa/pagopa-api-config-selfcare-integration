@@ -351,6 +351,7 @@
         }
       ]
     },
+<<<<<<< HEAD
     "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
       "get": {
         "tags": [
@@ -387,6 +388,57 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+=======
+    "/ibans" : {
+      "get" : {
+        "tags" : [ "Ibans" ],
+        "summary" : "Get the paginated list of all IBANs, filtering by creditor institution",
+        "operationId" : "getIbans",
+        "parameters" : [ {
+          "name" : "ci_list",
+          "in" : "query",
+          "description" : "The identifiers of the creditor institutions.",
+          "required" : true,
+          "schema" : {
+            "maxItems" : 100,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+>>>>>>> fb026cd ([PASELC-658] fix: refactored code)
                 }
               }
             },
@@ -1098,11 +1150,14 @@
           }
         }
       },
-      "IbanDetails": {
-        "type": "object",
-        "properties": {
-          "creditor_institution": {
-            "type": "string"
+      "IbanDetails" : {
+        "type" : "object",
+        "properties" : {
+          "ci_fiscal_code" : {
+            "type" : "string"
+          },
+          "ci_name" : {
+            "type" : "string"
           },
           "iban": {
             "type": "string"

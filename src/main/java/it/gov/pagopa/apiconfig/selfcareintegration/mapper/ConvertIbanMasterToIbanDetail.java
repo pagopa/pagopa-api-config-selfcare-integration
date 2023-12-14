@@ -29,7 +29,8 @@ public class ConvertIbanMasterToIbanDetail implements Converter<IbanMaster, Iban
 
         Iban iban = src.getIban();
         return IbanDetails.builder()
-                .creditorInstitution(src.getPa().getIdDominio())
+                .creditorInstitutionFiscalCode(src.getPa().getIdDominio())
+                .creditorInstitutionName(src.getPa().getRagioneSociale())
                 .iban(iban.getIban())
                 .insertedDate(OffsetDateTime.ofInstant(src.getInsertedDate().toInstant(), ZoneId.of("UTC")))
                 .validityDate(OffsetDateTime.ofInstant(src.getValidityDate().toInstant(), ZoneId.of("UTC")))

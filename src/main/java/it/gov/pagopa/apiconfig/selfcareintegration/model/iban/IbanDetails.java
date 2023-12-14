@@ -16,8 +16,11 @@ import java.util.List;
 @ToString
 public class IbanDetails {
 
-    @JsonProperty("creditor_institution")
-    private String creditorInstitution;
+    @JsonProperty("ci_fiscal_code")
+    private String creditorInstitutionFiscalCode;
+
+    @JsonProperty("ci_name")
+    private String creditorInstitutionName;
 
     @JsonProperty("iban")
     private String iban;
