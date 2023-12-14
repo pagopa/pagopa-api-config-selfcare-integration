@@ -88,8 +88,8 @@ public class IbanController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<IbansList> getIbans(
             @Parameter(description = "The identifiers of the creditor institutions.") @RequestParam(name = "ci_list")
-            @NotEmpty List<String> creditorInstitutions,
-            @Valid @Size(min = 1, max = 100)
+            @NotEmpty @Size(min = 1, max = 100) List<String> creditorInstitutions,
+            @Valid
             @Parameter(
                     description = "The number of elements to be included in the page.",
                     required = true)
