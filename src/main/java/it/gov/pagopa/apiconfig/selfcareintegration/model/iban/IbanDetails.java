@@ -1,6 +1,8 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.model.iban;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Constants;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -26,12 +28,15 @@ public class IbanDetails {
     private String iban;
 
     @JsonProperty("inserted_date")
+    @JsonFormat(pattern = Constants.DATE_TIME_FORMAT)
     private OffsetDateTime insertedDate;
 
     @JsonProperty("validity_date")
+    @JsonFormat(pattern = Constants.DATE_TIME_FORMAT)
     private OffsetDateTime validityDate;
 
     @JsonProperty("due_date")
+    @JsonFormat(pattern = Constants.DATE_TIME_FORMAT)
     private OffsetDateTime dueDate;
 
     @JsonProperty("description")

@@ -2,11 +2,16 @@ package it.gov.pagopa.apiconfig.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanLabel;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.starter.entity.*;
@@ -18,6 +23,10 @@ import org.springframework.data.domain.Page;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,9 +147,212 @@ public class TestUtil {
                 .build();
     }
 
+    public static List<IbanMaster> getMockIbanMaster() {
+        Pa pa = Pa.builder()
+                .objId(100L)
+                .idDominio("168480242")
+                .enabled(true)
+                .ragioneSociale("Comune di Bassano del Grappa")
+                .indirizzoDomicilioFiscale("Via Roma 1")
+                .capDomicilioFiscale("23456")
+                .siglaProvinciaDomicilioFiscale("VE")
+                .comuneDomicilioFiscale("Bassano del Grappa")
+                .denominazioneDomicilioFiscale("Via Roma 1")
+                .description("Bassano del Grappa")
+                .build();
+        return List.of(
+                IbanMaster.builder()
+                        .objId(1L)
+                        .ibanStatus(IbanMaster.IbanStatus.NA)
+                        .insertedDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .validityDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .description("Cassa comunale Bassano del Grappa")
+                        .iban(Iban.builder()
+                                .objId(10L)
+                                .iban("IT01X02933019297465283757")
+                                .fiscalCode("168480242")
+                                .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .description("iban description")
+                                .build()
+                        )
+                        .ibanAttributesMasters(List.of())
+                        .pa(pa)
+                        .build(),
+                IbanMaster.builder()
+                        .objId(2L)
+                        .ibanStatus(IbanMaster.IbanStatus.NA)
+                        .insertedDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .validityDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .description("Cassa comunale Bassano del Grappa - CUP e StandIn")
+                        .iban(Iban.builder()
+                                .objId(11L)
+                                .iban("IT01X02933019297465283758")
+                                .fiscalCode("168480242")
+                                .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .description("iban description")
+                                .build()
+                        )
+                        .ibanAttributesMasters(List.of(
+                                IbanAttributeMaster.builder()
+                                        .objId(1000L)
+                                        .ibanAttribute(
+                                                IbanAttribute.builder()
+                                                        .attributeName("0201138TS")
+                                                        .attributeDescription("CUP")
+                                                        .build()
+                                        )
+                                        .build(),
+                                IbanAttributeMaster.builder()
+                                        .objId(1001L)
+                                        .ibanAttribute(
+                                                IbanAttribute.builder()
+                                                        .attributeName("ACA")
+                                                        .attributeDescription("StandIn")
+                                                        .build()
+                                        )
+                                        .build()
+                        ))
+                        .pa(pa)
+                        .build()
+        );
+    }
+
+    public static List<IbanMaster> getMockIbanMaster2() {
+        Pa pa = Pa.builder()
+                .objId(100L)
+                .idDominio("168480242")
+                .enabled(true)
+                .ragioneSociale("Comune di Bassano del Grappa")
+                .indirizzoDomicilioFiscale("Via Roma 1")
+                .capDomicilioFiscale("23456")
+                .siglaProvinciaDomicilioFiscale("VE")
+                .comuneDomicilioFiscale("Bassano del Grappa")
+                .denominazioneDomicilioFiscale("Via Roma 1")
+                .description("Bassano del Grappa")
+                .build();
+        return List.of(
+                IbanMaster.builder()
+                        .objId(3L)
+                        .ibanStatus(IbanMaster.IbanStatus.NA)
+                        .insertedDate(Timestamp.valueOf("2023-02-01 12:00:00.000"))
+                        .validityDate(Timestamp.valueOf("2023-02-01 12:00:00.000"))
+                        .description("Cassa comunale Ventimiglia")
+                        .iban(Iban.builder()
+                                .objId(12L)
+                                .iban("IT01X02933019297465283888")
+                                .fiscalCode("99999999999")
+                                .dueDate(Timestamp.valueOf("2025-12-31 23:59:59.999"))
+                                .description("iban description")
+                                .build()
+                        )
+                        .ibanAttributesMasters(List.of())
+                        .pa(Pa.builder()
+                                .objId(102L)
+                                .idDominio("99999999999")
+                                .enabled(true)
+                                .ragioneSociale("Comune di Ventimiglia")
+                                .indirizzoDomicilioFiscale("Via Palermo 1")
+                                .capDomicilioFiscale("78901")
+                                .siglaProvinciaDomicilioFiscale("GE")
+                                .comuneDomicilioFiscale("Ventimiglia")
+                                .denominazioneDomicilioFiscale("Via Palermo 1")
+                                .description("Ventimiglia")
+                                .build()
+                        )
+                        .build(),
+                IbanMaster.builder()
+                        .objId(1L)
+                        .ibanStatus(IbanMaster.IbanStatus.NA)
+                        .insertedDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .validityDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .description("Cassa comunale Bassano del Grappa")
+                        .iban(Iban.builder()
+                                .objId(10L)
+                                .iban("IT01X02933019297465283757")
+                                .fiscalCode("168480242")
+                                .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .description("iban description")
+                                .build()
+                        )
+                        .ibanAttributesMasters(List.of())
+                        .pa(pa)
+                        .build(),
+                IbanMaster.builder()
+                        .objId(2L)
+                        .ibanStatus(IbanMaster.IbanStatus.NA)
+                        .insertedDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .validityDate(Timestamp.valueOf("2023-01-01 12:00:00.000"))
+                        .description("Cassa comunale Bassano del Grappa - CUP e StandIn")
+                        .iban(Iban.builder()
+                                .objId(11L)
+                                .iban("IT01X02933019297465283758")
+                                .fiscalCode("168480242")
+                                .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .description("iban description")
+                                .build()
+                        )
+                        .ibanAttributesMasters(List.of(
+                                IbanAttributeMaster.builder()
+                                        .objId(1000L)
+                                        .ibanAttribute(
+                                                IbanAttribute.builder()
+                                                        .attributeName("0201138TS")
+                                                        .attributeDescription("CUP")
+                                                        .build()
+                                        )
+                                        .build(),
+                                IbanAttributeMaster.builder()
+                                        .objId(1001L)
+                                        .ibanAttribute(
+                                                IbanAttribute.builder()
+                                                        .attributeName("ACA")
+                                                        .attributeDescription("StandIn")
+                                                        .build()
+                                        )
+                                        .build()
+                        ))
+                        .pa(pa)
+                        .build()
+        );
+    }
+
+    public static IbansList getMockIbanList() throws IOException {
+        return IbansList.builder()
+                .ibans(List.of(
+                        IbanDetails.builder()
+                                .creditorInstitutionFiscalCode("168480242")
+                                .creditorInstitutionName("Comune di Bassano del Grappa")
+                                .insertedDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1672570800000L), ZoneId.of("UTC")))
+                                .validityDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1672570800000L), ZoneId.of("UTC")))
+                                .dueDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(2082754799000L), ZoneId.of("UTC")))
+                                .description("Cassa comunale Bassano del Grappa")
+                                .ownerFiscalCode("168480242")
+                                .labels(List.of())
+                                .build(),
+                        IbanDetails.builder()
+                                .creditorInstitutionFiscalCode("168480242")
+                                .creditorInstitutionName("Comune di Bassano del Grappa")
+                                .insertedDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1672570800000L), ZoneId.of("UTC")))
+                                .validityDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1672570800000L), ZoneId.of("UTC")))
+                                .dueDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(2082754799000L), ZoneId.of("UTC")))
+                                .description("Cassa comunale Bassano del Grappa - CUP e StandIn")
+                                .ownerFiscalCode("168480242")
+                                .labels(List.of(
+                                        IbanLabel.builder().name("0201138TS").description("CUP").build(),
+                                        IbanLabel.builder().name("ACA").description("StandIn").build()
+                                ))
+                                .build()
+                ))
+                .pageInfo(PageInfo.builder().page(0).limit(10).totalPages(1).itemsFound(2).totalItems(2L).build())
+                .build();
+    }
+
     public static <T> T getMockRequest(String requestPath, Class<T> clazz) throws IOException {
-        String mockChannel = readJsonFromFile(requestPath);
-        return new ObjectMapper().readValue(mockChannel, clazz);
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        String mockData = readJsonFromFile(requestPath);
+        return mapper.readValue(mockData, clazz);
     }
 
     /**
@@ -149,7 +361,10 @@ public class TestUtil {
      * @throws JsonProcessingException if there is an error during the parsing of the object
      */
     public String toJson(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(object);
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        return mapper.writeValueAsString(object);
     }
 
     /**
