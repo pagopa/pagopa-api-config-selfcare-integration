@@ -1,0 +1,53 @@
+{
+  "ibans": [
+    {
+      "ci_fiscal_code": "99999999999",
+      "ci_name": "Comune di Ventimiglia",
+      "iban": "IT01X02933019297465283888",
+      "inserted_date": "2023-02-01T11:00:00.000Z",
+      "validity_date": "2023-02-01T11:00:00.000Z",
+      "due_date": "2025-12-31T22:59:59.999Z",
+      "description": "Cassa comunale Ventimiglia",
+      "owner_fiscal_code": "99999999999",
+      "labels": []
+    },
+    {
+      "ci_fiscal_code": "168480242",
+      "ci_name": "Comune di Bassano del Grappa",
+      "iban": "IT01X02933019297465283757",
+      "inserted_date": "2023-01-01T11:00:00.000Z",
+      "validity_date": "2023-01-01T11:00:00.000Z",
+      "due_date": "2035-12-31T22:59:59.999Z",
+      "description": "Cassa comunale Bassano del Grappa",
+      "owner_fiscal_code": "168480242",
+      "labels": []
+    },
+    {
+      "ci_fiscal_code": "168480242",
+      "ci_name": "Comune di Bassano del Grappa",
+      "iban": "IT01X02933019297465283758",
+      "inserted_date": "2023-01-01T11:00:00.000Z",
+      "validity_date": "2023-01-01T11:00:00.000Z",
+      "due_date": "2035-12-31T22:59:59.999Z",
+      "description": "Cassa comunale Bassano del Grappa - CUP e StandIn",
+      "owner_fiscal_code": "168480242",
+      "labels": [
+        {
+          "name": "0201138TS",
+          "description": "CUP"
+        },
+        {
+          "name": "ACA",
+          "description": "StandIn"
+        }
+      ]
+    }
+  ],
+  "page_info": {
+    "page": 0,
+    "limit": 10,
+    "items_found": 3,
+    "total_pages": 1,
+    "total_items": 3
+  }
+}
