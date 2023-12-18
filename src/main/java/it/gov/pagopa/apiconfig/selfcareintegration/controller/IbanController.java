@@ -103,7 +103,7 @@ public class IbanController {
           )
           @RequestParam(required = false, defaultValue = "10")
           @Positive
-          @Max(999)
+          //          @Max(999)
           Integer limit,
       @Valid
           @Parameter(description = "The index of the page, starting from 0.", required = true)
