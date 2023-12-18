@@ -141,7 +141,7 @@ microservice-chart:
       create: true
       image:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-        tag: 1.8.6-1-export-iban
+        tag: 1.8.6-2-export-iban
       pullPolicy: Always
       envConfig: {}
       envSecret: {}
