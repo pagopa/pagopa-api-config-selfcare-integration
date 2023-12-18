@@ -40,3 +40,4 @@ hs_err_pid*
 /docker/.env
 /.cache/
 /docker/secrets
+/.cache_ggshield
