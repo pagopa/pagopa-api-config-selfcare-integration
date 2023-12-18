@@ -9,7 +9,7 @@ microservice-chart:
       maxSurge: 1
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.8.6"
+    tag: "1.8.6-6-export-iban"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -119,7 +119,7 @@ microservice-chart:
                 values:
                   - user
   canaryDelivery:
-    create: true
+    create: false
     ingress:
       canary:
         type: header
@@ -132,7 +132,7 @@ microservice-chart:
       create: true
       image:
         repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-        tag: 1.8.6-4-export-iban
+        tag: 1.8.6-5-export-iban
       pullPolicy: Always
       envConfig: {}
       envSecret: {}
