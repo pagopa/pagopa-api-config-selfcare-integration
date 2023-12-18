@@ -30,7 +30,7 @@ public class IbansService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public IbansList getIbans(@NotEmpty @Size(min = 1, max = 100) List<String> creditorInstitutions, @NotNull Pageable page) {
+    public IbansList getIbans(@NotEmpty List<String> creditorInstitutions, @NotNull Pageable page) {
         Page<IbanMaster> queryResult = extendedIbanMasterRepository.findAllByPa_idDominioIn(creditorInstitutions, page);
         return IbansList.builder()
                 .pageInfo(Utility.buildPageInfo(queryResult))
