@@ -3,14 +3,17 @@ package it.gov.pagopa.apiconfig.selfcareintegration.config;
 import java.util.Arrays;
 import java.util.stream.StreamSupport;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -18,12 +21,22 @@ import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 @Slf4j
 public class LoggingAspect {
+
+  public static final String START_TIME = "startTime";
+  public static final String METHOD = "method";
+  public static final String STATUS = "status";
+  public static final String CODE = "httpCode";
+  public static final String RESPONSE_TIME = "responseTime";
+
+  @Autowired HttpServletRequest httRequest;
+  @Autowired HttpServletResponse httpResponse;
 
   @Value("${info.application.artifactId}")
   private String artifactId;
@@ -34,17 +47,27 @@ public class LoggingAspect {
   @Value("${info.properties.environment}")
   private String environment;
 
+  private static String getExecutionTime() {
+    String startTime = MDC.get(START_TIME);
+    if (startTime != null) {
+      long endTime = System.currentTimeMillis();
+      long executionTime = endTime - Long.parseLong(startTime);
+      return String.valueOf(executionTime);
+    }
+    return "1";
+  }
+
   @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
   public void restController() {
     // all rest controllers
   }
 
-  @Pointcut("execution(* it.gov.pagopa.apiconfig.repository..*.*(..))")
+  @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.repository..*.*(..))")
   public void repository() {
     // all repository methods
   }
 
-  @Pointcut("execution(* it.gov.pagopa.apiconfig.service..*.*(..))")
+  @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.service..*.*(..))")
   public void service() {
     // all service methods
   }
@@ -80,39 +103,46 @@ public class LoggingAspect {
                 !(prop.toLowerCase().contains("credentials")
                     || prop.toLowerCase().contains("password")
                     || prop.toLowerCase().contains("pass")
-                    || prop.toLowerCase().contains("pwd")))
+                    || prop.toLowerCase().contains("pwd")
+                    || prop.toLowerCase().contains("key")
+                    || prop.toLowerCase().contains("secret")))
         .forEach(prop -> log.debug("{}: {}", prop, env.getProperty(prop)));
   }
 
-  @Before(value = "restController()")
-  public void logApiInvocation(JoinPoint joinPoint) {
+  @Around(value = "restController()")
+  public Object logApiInvocation(ProceedingJoinPoint joinPoint) throws Throwable {
+    MDC.put(METHOD, joinPoint.getSignature().getName());
+    MDC.put(START_TIME, String.valueOf(System.currentTimeMillis()));
+    log.info("{} {}", httRequest.getMethod(), httRequest.getRequestURI());
     log.info(
         "Invoking API operation {} - args: {}",
         joinPoint.getSignature().getName(),
         joinPoint.getArgs());
-  }
 
-  @AfterReturning(value = "restController()", returning = "result")
-  public void returnApiInvocation(JoinPoint joinPoint, Object result) {
+    Object result = joinPoint.proceed();
+
+    MDC.put(STATUS, "OK");
+    MDC.put(CODE, String.valueOf(httpResponse.getStatus()));
+    MDC.put(RESPONSE_TIME, getExecutionTime());
     log.info(
         "Successful API operation {} - result: {}", joinPoint.getSignature().getName(), result);
-  }
-
-  @AfterReturning(value = "errorHandler()", returning = "result")
-  public void trowingApiInvocation(JoinPoint joinPoint, Object result) {
-    log.info("Failed API operation {} - error: {}", joinPoint.getSignature().getName(), result);
-  }
-
-  @Around(value = "repository() || service()")
-  public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-    long startTime = System.currentTimeMillis();
-    Object result = joinPoint.proceed();
-    long endTime = System.currentTimeMillis();
-    log.trace(
-        "Time taken for Execution of {} is: {}ms",
-        joinPoint.getSignature().toShortString(),
-        (endTime - startTime));
+    MDC.remove(STATUS);
+    MDC.remove(CODE);
+    MDC.remove(RESPONSE_TIME);
+    MDC.remove(START_TIME);
     return result;
+  }
+
+  @AfterReturning(value = "execution(* *..exception.ErrorHandler.*(..))", returning = "result")
+  public void trowingApiInvocation(JoinPoint joinPoint, ResponseEntity<?> result) {
+    MDC.put(STATUS, "KO");
+    MDC.put(CODE, String.valueOf(result.getStatusCodeValue()));
+    MDC.put(RESPONSE_TIME, getExecutionTime());
+    log.info("Failed API operation {} - error: {}", MDC.get(METHOD), result);
+    MDC.remove(STATUS);
+    MDC.remove(CODE);
+    MDC.remove(RESPONSE_TIME);
+    MDC.remove(START_TIME);
   }
 
   @Around(value = "repository() || service()")
