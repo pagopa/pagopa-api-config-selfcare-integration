@@ -19,8 +19,11 @@ import it.gov.pagopa.apiconfig.util.TestUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
+
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -43,6 +46,11 @@ class CreditorInstitutionsServiceTest {
   @Autowired @InjectMocks private CreditorInstitutionsService creditorInstitutionsService;
 
   private Pageable pageable = PageRequest.of(0, 10);
+
+  @BeforeEach
+  void setup() {
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+  }
 
   @Test
   void getStationsDetailsCI_200() throws IOException, JSONException {

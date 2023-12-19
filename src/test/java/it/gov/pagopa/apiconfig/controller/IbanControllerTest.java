@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.TimeZone;
 
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanList;
 import static org.mockito.Mockito.when;
@@ -32,9 +33,9 @@ class IbanControllerTest {
 
     @MockBean
     private IbansService ibansService;
-
     @BeforeEach
     void setup() throws IOException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         when(ibansService.getIbans(List.of("168480242"), PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "fkPa", "objId"))))
                 .thenReturn(getMockIbanList());
     }
