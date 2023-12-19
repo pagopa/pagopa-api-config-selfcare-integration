@@ -1,10 +1,10 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "@project.name@",
-    "description" : "@project.description@",
+    "title" : "API-Config - SelfCare Integration",
+    "description" : "Spring application exposes APIs for SelfCare",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "1.8.4-2-PASELC-658-be-api-config-nuova-api-get-per-recupero-iban-da-lista-ec"
+    "version" : "1.8.6-11-export-iban"
   },
   "servers" : [ {
     "url" : "http://localhost",
