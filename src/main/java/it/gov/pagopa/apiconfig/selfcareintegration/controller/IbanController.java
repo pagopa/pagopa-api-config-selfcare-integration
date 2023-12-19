@@ -13,7 +13,10 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.IbansService;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
@@ -103,10 +106,10 @@ public class IbanController {
           )
           @RequestParam(required = false, defaultValue = "10")
           @Positive
-          //          @Max(999)
+          @Max(1000)
           Integer limit,
-      @Valid
-          @Parameter(description = "The index of the page, starting from 0.", required = true)
+      @Parameter(description = "The index of the page, starting from 0.", required = true)
+          @Valid
           @Min(0)
           @RequestParam(required = false, defaultValue = "0")
           Integer page) {
