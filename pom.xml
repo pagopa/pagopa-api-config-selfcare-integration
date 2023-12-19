@@ -12,7 +12,7 @@
 
   <groupId>it.gov.pagopa.api-config</groupId>
   <artifactId>selfcareintegration</artifactId>
-  <version>1.8.6-10-export-iban</version>
+  <version>1.8.6-11-export-iban</version>
   <name>API-Config - SelfCare Integration</name>
   <description>Spring application exposes APIs for SelfCare</description>
 
