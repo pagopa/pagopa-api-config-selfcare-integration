@@ -9,6 +9,7 @@ import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
 import it.gov.pagopa.apiconfig.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.List;
+import java.util.TimeZone;
 
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanMaster;
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanMaster2;
@@ -47,6 +49,12 @@ class IbanServiceTest {
     @Autowired
     @InjectMocks
     private IbansService ibansService;
+
+
+    @BeforeEach
+    void setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     void getIbans_singleCI_200() throws IOException, JSONException {

@@ -16,10 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.TimeZone;
 
 import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanList;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,16 +36,19 @@ class IbanControllerTest {
 
     @BeforeEach
     void setup() throws IOException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         when(ibansService.getIbans(List.of("168480242"), PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "fkPa", "objId"))))
                 .thenReturn(getMockIbanList());
     }
 
     @ParameterizedTest
     @CsvSource({
-            "/ibans?limit=10&page=0&ci_list=168480242",
+            "/ibans?limit=10&page=0",
     })
     void testGetWithCIs(String url) throws Exception {
-        mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(post(url)
+                        .content("[\"168480242\"]")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -54,7 +58,7 @@ class IbanControllerTest {
             "/ibans?limit=10&page=0",
     })
     void testGetWithoutCIs(String url) throws Exception {
-        mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(post(url).content("[]").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 }

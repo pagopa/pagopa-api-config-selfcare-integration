@@ -20,8 +20,11 @@ import it.gov.pagopa.apiconfig.starter.repository.IntermediariPspRepository;
 import it.gov.pagopa.apiconfig.util.TestUtil;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.TimeZone;
+
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -45,6 +48,11 @@ class BrokerPSPsServiceTest {
   @Mock private Pageable pageable;
 
   @Autowired @InjectMocks private BrokerPSPsService brokerPspsService;
+
+  @BeforeEach
+  void setup() {
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+  }
 
   @Test
   void getStationsDetailsCI_withChannelId_200() throws IOException, JSONException {
