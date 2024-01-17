@@ -2,7 +2,8 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pagopa_pagopa-api-config-selfcare-integration&metric=alert_status)](https://sonarcloud.io/dashboard?id=pagopa_pagopa-api-config-selfcare-integration)
 
-Spring Application that exposes a subset of the APIs to manage configuration for EC/PSP on the _Nodo dei Pagamenti_, needed by PagoPA SelfCare application.
+Spring Application that exposes a subset of the APIs to manage configuration for EC/PSP on the _Nodo dei Pagamenti_,
+needed by PagoPA SelfCare application.
 
 - [pagoPa Api Config - SelfCare integration](#pagopa-api-config---selfcare-integration)
     * [Api Documentation 📖](#api-documentation---)
@@ -25,7 +26,8 @@ Spring Application that exposes a subset of the APIs to manage configuration for
 
 ## Api Documentation 📖
 
-See the [OpenApi 3 here.](https://editor.swagger.io/?url=https://raw.githubusercontent.com/pagopa/pagopa-api-config-selfcare-integration/main/openapi/openapi.json)
+See
+the [OpenApi 3 here.](https://editor.swagger.io/?url=https://raw.githubusercontent.com/pagopa/pagopa-api-config-selfcare-integration/main/openapi/openapi.json)
 
 ---
 
@@ -72,6 +74,9 @@ Start the springboot application with this command for local test:
 or, for H2 tests:
 
 `mvn spring-boot:run -Dspring-boot.run.profiles=h2`
+
+Using the spring profile `local`, the Spring application connects to the H2 in-memory DB.  
+For access to H2 console, use this url: http://localhost:8080/h2-console/
 
 ### Spring Profiles
 
