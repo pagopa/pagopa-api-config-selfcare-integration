@@ -4,7 +4,7 @@
     "title": "API-Config - SelfCare Integration",
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.8.8-1-PASELC-655-be-export-ec-cron-job"
+    "version": "1.8.8-2-PASELC-655-be-export-ec-cron-job"
   },
   "servers": [
     {
