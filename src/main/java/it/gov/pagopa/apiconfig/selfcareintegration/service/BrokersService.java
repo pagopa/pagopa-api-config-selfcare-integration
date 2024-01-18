@@ -17,7 +17,6 @@ import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -63,11 +62,9 @@ public class BrokersService {
                 .build();
     }
 
-    public CreditorInstitutionDetails getCreditorInstitutionsAssociatedToBroker(@NotNull Integer limit, @NotNull Integer pageNumber, @NotNull String brokerId, Boolean enabled) {
+    public CreditorInstitutionDetails getCreditorInstitutionsAssociatedToBroker(@NotNull String brokerId, Boolean enabled, Pageable pageable) {
 
-        Page<PaStazionePa> page = paStazionePaRepository.findAll(
-                PaStazionePaSpecifications.filter(brokerId, enabled),
-                PageRequest.of(pageNumber, limit));
+        Page<PaStazionePa> page = paStazionePaRepository.findAll(PaStazionePaSpecifications.filter(brokerId, enabled), pageable);
 
         return CreditorInstitutionDetails.builder()
                 .creditorInstitutions(page.stream()

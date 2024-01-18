@@ -166,6 +166,6 @@ public class BrokerController {
             @Parameter(description = "Filter by enabled station")
             @RequestParam(required = false, name = "enabled")
             Boolean enabled) {
-        return ResponseEntity.ok(brokersService.getCreditorInstitutionsAssociatedToBroker(limit, page, brokerId, enabled));
+        return ResponseEntity.ok(brokersService.getCreditorInstitutionsAssociatedToBroker(brokerId, enabled, PageRequest.of(page, limit)));
     }
 }

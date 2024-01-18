@@ -1,19 +1,13 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.gov.pagopa.apiconfig.selfcareintegration.util.Constants;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
 
 /**
  * Creditor Institutions
@@ -81,11 +75,4 @@ public class CreditorInstitutionDetail {
     @JsonProperty("broadcast")
     @Schema(description = "The flag that define if the station is made for broadcast operations", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean broadcast;
-
-    @JsonProperty("activation_date")
-    @JsonFormat(pattern = Constants.DATE_TIME_WITHOUT_SECONDS_FORMAT)
-    @JsonSerialize(using = OffsetDateTimeSerializer.class)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Schema(example = "2021-01-01T12:00Z", description = "The activation date of the station", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private OffsetDateTime activationDate;
 }
