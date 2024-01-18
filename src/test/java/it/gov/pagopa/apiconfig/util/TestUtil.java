@@ -138,7 +138,7 @@ public class TestUtil {
                 .pa(Pa.builder()
                         .ragioneSociale("Comune di Roma")
                         .idDominio("02438750586")
-                        //.cbill("APNEY")
+                        .cbill("APNEY")
                         .build())
                 .fkStazione(
                         Stazioni.builder()
@@ -161,7 +161,7 @@ public class TestUtil {
                 .pa(Pa.builder()
                         .ragioneSociale("Comune di Roma")
                         .idDominio("02438750586")
-                        //.cbill("APNEY")
+                        .cbill("APNEY")
                         .build())
                 .fkStazione(
                         Stazioni.builder()

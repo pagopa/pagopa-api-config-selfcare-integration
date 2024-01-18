@@ -21,7 +21,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
         return CreditorInstitutionDetail.builder()
                 .businessName(pa.getRagioneSociale())
                 .creditorInstitutionCode(pa.getIdDominio())
-                //.cbillCode(pa.getCbill())
+                .cbillCode(pa.getCbill())
                 .brokerBusinessName(intermediariPa.getCodiceIntermediario())
                 .brokerCode(intermediariPa.getIdIntermediarioPa())
                 .stationCode(stazioni.getIdStazione())
