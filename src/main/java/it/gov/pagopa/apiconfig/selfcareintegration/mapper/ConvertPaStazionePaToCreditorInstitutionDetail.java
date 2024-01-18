@@ -31,7 +31,6 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 .segregationCode(getDoubleDigitCode(src.getSegregazione()))
                 .applicationCode(getDoubleDigitCode(src.getProgressivo()))
                 .broadcast(src.getBroadcast())
-                //.activationDate(null)
                 .build();
     }
 
