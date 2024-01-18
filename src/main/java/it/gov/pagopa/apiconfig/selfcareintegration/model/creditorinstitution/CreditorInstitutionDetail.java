@@ -56,10 +56,10 @@ public class CreditorInstitutionDetail {
     @NotBlank
     private String stationCode;
 
-    @JsonProperty("station_state")
-    @Schema(description = "The flag that define if the station is active or inactive", defaultValue = "true", requiredMode = Schema.RequiredMode.REQUIRED)
+    @JsonProperty("station_enabled")
+    @Schema(description = "The flag that define if the station is enabled or not", defaultValue = "true", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
-    private Boolean stationState;
+    private Boolean stationEnabled;
 
     @JsonProperty("station_version")
     @Schema(example = "2", description = "The version of the station. It can be either 1 or 2", requiredMode = Schema.RequiredMode.REQUIRED)

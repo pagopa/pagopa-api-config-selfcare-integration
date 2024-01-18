@@ -25,7 +25,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 .brokerBusinessName(intermediariPa.getCodiceIntermediario())
                 .brokerCode(intermediariPa.getIdIntermediarioPa())
                 .stationCode(stazioni.getIdStazione())
-                .stationState(stazioni.getEnabled())
+                .stationEnabled(stazioni.getEnabled())
                 .stationVersion(stazioni.getVersione())
                 .auxDigit(src.getAuxDigit())
                 .segregationCode(getDoubleDigitCode(src.getSegregazione()))
@@ -36,6 +36,10 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
     }
 
     private String getDoubleDigitCode(Long code) {
-        return (code < 10 ? "0" : "") + code;
+        String doubleDigitCode = null;
+        if (code != null) {
+            doubleDigitCode = (code < 10 ? "0" : "") + code;
+        }
+        return doubleDigitCode;
     }
 }
