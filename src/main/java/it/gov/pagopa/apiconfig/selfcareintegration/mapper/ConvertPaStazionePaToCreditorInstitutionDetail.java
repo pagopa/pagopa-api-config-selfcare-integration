@@ -37,7 +37,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
     private String getDoubleDigitCode(Long code) {
         String doubleDigitCode = null;
         if (code != null) {
-            doubleDigitCode = (code < 10 ? "0" : "") + code;
+            doubleDigitCode = String.format("%02d", code);
         }
         return doubleDigitCode;
     }
