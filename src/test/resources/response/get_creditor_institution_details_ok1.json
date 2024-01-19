@@ -1,0 +1,37 @@
+{
+  "creditor_institutions": [
+    {
+      "business_name": "Comune di Roma",
+      "creditor_institution_code": "02438750586",
+      "cbill_code": "APNEY",
+      "broker_business_name": "Regione Lazio",
+      "broker_code": "80143490581",
+      "station_code": "80143490581_01",
+      "station_enabled": true,
+      "station_version": 2,
+      "aux_digit": 3,
+      "segregation_code": "11",
+      "broadcast": false
+    },
+    {
+      "business_name": "Comune di Roma",
+      "creditor_institution_code": "02438750586",
+      "cbill_code": "APNEY",
+      "broker_business_name": "Regione Lazio",
+      "broker_code": "80143490581",
+      "station_code": "80143490581_02",
+      "station_enabled": false,
+      "station_version": 2,
+      "aux_digit": 3,
+      "segregation_code": "02",
+      "broadcast": false
+    }
+  ],
+  "page_info": {
+    "page": 0,
+    "limit": 10,
+    "items_found": 2,
+    "total_pages": 1,
+    "total_items": 2
+  }
+}

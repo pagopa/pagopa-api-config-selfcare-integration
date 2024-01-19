@@ -9,6 +9,8 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetail;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanLabel;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
@@ -27,6 +29,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +59,14 @@ public class TestUtil {
         return StationDetailsList.builder()
                 .stationsDetailsList(stationDetails)
                 .pageInfo(getMockPageInfo(0, 1, 10, stationDetails.size()))
+                .build();
+    }
+
+    public static CreditorInstitutionDetails getMockCreditorInstitutionDetails() throws IOException {
+        List<CreditorInstitutionDetail> creditorInstitutionDetails = List.of(getMockCreditorInstitutionDetail());
+        return CreditorInstitutionDetails.builder()
+                .creditorInstitutions(creditorInstitutionDetails)
+                .pageInfo(getMockPageInfo(0, 1, 10, creditorInstitutionDetails.size()))
                 .build();
     }
 
@@ -89,6 +100,10 @@ public class TestUtil {
         return getMockRequest("request/get_station_details_ok1.json", StationDetails.class);
     }
 
+    public static CreditorInstitutionDetail getMockCreditorInstitutionDetail() throws IOException {
+        return getMockRequest("request/get_creditor_institution_detail_ok1.json", CreditorInstitutionDetail.class);
+    }
+
     public static CIAssociatedCode getMockUnusedApplicationCodesList() throws IOException {
         return getMockRequest("request/get_application_codes_ok1.json", CIAssociatedCode.class);
     }
@@ -115,6 +130,66 @@ public class TestUtil {
 
     public static Stazioni getMockStazioni() throws IOException {
         return getMockRequest("request/get_station_ok1.json", Stazioni.class);
+    }
+
+    public static List<PaStazionePa> getMockPaStazionePa(Boolean enabledStation) throws IOException {
+        List<PaStazionePa> paStazionePa = new ArrayList<>();
+        PaStazionePa enabled = PaStazionePa.builder()
+                .pa(Pa.builder()
+                        .ragioneSociale("Comune di Roma")
+                        .idDominio("02438750586")
+                        .cbill("APNEY")
+                        .build())
+                .fkStazione(
+                        Stazioni.builder()
+                                .intermediarioPa(
+                                        IntermediariPa.builder()
+                                                .codiceIntermediario("Regione Lazio")
+                                                .idIntermediarioPa("80143490581")
+                                                .build()
+                                )
+                                .idStazione("80143490581_01")
+                                .enabled(true)
+                                .versione(2L)
+                                .build()
+                )
+                .segregazione(11L)
+                .auxDigit(3L)
+                .broadcast(false)
+                .build();
+        PaStazionePa disabled = PaStazionePa.builder()
+                .pa(Pa.builder()
+                        .ragioneSociale("Comune di Roma")
+                        .idDominio("02438750586")
+                        .cbill("APNEY")
+                        .build())
+                .fkStazione(
+                        Stazioni.builder()
+                                .intermediarioPa(
+                                        IntermediariPa.builder()
+                                                .codiceIntermediario("Regione Lazio")
+                                                .idIntermediarioPa("80143490581")
+                                                .build()
+                                )
+                                .idStazione("80143490581_02")
+                                .enabled(false)
+                                .versione(2L)
+                                .build()
+                )
+                .segregazione(2L)
+                .auxDigit(3L)
+                .broadcast(false)
+                .build();
+
+        if (enabledStation == null) {
+            paStazionePa.add(enabled);
+            paStazionePa.add(disabled);
+        } else if (enabledStation) {
+            paStazionePa.add(enabled);
+        } else {
+            paStazionePa.add(disabled);
+        }
+        return paStazionePa;
     }
 
     public static Canali getMockChannel() throws IOException {
