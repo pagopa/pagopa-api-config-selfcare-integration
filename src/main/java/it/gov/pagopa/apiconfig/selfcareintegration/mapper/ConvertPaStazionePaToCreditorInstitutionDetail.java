@@ -21,7 +21,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
         return CreditorInstitutionDetail.builder()
                 .businessName(pa.getRagioneSociale())
                 .creditorInstitutionCode(pa.getIdDominio())
-                //.cbillCode(pa.getCbill())
+                .cbillCode(pa.getCbill())
                 .brokerBusinessName(intermediariPa.getCodiceIntermediario())
                 .brokerCode(intermediariPa.getIdIntermediarioPa())
                 .stationCode(stazioni.getIdStazione())
@@ -37,7 +37,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
     private String getDoubleDigitCode(Long code) {
         String doubleDigitCode = null;
         if (code != null) {
-            doubleDigitCode = (code < 10 ? "0" : "") + code;
+            doubleDigitCode = String.format("%02d", code);
         }
         return doubleDigitCode;
     }
