@@ -12,7 +12,6 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +30,11 @@ import javax.validation.constraints.PositiveOrZero;
 @Validated
 public class BrokerController {
 
-    @Autowired
-    private BrokersService brokersService;
+    private final BrokersService brokersService;
+
+    public BrokerController(BrokersService brokersService) {
+        this.brokersService = brokersService;
+    }
 
     /**
      * GET /{brokerId}/stations : Get broker stations

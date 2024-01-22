@@ -11,17 +11,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-  @Value("${cors.configuration}")
-  private String corsConfiguration;
+    @Value("${cors.configuration}")
+    private String corsConfiguration;
 
-  @SneakyThrows
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    AppCorsConfiguration appCorsConfiguration =
-        new ObjectMapper().readValue(corsConfiguration, AppCorsConfiguration.class);
-    registry
-        .addMapping("/**")
-        .allowedOrigins(appCorsConfiguration.getOrigins())
-        .allowedMethods(appCorsConfiguration.getMethods());
-  }
+    @SneakyThrows
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        AppCorsConfiguration appCorsConfiguration =
+                new ObjectMapper().readValue(corsConfiguration, AppCorsConfiguration.class);
+        registry
+                .addMapping("/**")
+                .allowedOrigins(appCorsConfiguration.getOrigins())
+                .allowedMethods(appCorsConfiguration.getMethods());
+    }
 }

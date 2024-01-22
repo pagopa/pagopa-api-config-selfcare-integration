@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -43,10 +42,8 @@ public class LoggingAspect {
     public static final String REQUEST_ID = "requestId";
     public static final String OPERATION_ID = "operationId";
 
-    @Autowired
-    HttpServletRequest httRequest;
-    @Autowired
-    HttpServletResponse httpResponse;
+    final HttpServletRequest httRequest;
+    final HttpServletResponse httpResponse;
 
     @Value("${info.application.artifactId}")
     private String artifactId;
@@ -56,6 +53,11 @@ public class LoggingAspect {
 
     @Value("${info.properties.environment}")
     private String environment;
+
+    public LoggingAspect(HttpServletRequest httRequest, HttpServletResponse httpResponse) {
+        this.httRequest = httRequest;
+        this.httpResponse = httpResponse;
+    }
 
     private static String getExecutionTime() {
         String startTime = MDC.get(START_TIME);
@@ -70,13 +72,17 @@ public class LoggingAspect {
     private static String getDetail(ResponseEntity<ProblemJson> result) {
         if (result != null && result.getBody() != null && result.getBody().getDetail() != null) {
             return result.getBody().getDetail();
-        } else return AppError.UNKNOWN.getDetails();
+        } else {
+            return AppError.UNKNOWN.getDetails();
+        }
     }
 
     private static String getTitle(ResponseEntity<ProblemJson> result) {
         if (result != null && result.getBody() != null && result.getBody().getTitle() != null) {
             return result.getBody().getTitle();
-        } else return AppError.UNKNOWN.getTitle();
+        } else {
+            return AppError.UNKNOWN.getTitle();
+        }
     }
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")

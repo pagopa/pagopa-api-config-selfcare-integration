@@ -122,7 +122,13 @@ class IbanServiceTest {
 
     @Test
     void getIbans_invalidParameters_400() {
-        assertThrows(ConstraintViolationException.class, () -> ibansService.getIbans(List.of(), pageable));
-        assertThrows(ConstraintViolationException.class, () -> ibansService.getIbans(List.of("168480242", "99999999999"), null));
+        List<String> creditorInstitutions = List.of("168480242", "99999999999");
+        List<String> creditorInstitutions1 = List.of();
+        assertThrows(ConstraintViolationException.class, () -> {
+            ibansService.getIbans(creditorInstitutions1, pageable);
+        });
+        assertThrows(ConstraintViolationException.class, () -> {
+            ibansService.getIbans(creditorInstitutions, null);
+        });
     }
 }

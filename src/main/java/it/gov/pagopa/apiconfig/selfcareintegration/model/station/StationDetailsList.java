@@ -5,12 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.*;
 
-/** Stations */
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+/**
+ * Stations
+ */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -20,14 +23,14 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StationDetailsList {
 
-  @JsonProperty("stations")
-  @NotNull
-  @Schema(description = "List of stations associated to the same entity")
-  private List<StationDetails> stationsDetailsList;
+    @JsonProperty("stations")
+    @NotNull
+    @Schema(description = "List of stations associated to the same entity")
+    private List<StationDetails> stationsDetailsList;
 
-  @JsonProperty("page_info")
-  @Schema()
-  @NotNull
-  @Valid
-  private PageInfo pageInfo;
+    @JsonProperty("page_info")
+    @Schema()
+    @NotNull
+    @Valid
+    private PageInfo pageInfo;
 }

@@ -3,7 +3,9 @@ package it.gov.pagopa.apiconfig.selfcareintegration.model.iban;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-/** Iban label */
+/**
+ * Iban label
+ */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-/** Codes associated with Creditor Institution */
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+/**
+ * Codes associated with Creditor Institution
+ */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -22,12 +21,12 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CIAssociatedCodeList {
 
-  @JsonProperty("used")
-  @Schema(description = "List of codes already used for existing associations")
-  private List<CIAssociatedCode> usedCodes;
+    @JsonProperty("used")
+    @Schema(description = "List of codes already used for existing associations")
+    private List<CIAssociatedCode> usedCodes;
 
-  @JsonProperty("unused")
-  @NotNull
-  @Schema(description = "List of codes not used for existing associations")
-  private List<CIAssociatedCode> unusedCodes;
+    @JsonProperty("unused")
+    @NotNull
+    @Schema(description = "List of codes not used for existing associations")
+    private List<CIAssociatedCode> unusedCodes;
 }

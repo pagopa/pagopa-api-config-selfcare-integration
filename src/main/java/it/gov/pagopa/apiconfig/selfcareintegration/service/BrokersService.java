@@ -15,7 +15,6 @@ import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,17 +29,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class BrokersService {
 
-    @Autowired
-    private StazioniRepository stazioniRepository;
+    private final StazioniRepository stazioniRepository;
 
-    @Autowired
-    private IntermediariPaRepository intermediariPaRepository;
+    private final IntermediariPaRepository intermediariPaRepository;
 
-    @Autowired
-    private PaStazionePaRepository paStazionePaRepository;
+    private final PaStazionePaRepository paStazionePaRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public BrokersService(StazioniRepository stazioniRepository, IntermediariPaRepository intermediariPaRepository, PaStazionePaRepository paStazionePaRepository, ModelMapper modelMapper) {
+        this.stazioniRepository = stazioniRepository;
+        this.intermediariPaRepository = intermediariPaRepository;
+        this.paStazionePaRepository = paStazionePaRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public StationDetailsList getStationsDetailsFromBroker(
             @NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
