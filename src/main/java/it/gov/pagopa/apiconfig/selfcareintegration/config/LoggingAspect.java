@@ -9,8 +9,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.CodeSignature;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -25,8 +25,12 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
+
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.Utility.deNull;
 
 @Aspect
 @Component
@@ -42,11 +46,10 @@ public class LoggingAspect {
     public static final String FAULT_DETAIL = "faultDetail";
     public static final String REQUEST_ID = "requestId";
     public static final String OPERATION_ID = "operationId";
+    public static final String ARGS = "args";
 
-    @Autowired
-    HttpServletRequest httRequest;
-    @Autowired
-    HttpServletResponse httpResponse;
+    final HttpServletRequest httRequest;
+    final HttpServletResponse httpResponse;
 
     @Value("${info.application.artifactId}")
     private String artifactId;
@@ -57,26 +60,9 @@ public class LoggingAspect {
     @Value("${info.properties.environment}")
     private String environment;
 
-    private static String getExecutionTime() {
-        String startTime = MDC.get(START_TIME);
-        if (startTime != null) {
-            long endTime = System.currentTimeMillis();
-            long executionTime = endTime - Long.parseLong(startTime);
-            return String.valueOf(executionTime);
-        }
-        return "1";
-    }
-
-    private static String getDetail(ResponseEntity<ProblemJson> result) {
-        if (result != null && result.getBody() != null && result.getBody().getDetail() != null) {
-            return result.getBody().getDetail();
-        } else return AppError.UNKNOWN.getDetails();
-    }
-
-    private static String getTitle(ResponseEntity<ProblemJson> result) {
-        if (result != null && result.getBody() != null && result.getBody().getTitle() != null) {
-            return result.getBody().getTitle();
-        } else return AppError.UNKNOWN.getTitle();
+    public LoggingAspect(HttpServletRequest httRequest, HttpServletResponse httpResponse) {
+        this.httRequest = httRequest;
+        this.httpResponse = httpResponse;
     }
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
@@ -142,19 +128,17 @@ public class LoggingAspect {
             var requestId = UUID.randomUUID().toString();
             MDC.put(REQUEST_ID, requestId);
         }
-        log.info("{} {}", httRequest.getMethod(), httRequest.getRequestURI());
-        log.info(
-                "Invoking API operation {} - args: {}",
-                joinPoint.getSignature().getName(),
-                joinPoint.getArgs());
+        Map<String, String> params = getParams(joinPoint);
+        MDC.put(ARGS, params.toString());
+
+        log.info("Invoking API operation {} - args: {}", joinPoint.getSignature().getName(), params);
 
         Object result = joinPoint.proceed();
 
         MDC.put(STATUS, "OK");
         MDC.put(CODE, String.valueOf(httpResponse.getStatus()));
         MDC.put(RESPONSE_TIME, getExecutionTime());
-        log.info(
-                "Successful API operation {} - result: {}", joinPoint.getSignature().getName(), result);
+        log.info("Successful API operation {} - result: {}", joinPoint.getSignature().getName(), result);
         MDC.remove(STATUS);
         MDC.remove(CODE);
         MDC.remove(RESPONSE_TIME);
@@ -163,22 +147,54 @@ public class LoggingAspect {
     }
 
     @AfterReturning(value = "execution(* *..exception.ErrorHandler.*(..))", returning = "result")
-    public void trowingApiInvocation(JoinPoint joinPoint, ResponseEntity<?> result) {
+    public void trowingApiInvocation(JoinPoint joinPoint, ResponseEntity<ProblemJson> result) {
         MDC.put(STATUS, "KO");
         MDC.put(CODE, String.valueOf(result.getStatusCodeValue()));
         MDC.put(RESPONSE_TIME, getExecutionTime());
-        MDC.put(FAULT_CODE, getTitle((ResponseEntity<ProblemJson>) result));
-        MDC.put(FAULT_DETAIL, getDetail((ResponseEntity<ProblemJson>) result));
+        MDC.put(FAULT_CODE, getTitle(result));
+        MDC.put(FAULT_DETAIL, getDetail(result));
         log.info("Failed API operation {} - error: {}", MDC.get(METHOD), result);
         MDC.clear();
     }
 
     @Around(value = "repository() || service()")
     public Object logTrace(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug(
-                "Call method {} - args: {}", joinPoint.getSignature().toShortString(), joinPoint.getArgs());
+        Map<String, String> params = getParams(joinPoint);
+        log.debug("Call method {} - args: {}", joinPoint.getSignature().toShortString(), params);
         Object result = joinPoint.proceed();
         log.debug("Return method {} - result: {}", joinPoint.getSignature().toShortString(), result);
         return result;
+    }
+
+    private static String getDetail(ResponseEntity<ProblemJson> result) {
+        if(result != null && result.getBody() != null && result.getBody().getDetail() != null) {
+            return result.getBody().getDetail();
+        } else return AppError.UNKNOWN.getDetails();
+    }
+
+    private static String getTitle(ResponseEntity<ProblemJson> result) {
+        if(result != null && result.getBody() != null && result.getBody().getTitle() != null) {
+            return result.getBody().getTitle();
+        } else return AppError.UNKNOWN.getTitle();
+    }
+
+    private static String getExecutionTime() {
+        String startTime = MDC.get(START_TIME);
+        if(startTime != null) {
+            long endTime = System.currentTimeMillis();
+            long executionTime = endTime - Long.parseLong(startTime);
+            return String.valueOf(executionTime);
+        }
+        return "-";
+    }
+
+    private static Map<String, String> getParams(ProceedingJoinPoint joinPoint) {
+        CodeSignature codeSignature = (CodeSignature) joinPoint.getSignature();
+        Map<String, String> params = new HashMap<>();
+        int i = 0;
+        for (var paramName : codeSignature.getParameterNames()) {
+            params.put(paramName, deNull(joinPoint.getArgs()[i++]));
+        }
+        return params;
     }
 }
