@@ -31,6 +31,11 @@ public class CreditorInstitutionDetail {
     @NotBlank
     private String creditorInstitutionCode;
 
+    @JsonProperty("psp_payment")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "true")
+    @NotNull
+    private Boolean pspPayment;
+
     @JsonProperty("cbill_code")
     @Schema(example = "APNEY", description = "The CBill code of the creditor institution", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String cbillCode;
