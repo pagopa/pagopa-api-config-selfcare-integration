@@ -50,6 +50,7 @@ create table NODO4_CFG.PA
     SIGLA_PROVINCIA_DOMICILIO_FISCALE varchar(2),
     COMUNE_DOMICILIO_FISCALE          varchar(255),
     DENOMINAZIONE_DOMICILIO_FISCALE   varchar(255),
+    CBILL                             varchar(255),
     PAGAMENTO_PRESSO_PSP              boolean     not null,
     RENDICONTAZIONE_FTP               boolean     not null,
     RENDICONTAZIONE_ZIP               boolean     not null,
