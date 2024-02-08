@@ -4,7 +4,7 @@
     "title": "@project.name@",
     "description": "@project.description@",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.9.0-3-psp_duplicated"
+    "version": "1.9.0-4-psp_duplicated"
   },
   "servers": [
     {
