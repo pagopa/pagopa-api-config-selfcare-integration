@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.AppInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PspDuplicated;
+import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedPspRepository;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.HealthCheckService;
 import it.gov.pagopa.apiconfig.starter.repository.PspRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class HomeController {
     HealthCheckService healthCheckService;
 
     @Autowired
-    PspRepository pspRepository;
+    ExtendedPspRepository pspRepository;
 
     /**
      * @return redirect to Swagger page documentation
@@ -127,7 +128,7 @@ public class HomeController {
             tags = {"Home"})
     @GetMapping("/export_psp_duplicated")
     public Collection<PspDuplicated> getPspDuplicated() {
-        return pspRepository.findAll()
+        return pspRepository.findAllByEnabled(true)
                 .parallelStream()
                 .map(elem -> {
                     var builder = new PspDuplicated(elem.getCodiceFiscale());
