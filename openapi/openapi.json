@@ -870,7 +870,8 @@
     },
     "/export_psp_duplicated" : {
       "get" : {
-        "tags" : [ "home-controller" ],
+        "tags" : [ "Home" ],
+        "summary" : "Export PSP duplicated",
         "operationId" : "getPspDuplicated",
         "responses" : {
           "200" : {
@@ -894,7 +895,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
       "parameters" : [ {
         "name" : "X-Request-Id",

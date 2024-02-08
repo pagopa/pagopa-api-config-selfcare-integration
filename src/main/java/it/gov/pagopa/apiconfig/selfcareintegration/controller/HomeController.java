@@ -122,12 +122,15 @@ public class HomeController {
     }
 
 
+    @Operation(summary = "Export PSP duplicated",
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")},
+            tags = {"Home"})
     @GetMapping("/export_psp_duplicated")
     public Collection<PspDuplicated> getPspDuplicated() {
         return pspRepository.findAll()
                 .parallelStream()
                 .map(elem -> {
-                    var builder = new PspDuplicated(elem.getCodiceFiscale(), elem.getIdPsp());
+                    var builder = new PspDuplicated(elem.getCodiceFiscale());
                     if (elem.getIdPsp().startsWith("ABI")) {
                         builder.getAbi().add(elem.getIdPsp());
                     } else {
@@ -139,11 +142,12 @@ public class HomeController {
                         PspDuplicated::getTaxCode,
                         Function.identity(),
                         (sum1, sum2) -> {
-                            var builder = PspDuplicated.builder()
-                                    .taxCode(sum1.getTaxCode())
-                                    .build();
+                            var builder = new PspDuplicated(sum1.getTaxCode());
                             builder.getAbi().addAll(sum1.getAbi());
+                            builder.getAbi().addAll(sum2.getAbi());
+
                             builder.getBic().addAll(sum1.getBic());
+                            builder.getBic().addAll(sum2.getBic());
                             return builder;
                         }
                 )).values();
