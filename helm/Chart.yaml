@@ -2,8 +2,8 @@ apiVersion: v2
 name: pagopa-api-config-selfcare-integration
 description: Microservice that manages requests from selfcare
 type: application
-version: 1.61.0
-appVersion: 1.9.0-3-VAS-427-nuova-api-get-channels
+version: 1.62.0
+appVersion: 1.9.0-4-VAS-427-nuova-api-get-channels
 dependencies:
   - name: microservice-chart
     version: 2.8.0
