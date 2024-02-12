@@ -4,7 +4,7 @@
     "title": "@project.name@",
     "description": "@project.description@",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.9.0-1-VAS-427-api-config-implementazione-nuova-api-get-channels"
+    "version": "1.9.0-2-VAS-427-nuova-api-get-channels"
   },
   "servers": [
     {
