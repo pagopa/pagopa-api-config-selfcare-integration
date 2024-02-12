@@ -9,7 +9,7 @@ microservice-chart:
       maxSurge: 1
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.9.0-2-VAS-427-nuova-api-get-channels"
+    tag: "1.9.0-3-VAS-427-nuova-api-get-channels"
     pullPolicy: Always
   livenessProbe:
     httpGet:
