@@ -13,8 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExtendedChannelRepository extends CanaliRepository {
 
-  Page<Canali> findByFkIntermediarioPsp_objIdOrderByIdCanale(
-      @Param("fkIntermediario") Long brokerId, Pageable pageable);
+  Page<Canali> findByFkIntermediarioPsp_objIdOrderByIdCanale(@Param("fkIntermediario") Long brokerId, Pageable pageable);
 
   @Query(
       value =
@@ -25,4 +24,12 @@ public interface ExtendedChannelRepository extends CanaliRepository {
       @Param("fkIntermediario") Long brokerId,
       @Param("idCanale") String channelId,
       Pageable pageable);
+
+  @Query(value = "SELECT DISTINCT c FROM  Psp p, PspCanaleTipoVersamento pct, CanaleTipoVersamento ct, Canali c " +
+          "WHERE p.objId = pct.fkPsp " +
+          "AND pct.fkCanaleTipoVersamento = ct.id " +
+          "AND ct.fkCanale = c.id " +
+          "AND p.codiceFiscale = :fiscalCode")
+  Page<Canali> findAllByPspFiscalCode(@Param("fiscalCode") String fiscalCode, Pageable pageable);
+
 }

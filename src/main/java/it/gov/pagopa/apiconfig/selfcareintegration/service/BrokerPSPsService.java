@@ -45,7 +45,7 @@ public class BrokerPSPsService {
     List<ChannelDetails> channels =
         queryResult
             .stream()
-            .map(station -> modelMapper.map(station, ChannelDetails.class))
+            .map(elem -> modelMapper.map(elem, ChannelDetails.class))
             .collect(Collectors.toList());
     return ChannelDetailsList.builder()
         .pageInfo(Utility.buildPageInfo(queryResult))
