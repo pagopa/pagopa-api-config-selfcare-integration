@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.PSPsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import it.gov.pagopa.apiconfig.selfcareintegration.service.PspService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +26,16 @@ import javax.validation.constraints.Positive;
 @RequestMapping(path = "/payment-service-providers")
 @Tag(name = "PSP", description = "Everything about PSP")
 @Validated
-public class PSPController {
+public class PspController {
 
-    @Autowired
-    private PSPsService pspService;
+    private final PspService pspService;
+
+    public PspController(PspService pspService) {
+        this.pspService = pspService;
+    }
 
 
-    @Operation(summary = "Get PSP broker's channel list",
+    @Operation(summary = "Get PSP's channel list",
             security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")},
             tags = {"PSP",})
     @ApiResponses(value = {

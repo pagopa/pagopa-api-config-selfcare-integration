@@ -12,7 +12,7 @@
 
     <groupId>it.gov.pagopa.api-config</groupId>
     <artifactId>selfcareintegration</artifactId>
-    <version>1.9.0-1-VAS-427-api-config-implementazione-nuova-api-get-channels</version>
+    <version>1.9.0-1-VAS-427-nuova-api-get-channels</version>
     <name>API-Config - SelfCare Integration</name>
     <description>Spring application exposes APIs for SelfCare</description>
 
@@ -177,17 +177,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.7.0.1746</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sonar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
             </plugin>
         </plugins>
         <testResources>

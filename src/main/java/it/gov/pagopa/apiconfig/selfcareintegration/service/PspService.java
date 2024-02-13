@@ -4,28 +4,27 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedChannelRepository;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
-import org.apache.commons.lang3.stream.Streams;
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PSPsService {
+public class PspService {
 
     private final ExtendedChannelRepository extendedChannelRepository;
 
     private final ModelMapper modelMapper;
 
-    public PSPsService(ExtendedChannelRepository extendedChannelRepository, ModelMapper modelMapper) {
+    public PspService(ExtendedChannelRepository extendedChannelRepository, ModelMapper modelMapper) {
         this.extendedChannelRepository = extendedChannelRepository;
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     public ChannelDetailsList getChannelByFiscalCode(String pspFiscalCode, Pageable pageable) {
         var queryResult = extendedChannelRepository.findAllByPspFiscalCode(pspFiscalCode, pageable);
 
