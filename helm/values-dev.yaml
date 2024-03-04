@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.10.0-1-PAGOPA-1561-infra-switch-from-oracle-to-pgflex-for-apiconfing-cache-2"
+    tag: "1.10.0-2-PAGOPA-1561-infra-switch-from-oracle-to-pgflex-for-apiconfing-cache-2"
     pullPolicy: Always
   livenessProbe:
     httpGet:
