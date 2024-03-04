@@ -1,4 +1,4 @@
-microservice-chart:
+microservice-chart: &microservice-chart
   namespace: "apiconfig"
   nameOverride: ""
   fullnameOverride: ""
