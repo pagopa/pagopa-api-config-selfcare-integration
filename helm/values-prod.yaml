@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.10.0-4-PAGOPA-1561-from-oracle-2-pgflex"
+    tag: "1.10.0-5-PAGOPA-1561-from-oracle-2-pgflex"
     pullPolicy: Always
   livenessProbe:
     httpGet:
