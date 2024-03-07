@@ -3,14 +3,21 @@ package it.gov.pagopa.apiconfig.selfcareintegration.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Enum defining the application errors
+ */
 @Getter
 public enum AppError {
     INTERNAL_SERVER_ERROR(
-            HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Something was wrong"),
+            HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Something was wrong: %s"),
     CREDITOR_INSTITUTION_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "Creditor Institution not found",
             "No Creditor Institution found with code: %s"),
+    MULTIPLE_CREDITOR_INSTITUTIONS_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "Creditor Institutions not found",
+            "No Creditor Institutions found with codes: %s"),
 
     BROKER_NOT_FOUND(HttpStatus.NOT_FOUND, "Broker not found", "No Broker found with code: %s"),
     UNKNOWN(null, null, null);
