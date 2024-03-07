@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig;
+package it.gov.pagopa.apiconfig.selfcareintegration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

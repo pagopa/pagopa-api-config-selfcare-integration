@@ -1,12 +1,11 @@
-package it.gov.pagopa.apiconfig.service;
+package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedIbanMasterRepository;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.IbansService;
 import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
-import it.gov.pagopa.apiconfig.util.TestUtil;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +26,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.TimeZone;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanMaster;
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanMaster2;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockIbanMaster;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockIbanMaster2;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;

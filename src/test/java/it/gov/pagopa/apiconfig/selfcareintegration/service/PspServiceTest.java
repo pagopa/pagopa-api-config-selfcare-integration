@@ -1,15 +1,10 @@
-package it.gov.pagopa.apiconfig.service;
+package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.Application;
-import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedChannelRepository;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokerPSPsService;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.PspService;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
-import it.gov.pagopa.apiconfig.starter.entity.IntermediariPsp;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPspRepository;
-import it.gov.pagopa.apiconfig.util.TestUtil;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,18 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.TimeZone;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannel;
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPSPBroker;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockChannel;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 

@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.controller;
+package it.gov.pagopa.apiconfig.selfcareintegration.controller;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.IbansService;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.TimeZone;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockIbanList;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockIbanList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

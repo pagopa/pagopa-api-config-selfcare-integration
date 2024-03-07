@@ -131,8 +131,8 @@ public class CreditorInstitutionsService {
         if (optionalPaList.isEmpty()) {
             throw new AppException(AppError.MULTIPLE_CREDITOR_INSTITUTIONS_NOT_FOUND, taxCodes);
         }
-        List<Pa> paList = optionalPaList.get();
 
+        List<Pa> paList = optionalPaList.get();
         if (paList.size() != taxCodes.size()) {
             throw new AppException(AppError.INTERNAL_SERVER_ERROR, "Retrieved less creditor institutions than expected");
         }

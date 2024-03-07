@@ -1,17 +1,16 @@
-package it.gov.pagopa.apiconfig.service;
+package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
-import it.gov.pagopa.apiconfig.util.TestUtil;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.*;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.*;
