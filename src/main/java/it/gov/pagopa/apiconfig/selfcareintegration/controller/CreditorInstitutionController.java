@@ -33,9 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class CreditorInstitutionController {
 
-  @Autowired private CreditorInstitutionsService creditorInstitutionsService;
+  private final CreditorInstitutionsService creditorInstitutionsService;
 
-  /**
+    public CreditorInstitutionController(CreditorInstitutionsService creditorInstitutionsService) {
+        this.creditorInstitutionsService = creditorInstitutionsService;
+    }
+
+    /**
    * GET /{creditorInstitutionCode}/stationsdetails : Get creditor institution station
    *
    * @param creditorInstitutionCode station code. (required)

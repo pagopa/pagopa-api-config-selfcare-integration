@@ -31,8 +31,11 @@ import javax.validation.constraints.PositiveOrZero;
 @Validated
 public class BrokerController {
 
-    @Autowired
-    private BrokersService brokersService;
+    private final BrokersService brokersService;
+
+    public BrokerController(BrokersService brokersService) {
+        this.brokersService = brokersService;
+    }
 
     /**
      * GET /{brokerId}/stations : Get broker stations

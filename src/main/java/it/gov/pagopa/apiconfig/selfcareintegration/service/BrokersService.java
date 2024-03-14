@@ -30,17 +30,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class BrokersService {
 
-    @Autowired
-    private StazioniRepository stazioniRepository;
+    private final StazioniRepository stazioniRepository;
 
-    @Autowired
-    private IntermediariPaRepository intermediariPaRepository;
+    private final IntermediariPaRepository intermediariPaRepository;
 
-    @Autowired
-    private PaStazionePaRepository paStazionePaRepository;
+    private final PaStazionePaRepository paStazionePaRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public BrokersService(StazioniRepository stazioniRepository, IntermediariPaRepository intermediariPaRepository, PaStazionePaRepository paStazionePaRepository, ModelMapper modelMapper) {
+        this.stazioniRepository = stazioniRepository;
+        this.intermediariPaRepository = intermediariPaRepository;
+        this.paStazionePaRepository = paStazionePaRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public StationDetailsList getStationsDetailsFromBroker(
             @NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
@@ -55,7 +58,7 @@ public class BrokersService {
         List<StationDetails> stations =
                 queryResult.stream()
                         .map(station -> modelMapper.map(station, StationDetails.class))
-                        .collect(Collectors.toList());
+                        .toList();
         return StationDetailsList.builder()
                 .pageInfo(Utility.buildPageInfo(queryResult))
                 .stationsDetailsList(stations)
@@ -69,7 +72,7 @@ public class BrokersService {
         return CreditorInstitutionDetails.builder()
                 .creditorInstitutions(page.stream()
                         .map(entity -> modelMapper.map(entity, CreditorInstitutionDetail.class))
-                        .collect(Collectors.toList()))
+                        .toList())
                 .pageInfo(Utility.buildPageInfo(page))
                 .build();
     }

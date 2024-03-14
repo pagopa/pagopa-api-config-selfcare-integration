@@ -24,11 +24,17 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class BrokerPSPsService {
 
-  @Autowired private ExtendedChannelRepository channelRepository;
+  private final ExtendedChannelRepository channelRepository;
 
-  @Autowired private IntermediariPspRepository brokerPspRepository;
+  private final IntermediariPspRepository brokerPspRepository;
 
-  @Autowired private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
+
+  public BrokerPSPsService(ExtendedChannelRepository channelRepository, IntermediariPspRepository brokerPspRepository, ModelMapper modelMapper) {
+    this.channelRepository = channelRepository;
+    this.brokerPspRepository = brokerPspRepository;
+    this.modelMapper = modelMapper;
+  }
 
   public ChannelDetailsList getChannelDetailsFromPSPBroker(
       @NotNull String brokerId, String channelId, Pageable pageable) throws AppException {
@@ -46,7 +52,7 @@ public class BrokerPSPsService {
         queryResult
             .stream()
             .map(elem -> modelMapper.map(elem, ChannelDetails.class))
-            .collect(Collectors.toList());
+            .toList();
     return ChannelDetailsList.builder()
         .pageInfo(Utility.buildPageInfo(queryResult))
         .channelsDetailsList(channels)

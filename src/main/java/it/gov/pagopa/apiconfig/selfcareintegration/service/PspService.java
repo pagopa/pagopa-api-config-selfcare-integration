@@ -30,7 +30,7 @@ public class PspService {
 
         List<ChannelDetails> channelsDetailsList = queryResult.stream()
                 .map(elem -> modelMapper.map(elem, ChannelDetails.class))
-                .collect(Collectors.toList());
+                .toList();
 
         return ChannelDetailsList.builder()
                 .channelsDetailsList(channelsDetailsList)

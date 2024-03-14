@@ -24,11 +24,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class IbansService {
 
-    @Autowired
-    private ExtendedIbanMasterRepository extendedIbanMasterRepository;
+    private final ExtendedIbanMasterRepository extendedIbanMasterRepository;
 
     @Autowired
     private ModelMapper modelMapper;
+
+    public IbansService(ExtendedIbanMasterRepository extendedIbanMasterRepository) {
+        this.extendedIbanMasterRepository = extendedIbanMasterRepository;
+    }
 
     public IbansList getIbans(@NotEmpty List<String> creditorInstitutions, @NotNull Pageable page) {
         Page<IbanMaster> queryResult = extendedIbanMasterRepository.findAllByPa_idDominioIn(creditorInstitutions, page);
@@ -36,7 +39,7 @@ public class IbansService {
                 .pageInfo(Utility.buildPageInfo(queryResult))
                 .ibans(queryResult.stream()
                         .map(iban -> modelMapper.map(iban, IbanDetails.class))
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 }

@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class HealthCheckService {
 
-  @Autowired HealthCheckRepository healthCheckRepository;
+  final HealthCheckRepository healthCheckRepository;
+
+  public HealthCheckService(HealthCheckRepository healthCheckRepository) {
+    this.healthCheckRepository = healthCheckRepository;
+  }
 
   public boolean checkDatabaseConnection() {
     try {

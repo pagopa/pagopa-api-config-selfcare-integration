@@ -32,9 +32,13 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class IbanController {
 
-  @Autowired private IbansService ibansService;
+  private final IbansService ibansService;
 
-  /**
+    public IbanController(IbansService ibansService) {
+        this.ibansService = ibansService;
+    }
+
+    /**
    * GET / : Get all ibans
    *
    * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
