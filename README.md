@@ -33,7 +33,7 @@ the [OpenApi 3 here.](https://editor.swagger.io/?url=https://raw.githubuserconte
 
 ## Technology Stack
 
-- Java 11
+- Java 17
 - Spring Boot
 - Spring Web
 - Hibernate

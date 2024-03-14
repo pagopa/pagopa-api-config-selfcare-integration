@@ -36,7 +36,11 @@ public class HomeController {
   @Value("${info.properties.environment}")
   private String environment;
 
-  @Autowired HealthCheckService healthCheckService;
+  final HealthCheckService healthCheckService;
+
+  public HomeController(HealthCheckService healthCheckService) {
+    this.healthCheckService = healthCheckService;
+  }
 
   /**
    * @return redirect to Swagger page documentation

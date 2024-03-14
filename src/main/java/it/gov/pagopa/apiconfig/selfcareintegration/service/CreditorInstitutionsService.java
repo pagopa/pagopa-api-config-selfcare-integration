@@ -37,11 +37,17 @@ public class CreditorInstitutionsService {
   @Value("${sc-int.segregation_code.max_value}")
   private Integer segregationCodeMaxValue;
 
-  @Autowired private ExtendedCreditorInstitutionStationRepository ciStationRepository;
+  private final ExtendedCreditorInstitutionStationRepository ciStationRepository;
 
-  @Autowired private PaRepository paRepository;
+  private final PaRepository paRepository;
 
-  @Autowired private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
+
+  public CreditorInstitutionsService(ExtendedCreditorInstitutionStationRepository ciStationRepository, PaRepository paRepository, ModelMapper modelMapper) {
+    this.ciStationRepository = ciStationRepository;
+    this.paRepository = paRepository;
+    this.modelMapper = modelMapper;
+  }
 
   public StationDetailsList getStationsDetailsFromCreditorInstitution(
       @NotNull String creditorInstitutionCode, Pageable pageable) {
@@ -51,7 +57,7 @@ public class CreditorInstitutionsService {
         queryResult.stream()
             .map(
                 paStazionePa -> modelMapper.map(paStazionePa.getFkStazione(), StationDetails.class))
-            .collect(Collectors.toList());
+            .toList();
     return StationDetailsList.builder()
         .pageInfo(Utility.buildPageInfo(queryResult))
         .stationsDetailsList(stations)
@@ -98,7 +104,7 @@ public class CreditorInstitutionsService {
       ciAssociatedCodeList.setUsedCodes(
           ciAssociatedCodeList.getUsedCodes().stream()
               .filter(usedCode -> !codesToBeObfuscated.contains(usedCode.getStationName()))
-              .collect(Collectors.toList()));
+              .toList());
     }
     return ciAssociatedCodeList;
   }

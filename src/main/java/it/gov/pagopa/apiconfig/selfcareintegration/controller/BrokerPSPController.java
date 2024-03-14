@@ -32,9 +32,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class BrokerPSPController {
 
-  @Autowired private BrokerPSPsService brokerPspsService;
+  private final BrokerPSPsService brokerPspsService;
 
-  /**
+    public BrokerPSPController(BrokerPSPsService brokerPspsService) {
+        this.brokerPspsService = brokerPspsService;
+    }
+
+    /**
    * GET /{brokerId}/channels : Get PSP's broker channels
    *
    * @param brokerId broker identifier. (required)

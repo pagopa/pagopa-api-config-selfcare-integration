@@ -25,7 +25,7 @@ public class ConvertIbanMasterToIbanDetail implements Converter<IbanMaster, Iban
                         .name(label.getAttributeName())
                         .description(label.getAttributeDescription())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         Iban iban = src.getIban();
         return IbanDetails.builder()
