@@ -33,6 +33,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController()
@@ -290,7 +291,7 @@ public class CreditorInstitutionController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))})
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     @Cacheable(value = "getCreditorInstitutionNamesFromTaxCodes")
-    public ResponseEntity<List<CreditorInstitutionInfo>> getCreditorInstitutionNamesFromTaxCodes(@RequestBody @NotEmpty List<String> taxCodeList) {
+    public ResponseEntity<List<CreditorInstitutionInfo>> getCreditorInstitutionNamesFromTaxCodes(@RequestBody @NotEmpty @Size(max = 100) List<String> taxCodeList) {
         return ResponseEntity.ok(this.creditorInstitutionsService.getCreditorInstitutionInfoList(taxCodeList));
     }
 }
