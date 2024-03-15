@@ -1,7 +1,7 @@
-package it.gov.pagopa.apiconfig.service;
+package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannel;
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockPSPBroker;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockChannel;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockPSPBroker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,11 +13,10 @@ import it.gov.pagopa.apiconfig.Application;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedChannelRepository;
-import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokerPSPsService;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPsp;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPspRepository;
-import it.gov.pagopa.apiconfig.util.TestUtil;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.TimeZone;

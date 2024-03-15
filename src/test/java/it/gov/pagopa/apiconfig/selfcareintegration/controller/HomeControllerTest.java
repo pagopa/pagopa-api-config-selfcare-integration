@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.controller;
+package it.gov.pagopa.apiconfig.selfcareintegration.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

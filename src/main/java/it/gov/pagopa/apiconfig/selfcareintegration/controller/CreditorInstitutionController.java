@@ -2,6 +2,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,13 +11,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +26,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+import java.util.List;
+
 @RestController()
 @RequestMapping(path = "/creditorinstitutions")
 @Tag(name = "Creditor Institutions", description = "Everything about Creditor Institution")
 @Validated
 public class CreditorInstitutionController {
 
-  private final CreditorInstitutionsService creditorInstitutionsService;
+    private final CreditorInstitutionsService creditorInstitutionsService;
 
+    @Autowired
     public CreditorInstitutionController(CreditorInstitutionsService creditorInstitutionsService) {
         this.creditorInstitutionsService = creditorInstitutionsService;
     }
@@ -259,4 +266,31 @@ public class CreditorInstitutionController {
         creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
             creditorInstitutionCode, showUsedCodes, service));
   }
+
+    /**
+     * Retrieve a list of creditor institution business names, given the provided list of creditor institution tax codes
+     *
+     * @param taxCodeList the list of creditor institution tax codes
+     * @return a list of {@link CreditorInstitutionInfo}, containing the business name and tax code of creditor institution
+     */
+    @Operation(summary = "Get the list of creditor institution business names",
+            description = "Return a list of business name and tax code of creditor institutions, given the provided list of creditor institution tax codes",
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = CreditorInstitutionInfo.class)))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Not Found",
+                    content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Service unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))})
+    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Cacheable(value = "getCreditorInstitutionNamesFromTaxCodes")
+    public ResponseEntity<List<CreditorInstitutionInfo>> getCreditorInstitutionNamesFromTaxCodes(
+            @Parameter(description = "List of Creditor Institution's tax code") @RequestParam @Size(max = 10) List<String> taxCodeList
+    ) {
+        return ResponseEntity.ok(this.creditorInstitutionsService.getCreditorInstitutionInfoList(taxCodeList));
+    }
 }

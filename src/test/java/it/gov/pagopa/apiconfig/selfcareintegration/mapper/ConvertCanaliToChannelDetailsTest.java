@@ -1,13 +1,12 @@
-package it.gov.pagopa.apiconfig.mapper;
+package it.gov.pagopa.apiconfig.selfcareintegration.mapper;
 
-import static it.gov.pagopa.apiconfig.util.TestUtil.getMockChannelMapping;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockChannelMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.apiconfig.Application;
-import it.gov.pagopa.apiconfig.selfcareintegration.mapper.ConvertCanaliToChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
-import it.gov.pagopa.apiconfig.util.TestUtil;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import java.io.IOException;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;

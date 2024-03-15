@@ -513,6 +513,131 @@
         }
       ]
     },
+    "/creditorinstitutions": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Get the list of creditor institution business names",
+        "description": "Return a list of business name and tax code of creditor institutions, given the provided list of creditor institution tax codes",
+        "operationId": "getCreditorInstitutionNamesFromTaxCodes",
+        "parameters": [
+          {
+            "name": "taxCodeList",
+            "in": "query",
+            "description": "List of Creditor Institution's tax code",
+            "required": true,
+            "schema": {
+              "maxItems": 10,
+              "minItems": 0,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreditorInstitutionInfo"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
       "get": {
         "tags": [
@@ -1720,6 +1845,25 @@
           },
           "dbConnection": {
             "type": "string"
+          }
+        }
+      },
+      "CreditorInstitutionInfo": {
+        "required": [
+          "business_name",
+          "creditor_institution_code"
+        ],
+        "type": "object",
+        "properties": {
+          "business_name": {
+            "type": "string",
+            "description": "The business name of the creditor institution",
+            "example": "Comune di Roma"
+          },
+          "creditor_institution_code": {
+            "type": "string",
+            "description": "The tax code of the creditor institution",
+            "example": "02438750586"
           }
         }
       },

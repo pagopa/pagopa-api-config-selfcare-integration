@@ -1,4 +1,4 @@
-package it.gov.pagopa.apiconfig.util;
+package it.gov.pagopa.apiconfig.selfcareintegration.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

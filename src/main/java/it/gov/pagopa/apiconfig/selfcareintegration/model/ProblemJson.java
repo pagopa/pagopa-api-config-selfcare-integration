@@ -3,18 +3,20 @@ package it.gov.pagopa.apiconfig.selfcareintegration.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import it.gov.pagopa.apiconfig.selfcareintegration.exception.ErrorHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 /**
  * Object returned as response in case of an error.
  *
- * <p>See {@link it.gov.pagopa.apiconfig.exception.ErrorHandler}
+ * <p>See {@link ErrorHandler}
  */
 @Data
 @Builder(toBuilder = true)
