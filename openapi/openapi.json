@@ -514,28 +514,29 @@
       ]
     },
     "/creditorinstitutions": {
-      "post": {
+      "get": {
         "tags": [
           "Creditor Institutions"
         ],
         "summary": "Get the list of creditor institution business names",
         "description": "Return a list of business name and tax code of creditor institutions, given the provided list of creditor institution tax codes",
         "operationId": "getCreditorInstitutionNamesFromTaxCodes",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "maxItems": 100,
-                "minItems": 0,
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+        "parameters": [
+          {
+            "name": "taxCodeList",
+            "in": "query",
+            "description": "List of Creditor Institution's tax code",
+            "required": true,
+            "schema": {
+              "maxItems": 10,
+              "minItems": 0,
+              "type": "array",
+              "items": {
+                "type": "string"
               }
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1617,25 +1618,6 @@
           }
         }
       },
-      "CreditorInstitutionInfo": {
-        "required": [
-          "business_name",
-          "creditor_institution_code"
-        ],
-        "type": "object",
-        "properties": {
-          "business_name": {
-            "type": "string",
-            "description": "The business name of the creditor institution",
-            "example": "Comune di Roma"
-          },
-          "creditor_institution_code": {
-            "type": "string",
-            "description": "The tax code of the creditor institution",
-            "example": "02438750586"
-          }
-        }
-      },
       "ChannelDetails": {
         "required": [
           "agid",
@@ -1863,6 +1845,25 @@
           },
           "dbConnection": {
             "type": "string"
+          }
+        }
+      },
+      "CreditorInstitutionInfo": {
+        "required": [
+          "business_name",
+          "creditor_institution_code"
+        ],
+        "type": "object",
+        "properties": {
+          "business_name": {
+            "type": "string",
+            "description": "The business name of the creditor institution",
+            "example": "Comune di Roma"
+          },
+          "creditor_institution_code": {
+            "type": "string",
+            "description": "The tax code of the creditor institution",
+            "example": "02438750586"
           }
         }
       },

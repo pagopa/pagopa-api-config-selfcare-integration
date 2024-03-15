@@ -22,8 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -289,9 +286,11 @@ public class CreditorInstitutionController {
             @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Service unavailable",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))})
-    @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     @Cacheable(value = "getCreditorInstitutionNamesFromTaxCodes")
-    public ResponseEntity<List<CreditorInstitutionInfo>> getCreditorInstitutionNamesFromTaxCodes(@RequestBody @NotEmpty @Size(max = 100) List<String> taxCodeList) {
+    public ResponseEntity<List<CreditorInstitutionInfo>> getCreditorInstitutionNamesFromTaxCodes(
+            @Parameter(description = "List of Creditor Institution's tax code") @RequestParam @Size(max = 10) List<String> taxCodeList
+    ) {
         return ResponseEntity.ok(this.creditorInstitutionsService.getCreditorInstitutionInfoList(taxCodeList));
     }
 }

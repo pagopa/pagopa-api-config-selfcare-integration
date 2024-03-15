@@ -2,6 +2,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.apiconfig.Application;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.CreditorInstitutionsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.List;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockApplicationCodesList;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockSegregationCodesList;
@@ -24,7 +26,6 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,12 +82,13 @@ class CreditorInstitutionsControllerTest {
 
     @Test
     void getCreditorInstitutionsTest() throws Exception {
-        when(creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
-                anyString(), anyBoolean(), any()))
-                .thenReturn(getMockSegregationCodesList());
-        mvc.perform(post("/creditorinstitutions/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(Collections.singletonList("00168480242"))))
+        List<String> taxCodeList = Collections.singletonList("00168480242");
+
+        when(creditorInstitutionsService.getCreditorInstitutionInfoList(taxCodeList))
+                .thenReturn(Collections.singletonList(new CreditorInstitutionInfo()));
+
+        mvc.perform(get("/creditorinstitutions/")
+                        .param("taxCodeList", taxCodeList.toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
