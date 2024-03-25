@@ -34,10 +34,13 @@ class BrokersControllerTest {
 
     @BeforeEach
     void setup() throws IOException {
-        when(brokersService.getStationsDetailsFromBroker("1234", null, PageRequest.of(0, 50)))
+        when(brokersService.getStationsDetailsFromBroker("1234", null, null, PageRequest.of(0, 50)))
                 .thenReturn(getMockStationDetailsList());
         when(brokersService.getStationsDetailsFromBroker(
-                "1234", "80007580279_01", PageRequest.of(0, 50)))
+                "1234", "80007580279_01", null, PageRequest.of(0, 50)))
+                .thenReturn(getMockStationDetailsList());
+        when(brokersService.getStationsDetailsFromBroker(
+                "1234", "80007580279_01", "80007580279", PageRequest.of(0, 50)))
                 .thenReturn(getMockStationDetailsList());
         when(brokersService.getCreditorInstitutionsAssociatedToBroker("1234", null, PageRequest.of(0, 50)))
                 .thenReturn(getMockCreditorInstitutionDetails());
@@ -49,6 +52,7 @@ class BrokersControllerTest {
     @CsvSource({
             "/brokers/1234/stations?limit=50&page=0",
             "/brokers/1234/stations?stationId=80007580279_01&limit=50&page=0",
+            "/brokers/1234/stations?stationId=80007580279_01&ciTaxCode=80007580279&limit=50&page=0",
             "/brokers/1234/creditor-institutions?limit=50&page=0",
             "/brokers/1234/creditor-institutions?enabled=true&limit=50&page=0",
     })
