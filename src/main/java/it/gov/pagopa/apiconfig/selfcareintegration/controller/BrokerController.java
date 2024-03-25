@@ -12,12 +12,15 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -38,9 +41,9 @@ public class BrokerController {
     }
 
     /**
-     * GET /{brokerId}/stations : Get broker stations
+     * GET /{broker-code}/stations : Get broker stations
      *
-     * @param brokerId broker identifier. (required)
+     * @param brokerCode broker identifier. (required)
      * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
      * code 500)
      */
@@ -87,14 +90,16 @@ public class BrokerController {
                                     schema = @Schema(implementation = ProblemJson.class)))
             })
     @GetMapping(
-            value = "/{brokerId}/stations",
+            value = "/{broker-code}/stations",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
-            @Parameter(description = "The identifier of the broker.", required = true)
-            @PathVariable("brokerId")
-            String brokerId,
+            @Parameter(description = "The broker's tax code.", required = true)
+            @PathVariable("broker-code")
+            String brokerCode,
             @Parameter(description = "The identifier of the station.") @RequestParam(required = false)
             String stationId,
+            @Parameter(description = "The creditor institution's tax code.") @RequestParam(required = false)
+            String ciTaxCode,
             @Valid
             @Parameter(
                     description = "The number of elements to be included in the page.",
@@ -107,10 +112,11 @@ public class BrokerController {
             @Parameter(description = "The index of the page, starting from 0.", required = true)
             @Min(0)
             @RequestParam(required = false, defaultValue = "0")
-            Integer page) {
+            Integer page
+    ) {
         return ResponseEntity.ok(
-                brokersService.getStationsDetailsFromBroker(
-                        brokerId, stationId, PageRequest.of(page, limit)));
+                brokersService.getStationsDetailsFromBroker(brokerCode, stationId, ciTaxCode, PageRequest.of(page, limit))
+        );
     }
 
 
@@ -154,7 +160,7 @@ public class BrokerController {
                                     schema = @Schema(implementation = ProblemJson.class)))
             })
     @GetMapping(
-            value = "/{brokerId}/creditor-institutions",
+            value = "/{broker-code}/creditor-institutions",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<CreditorInstitutionDetails> getCreditorInstitutionsAssociatedToBroker(
             @Parameter(description = "Number of elements on one page. Default = 50")
@@ -163,12 +169,12 @@ public class BrokerController {
             @Parameter(description = "Page number. Page value starts from 0", required = true)
             @PositiveOrZero @RequestParam
             Integer page,
-            @Parameter(description = "Filter by broker code associated to creditor institutions")
-            @PathVariable("brokerId")
-            String brokerId,
+            @Parameter(description = "Filter by broker tax code associated to creditor institutions")
+            @PathVariable("broker-code")
+            String brokerCode,
             @Parameter(description = "Filter by enabled station")
             @RequestParam(required = false, name = "enabled")
             Boolean enabled) {
-        return ResponseEntity.ok(brokersService.getCreditorInstitutionsAssociatedToBroker(brokerId, enabled, PageRequest.of(page, limit)));
+        return ResponseEntity.ok(brokersService.getCreditorInstitutionsAssociatedToBroker(brokerCode, enabled, PageRequest.of(page, limit)));
     }
 }
