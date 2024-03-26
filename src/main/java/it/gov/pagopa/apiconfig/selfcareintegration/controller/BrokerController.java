@@ -41,9 +41,9 @@ public class BrokerController {
     }
 
     /**
-     * GET /{broker-code}/stations : Get broker stations
+     * GET /{broker-tax-code}/stations : Get broker stations
      *
-     * @param brokerCode broker identifier. (required)
+     * @param brokerCode broker's tax code. (required)
      * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
      * code 500)
      */
@@ -90,11 +90,11 @@ public class BrokerController {
                                     schema = @Schema(implementation = ProblemJson.class)))
             })
     @GetMapping(
-            value = "/{broker-code}/stations",
+            value = "/{broker-tax-code}/stations",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
             @Parameter(description = "The broker's tax code.", required = true)
-            @PathVariable("broker-code")
+            @PathVariable("broker-tax-code")
             String brokerCode,
             @Parameter(description = "The identifier of the station.") @RequestParam(required = false)
             String stationId,
@@ -160,7 +160,7 @@ public class BrokerController {
                                     schema = @Schema(implementation = ProblemJson.class)))
             })
     @GetMapping(
-            value = "/{broker-code}/creditor-institutions",
+            value = "/{broker-tax-code}/creditor-institutions",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<CreditorInstitutionDetails> getCreditorInstitutionsAssociatedToBroker(
             @Parameter(description = "Number of elements on one page. Default = 50")
@@ -170,7 +170,7 @@ public class BrokerController {
             @PositiveOrZero @RequestParam
             Integer page,
             @Parameter(description = "Filter by broker tax code associated to creditor institutions")
-            @PathVariable("broker-code")
+            @PathVariable("broker-tax-code")
             String brokerCode,
             @Parameter(description = "Filter by enabled station")
             @RequestParam(required = false, name = "enabled")
