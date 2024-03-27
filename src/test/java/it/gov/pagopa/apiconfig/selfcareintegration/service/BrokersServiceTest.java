@@ -4,13 +4,13 @@ import it.gov.pagopa.apiconfig.selfcareintegration.config.MappingsConfiguration;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedStationRepository;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
+import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +38,6 @@ import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockS
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,7 +50,7 @@ class BrokersServiceTest {
     private final Pageable pageable = PageRequest.of(0, 10);
 
     @MockBean
-    private ExtendedStationRepository extendedStationRepository;
+    private StazioniRepository stazioniRepository;
 
     @MockBean
     private IntermediariPaRepository intermediariPaRepository;
@@ -75,8 +73,7 @@ class BrokersServiceTest {
 
         when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE))
                 .thenReturn(Optional.of(mockedBroker));
-        when(extendedStationRepository
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class)))
+        when(stazioniRepository.findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(page);
 
         StationDetailsList result =
@@ -86,82 +83,7 @@ class BrokersServiceTest {
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
 
         verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), any(Pageable.class));
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository)
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class));
-    }
-
-    @Test
-    void getStationsDetailsCI_withoutStationIdAndCITaxCode_200() throws IOException, JSONException {
-        Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
-
-        when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE))
-                .thenReturn(Optional.of(getMockBroker()));
-        when(extendedStationRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(page);
-
-        StationDetailsList result = brokersService.getStationsDetailsFromBroker(BROKER_CODE, null, null, pageable);
-        String actual = TestUtil.toJson(result);
-        String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
-
-        verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
-        verify(extendedStationRepository).findAllByFiltersOrderById(anyLong(), any(Pageable.class));
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class));
-    }
-
-    @Test
-    void getStationsDetailsCI_withoutStationIdAndWithCITaxCode_200() throws IOException, JSONException {
-        Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
-
-        when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE))
-                .thenReturn(Optional.of(getMockBroker()));
-        when(extendedStationRepository.findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class)))
-                .thenReturn(page);
-
-        StationDetailsList result = brokersService.getStationsDetailsFromBroker(BROKER_CODE, null, "ciTaxCode", pageable);
-        String actual = TestUtil.toJson(result);
-        String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
-
-        verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), any(Pageable.class));
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository)
-                .findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class));
-    }
-
-    @Test
-    void getStationsDetailsCI_withStationIdAndWithoutCITaxCode_200() throws IOException, JSONException {
-        IntermediariPa mockedBroker = getMockBroker();
-        Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
-
-        when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE))
-                .thenReturn(Optional.of(mockedBroker));
-        when(extendedStationRepository.findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class)))
-                .thenReturn(page);
-
-        StationDetailsList result =
-                brokersService.getStationsDetailsFromBroker(BROKER_CODE, STATION_ID, null, pageable);
-        String actual = TestUtil.toJson(result);
-        String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
-
-        verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), any(Pageable.class));
-        verify(extendedStationRepository).findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class));
+        verify(stazioniRepository).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @Test
@@ -174,12 +96,7 @@ class BrokersServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
 
         verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), any(Pageable.class));
-        verify(extendedStationRepository, never()).findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByCITaxCodeOrderById(anyLong(), anyString(), any(Pageable.class));
-        verify(extendedStationRepository, never())
-                .findAllFilteredByStationIdAndCITaxCodeOrderById(anyLong(), anyString(), anyString(), any(Pageable.class));
+        verify(stazioniRepository, never()).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @ParameterizedTest

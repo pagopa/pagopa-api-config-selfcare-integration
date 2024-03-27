@@ -6,14 +6,15 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.Cre
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
-import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedStationRepository;
 import it.gov.pagopa.apiconfig.selfcareintegration.specification.PaStazionePaSpecifications;
+import it.gov.pagopa.apiconfig.selfcareintegration.specification.StationSpecifications;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
+import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ import java.util.Optional;
 @Transactional
 public class BrokersService {
 
-    private final ExtendedStationRepository extendedStationRepository;
+    private final StazioniRepository stazioniRepository;
 
     private final IntermediariPaRepository intermediariPaRepository;
 
@@ -37,11 +38,11 @@ public class BrokersService {
     private final ModelMapper modelMapper;
 
     public BrokersService(
-            ExtendedStationRepository extendedStationRepository,
+            StazioniRepository stazioniRepository,
             IntermediariPaRepository intermediariPaRepository,
             PaStazionePaRepository paStazionePaRepository,
             ModelMapper modelMapper) {
-        this.extendedStationRepository = extendedStationRepository;
+        this.stazioniRepository = stazioniRepository;
         this.intermediariPaRepository = intermediariPaRepository;
         this.paStazionePaRepository = paStazionePaRepository;
         this.modelMapper = modelMapper;
@@ -64,19 +65,8 @@ public class BrokersService {
             Pageable pageable
     ) {
         IntermediariPa broker = getBrokerIfExists(brokerCode);
-        Page<Stazioni> queryResult;
-
-        if (stationId == null && ciTaxCode == null) {
-            queryResult = extendedStationRepository.findAllByFiltersOrderById(broker.getObjId(), pageable);
-        } else if (stationId != null && ciTaxCode == null) {
-            queryResult = extendedStationRepository.findAllByFiltersOrderById(broker.getObjId(), stationId, pageable);
-        } else if (stationId == null) {
-            queryResult = extendedStationRepository
-                    .findAllFilteredByCITaxCodeOrderById(broker.getObjId(), ciTaxCode, pageable);
-        } else {
-            queryResult = extendedStationRepository
-                    .findAllFilteredByStationIdAndCITaxCodeOrderById(broker.getObjId(), stationId, ciTaxCode, pageable);
-        }
+        Page<Stazioni> queryResult = stazioniRepository
+                .findAll(StationSpecifications.filter(broker.getObjId(), stationId, ciTaxCode), pageable);
 
         List<StationDetails> stations = queryResult.stream()
                 .map(station -> modelMapper.map(station, StationDetails.class))
