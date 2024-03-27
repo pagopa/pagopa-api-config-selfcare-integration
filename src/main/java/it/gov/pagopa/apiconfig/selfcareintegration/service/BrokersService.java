@@ -7,6 +7,7 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.Cre
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.specification.PaStazionePaSpecifications;
+import it.gov.pagopa.apiconfig.selfcareintegration.specification.StationSpecifications;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
@@ -15,7 +16,6 @@ import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,27 +37,40 @@ public class BrokersService {
 
     private final ModelMapper modelMapper;
 
-    public BrokersService(StazioniRepository stazioniRepository, IntermediariPaRepository intermediariPaRepository, PaStazionePaRepository paStazionePaRepository, ModelMapper modelMapper) {
+    public BrokersService(
+            StazioniRepository stazioniRepository,
+            IntermediariPaRepository intermediariPaRepository,
+            PaStazionePaRepository paStazionePaRepository,
+            ModelMapper modelMapper) {
         this.stazioniRepository = stazioniRepository;
         this.intermediariPaRepository = intermediariPaRepository;
         this.paStazionePaRepository = paStazionePaRepository;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * Retrieve the paginated list of station by broker tax code. the list can be filtered by station id and/or
+     * creditor institution's tax code
+     *
+     * @param brokerCode broker's tax code
+     * @param stationId station id
+     * @param ciTaxCode creditor institution's tax code
+     * @param pageable page request
+     * @return the paginated list of stations
+     */
     public StationDetailsList getStationsDetailsFromBroker(
-            @NotNull String brokerId, String stationId, Pageable pageable) throws AppException {
-        IntermediariPa broker = getBrokerIfExists(brokerId);
-        Page<Stazioni> queryResult;
-        if (stationId == null) {
-            queryResult = stazioniRepository.findAllByFiltersOrderById(broker.getObjId(), pageable);
-        } else {
-            queryResult =
-                    stazioniRepository.findAllByFiltersOrderById(broker.getObjId(), stationId, pageable);
-        }
-        List<StationDetails> stations =
-                queryResult.stream()
-                        .map(station -> modelMapper.map(station, StationDetails.class))
-                        .toList();
+            @NotNull String brokerCode,
+            String stationId,
+            String ciTaxCode,
+            Pageable pageable
+    ) {
+        IntermediariPa broker = getBrokerIfExists(brokerCode);
+        Page<Stazioni> queryResult = stazioniRepository
+                .findAll(StationSpecifications.filter(broker.getObjId(), stationId, ciTaxCode), pageable);
+
+        List<StationDetails> stations = queryResult.stream()
+                .map(station -> modelMapper.map(station, StationDetails.class))
+                .toList();
         return StationDetailsList.builder()
                 .pageInfo(Utility.buildPageInfo(queryResult))
                 .stationsDetailsList(stations)
@@ -77,10 +89,10 @@ public class BrokersService {
                 .build();
     }
 
-    protected IntermediariPa getBrokerIfExists(String brokerId) throws AppException {
-        Optional<IntermediariPa> result = intermediariPaRepository.findByIdIntermediarioPa(brokerId);
+    protected IntermediariPa getBrokerIfExists(String brokerCode) throws AppException {
+        Optional<IntermediariPa> result = intermediariPaRepository.findByIdIntermediarioPa(brokerCode);
         if (result.isEmpty()) {
-            throw new AppException(AppError.BROKER_NOT_FOUND, brokerId);
+            throw new AppException(AppError.BROKER_NOT_FOUND, brokerCode);
         }
         return result.get();
     }

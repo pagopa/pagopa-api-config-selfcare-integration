@@ -1,30 +1,28 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
-import it.gov.pagopa.apiconfig.Application;
+import it.gov.pagopa.apiconfig.selfcareintegration.config.MappingsConfiguration;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
-import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,24 +32,33 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.*;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockBroker;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockPaStazionePa;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStazioni;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = {MappingsConfiguration.class, BrokersService.class})
 class BrokersServiceTest {
 
+    private static final String BROKER_CODE = "1234";
+    private static final String STATION_ID = "80007580279_01";
     private final Pageable pageable = PageRequest.of(0, 10);
+
     @MockBean
     private StazioniRepository stazioniRepository;
+
     @MockBean
     private IntermediariPaRepository intermediariPaRepository;
+
     @MockBean
     private PaStazionePaRepository paStazionePaRepository;
+
     @Autowired
-    @InjectMocks
     private BrokersService brokersService;
 
     @BeforeEach
@@ -60,80 +67,37 @@ class BrokersServiceTest {
     }
 
     @Test
-    void getStationsDetailsCI_withStationId_200() throws IOException, JSONException {
-
+    void getStationsDetailsCI_withStationIdAndCITaxCode_200() throws IOException, JSONException {
         IntermediariPa mockedBroker = getMockBroker();
         Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
 
-        when(intermediariPaRepository.findByIdIntermediarioPa("1234"))
+        when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE))
                 .thenReturn(Optional.of(mockedBroker));
-        when(stazioniRepository.findAllByFiltersOrderById(anyLong(), anyString(), any(Pageable.class)))
+        when(stazioniRepository.findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(page);
 
         StationDetailsList result =
-                brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
+                brokersService.getStationsDetailsFromBroker(BROKER_CODE, STATION_ID, "ciTaxCode", pageable);
         String actual = TestUtil.toJson(result);
         String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+
+        verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
+        verify(stazioniRepository).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @Test
-    void getStationsDetailsCI_withoutStationId_200() throws IOException, JSONException {
+    void getStationsDetailsCI_noBrokerFound_404() {
+        when(intermediariPaRepository.findByIdIntermediarioPa(BROKER_CODE)).thenReturn(Optional.empty());
 
-        Page<Stazioni> page = TestUtil.mockPage(Lists.newArrayList(getMockStazioni()), 10, 0);
+        AppException e = assertThrows(AppException.class, () ->
+                brokersService.getStationsDetailsFromBroker(BROKER_CODE, STATION_ID, null, pageable));
 
-        when(intermediariPaRepository.findByIdIntermediarioPa("1234"))
-                .thenReturn(Optional.of(getMockBroker()));
-        when(stazioniRepository.findAllByFiltersOrderById(anyLong(), any())).thenReturn(page);
+        assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
 
-        StationDetailsList result = brokersService.getStationsDetailsFromBroker("1234", null, pageable);
-        String actual = TestUtil.toJson(result);
-        String expected = TestUtil.readJsonFromFile("response/get_broker_stations_details_ok1.json");
-        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+        verify(intermediariPaRepository).findByIdIntermediarioPa(BROKER_CODE);
+        verify(stazioniRepository, never()).findAll(any(Specification.class), any(Pageable.class));
     }
-
-    @Test
-    void getStationsDetailsCI_noBrokerFound_404() throws IOException, JSONException {
-        when(intermediariPaRepository.findByIdIntermediarioPa("1234")).thenReturn(Optional.empty());
-        try {
-            brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
-        } catch (AppException e) {
-            assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
-    @Test
-    void getStationsDetailsCI_withStationId_404() throws IOException, JSONException {
-        when(intermediariPaRepository.findByIdIntermediarioPa("1234"))
-                .thenReturn(Optional.of(getMockBroker()));
-        when(stazioniRepository.findAllByFiltersOrderById(anyLong(), anyString(), any()))
-                .thenReturn(new PageImpl<>(Lists.newArrayList()));
-        try {
-            brokersService.getStationsDetailsFromBroker("1234", "80007580279_01", pageable);
-        } catch (AppException e) {
-            assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
-    @Test
-    void getStationsDetailsCI_withoutStationId_404() throws IOException, JSONException {
-        when(intermediariPaRepository.findByIdIntermediarioPa("1234"))
-                .thenReturn(Optional.of(getMockBroker()));
-        when(stazioniRepository.findAllByFiltersOrderById(anyLong(), any()))
-                .thenReturn(new PageImpl<>(Lists.newArrayList()));
-        try {
-            brokersService.getStationsDetailsFromBroker("1234", null, pageable);
-        } catch (AppException e) {
-            assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
 
     @ParameterizedTest
     @CsvSource({
@@ -151,7 +115,7 @@ class BrokersServiceTest {
         when(paStazionePaRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
 
         CreditorInstitutionDetails result =
-                brokersService.getCreditorInstitutionsAssociatedToBroker("1234", isStationEnabled, pageable);
+                brokersService.getCreditorInstitutionsAssociatedToBroker(BROKER_CODE, isStationEnabled, pageable);
         String actual = TestUtil.toJson(result);
 
         String expected = TestUtil.readJsonFromFile("response/get_creditor_institution_details_ok" + fileIndex + ".json");

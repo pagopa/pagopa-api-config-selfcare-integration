@@ -35,7 +35,7 @@
     }
   ],
   "paths": {
-    "/brokers/{brokerId}/creditor-institutions": {
+    "/brokers/{broker-tax-code}/creditor-institutions": {
       "get": {
         "tags": [
           "Brokers"
@@ -66,9 +66,9 @@
             }
           },
           {
-            "name": "brokerId",
+            "name": "broker-tax-code",
             "in": "path",
-            "description": "Filter by broker code associated to creditor institutions",
+            "description": "Filter by broker tax code associated to creditor institutions",
             "required": true,
             "schema": {
               "type": "string"
@@ -193,7 +193,7 @@
         }
       ]
     },
-    "/brokers/{brokerId}/stations": {
+    "/brokers/{broker-tax-code}/stations": {
       "get": {
         "tags": [
           "Brokers"
@@ -202,9 +202,9 @@
         "operationId": "getStationsDetailsFromBroker",
         "parameters": [
           {
-            "name": "brokerId",
+            "name": "broker-tax-code",
             "in": "path",
-            "description": "The identifier of the broker.",
+            "description": "The broker's tax code.",
             "required": true,
             "schema": {
               "type": "string"
@@ -214,6 +214,15 @@
             "name": "stationId",
             "in": "query",
             "description": "The identifier of the station.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ciTaxCode",
+            "in": "query",
+            "description": "The creditor institution's tax code.",
             "required": false,
             "schema": {
               "type": "string"
