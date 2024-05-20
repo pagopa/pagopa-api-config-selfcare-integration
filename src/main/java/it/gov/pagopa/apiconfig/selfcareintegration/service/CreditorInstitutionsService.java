@@ -123,7 +123,7 @@ public class CreditorInstitutionsService {
             availableCodes = LongStream.rangeClosed(0, segregationCodeMaxValue).parallel()
                     .boxed()
                     .filter(num -> isNotReservedCode(num) && isUnusedCode(num, usedSegregationCodes, usedApplicationCodes))
-                    .map(String::valueOf)
+                    .map(this::getCode)
                     .toList();
         }
         return AvailableCodes.builder()
@@ -151,7 +151,7 @@ public class CreditorInstitutionsService {
 
         return paList.stream()
                 .map(pa -> modelMapper.map(pa, CreditorInstitutionInfo.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private CIAssociatedCodeList extractUsedAndUnusedCodes(
@@ -163,13 +163,14 @@ public class CreditorInstitutionsService {
         LongStream.rangeClosed(0, codeMaxValue)
                 .boxed()
                 .forEach(codeFromSequence -> {
-                    CIAssociatedCode code = buildCiAssociatedCode(codeFromSequence);
                     // choose the list where must be added the model object
                     if (alreadyUsedCodes.containsKey(codeFromSequence)) {
-                        code.setStationName(alreadyUsedCodes.get(codeFromSequence).getFkStazione().getIdStazione());
-                        usedCodes.add(code);
+                        usedCodes.add(CIAssociatedCode.builder()
+                                .code(getCode(codeFromSequence))
+                                .stationName(alreadyUsedCodes.get(codeFromSequence).getFkStazione().getIdStazione())
+                                .build());
                     } else {
-                        unusedCodes.add(code);
+                        unusedCodes.add(CIAssociatedCode.builder().code(getCode(codeFromSequence)).build());
                     }
                 });
 
@@ -179,10 +180,8 @@ public class CreditorInstitutionsService {
                 .build();
     }
 
-    private CIAssociatedCode buildCiAssociatedCode(Long codeFromSequence) {
-        return CIAssociatedCode.builder()
-                .code(codeFromSequence < 10 ? "0".concat(String.valueOf(codeFromSequence)) : String.valueOf(codeFromSequence))
-                .build();
+    private String getCode(Long codeFromSequence) {
+        return codeFromSequence < 10 ? "0".concat(String.valueOf(codeFromSequence)) : String.valueOf(codeFromSequence);
     }
 
     /**
