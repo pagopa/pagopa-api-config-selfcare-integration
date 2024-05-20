@@ -2,6 +2,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.code.AvailableCodes;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionInfo;
@@ -21,11 +22,12 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -35,6 +37,10 @@ import java.util.stream.LongStream;
 @Service
 @Transactional
 public class CreditorInstitutionsService {
+
+    private static final String UNIONECAMERE_TAX_CODE = "01484460587";
+    private static final String ACI_TAX_CODE = "00493410583";
+    private static final String ROMA_CAPITALE_TAX_CODE = "02438750586";
 
     private final Integer applicationCodeMaxValue;
 
@@ -85,38 +91,44 @@ public class CreditorInstitutionsService {
         return extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, applicationCodeMaxValue, getUsed);
     }
 
-    public CIAssociatedCodeList getSegregationCodesFromCreditorInstitution(
-            @NotNull String creditorInstitutionCode, boolean getUsed, String service) {
-        String serviceSubstringToBeSearched = service != null ? service.toLowerCase() : null;
-        Pa pa = getPaIfExists(creditorInstitutionCode);
-        List<PaStazionePa> queryResult = ciStationRepository.findByFkPa(pa.getObjId());
-        Map<Long, PaStazionePa> alreadyUsedApplicationCodes =
-                queryResult.stream()
-                        .filter(station -> station.getSegregazione() != null)
-                        .collect(Collectors.toMap(PaStazionePa::getSegregazione, station -> station));
-        // get the set of codes to be obfuscated by service search. If passed service is null, the set
-        // is empty and all the element will be returned.
-        Set<String> codesToBeObfuscated =
-                queryResult.stream()
-                        .filter(
-                                station -> {
-                                    String serviceEndpoint = station.getFkStazione().getServizio();
-                                    return serviceSubstringToBeSearched != null
-                                            && (serviceEndpoint == null
-                                            || !serviceEndpoint.toLowerCase().contains(serviceSubstringToBeSearched));
-                                })
-                        .map(station -> station.getFkStazione().getIdStazione())
-                        .collect(Collectors.toSet());
-        // retrieving the data removing the ones to be obfuscated
-        CIAssociatedCodeList ciAssociatedCodeList =
-                extractUsedAndUnusedCodes(alreadyUsedApplicationCodes, segregationCodeMaxValue, getUsed);
-        if (ciAssociatedCodeList.getUsedCodes() != null) {
-            ciAssociatedCodeList.setUsedCodes(
-                    ciAssociatedCodeList.getUsedCodes().stream()
-                            .filter(usedCode -> !codesToBeObfuscated.contains(usedCode.getStationName()))
-                            .toList());
+    /**
+     * Retrieve the available segregation codes for the provided creditor institution's tax code
+     *
+     * @param ciTaxCode creditor institution's tax code
+     * @return the available segregation codes
+     */
+    public AvailableCodes getAvailableCISegregationCodes(@NotNull String ciTaxCode) {
+        List<String> availableCodes;
+        if (ciTaxCode.equals(ROMA_CAPITALE_TAX_CODE)) {
+            availableCodes = Collections.singletonList("49");
+        } else if (ciTaxCode.equals(ACI_TAX_CODE)) {
+            availableCodes = Collections.singletonList("96");
+        } else if (ciTaxCode.equals(UNIONECAMERE_TAX_CODE)) {
+            availableCodes = Collections.singletonList("97");
+        } else {
+            Pa pa = getPaIfExists(ciTaxCode);
+            List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkPa(pa.getObjId());
+
+            List<Long> usedSegregationCodes =
+                    stazionePaList.parallelStream()
+                            .map(PaStazionePa::getSegregazione)
+                            .filter(Objects::nonNull)
+                            .toList();
+            List<Long> usedApplicationCodes =
+                    stazionePaList.parallelStream()
+                            .map(PaStazionePa::getProgressivo)
+                            .filter(Objects::nonNull)
+                            .toList();
+
+            availableCodes = LongStream.rangeClosed(0, segregationCodeMaxValue).parallel()
+                    .boxed()
+                    .filter(num -> isNotReservedCode(num) && isUnusedCode(num, usedSegregationCodes, usedApplicationCodes))
+                    .map(String::valueOf)
+                    .toList();
         }
-        return ciAssociatedCodeList;
+        return AvailableCodes.builder()
+                .availableCodeList(availableCodes)
+                .build();
     }
 
     /**
@@ -150,30 +162,26 @@ public class CreditorInstitutionsService {
         // existing association to station
         LongStream.rangeClosed(0, codeMaxValue)
                 .boxed()
-                .forEach(
-                        codeFromSequence -> {
-                            // generate model to be added
-                            CIAssociatedCode ciAssociatedCode =
-                                    CIAssociatedCode.builder()
-                                            .code(
-                                                    String.valueOf(
-                                                            codeFromSequence < 10
-                                                                    ? "0".concat(String.valueOf(codeFromSequence))
-                                                                    : codeFromSequence))
-                                            .build();
-                            // choose the list where must be added the model object
-                            if (alreadyUsedCodes.containsKey(codeFromSequence)) {
-                                ciAssociatedCode.setStationName(
-                                        alreadyUsedCodes.get(codeFromSequence).getFkStazione().getIdStazione());
-                                usedCodes.add(ciAssociatedCode);
-                            } else {
-                                unusedCodes.add(ciAssociatedCode);
-                            }
-                        });
-        // generate final object
+                .forEach(codeFromSequence -> {
+                    CIAssociatedCode code = buildCiAssociatedCode(codeFromSequence);
+                    // choose the list where must be added the model object
+                    if (alreadyUsedCodes.containsKey(codeFromSequence)) {
+                        code.setStationName(alreadyUsedCodes.get(codeFromSequence).getFkStazione().getIdStazione());
+                        usedCodes.add(code);
+                    } else {
+                        unusedCodes.add(code);
+                    }
+                });
+
         return CIAssociatedCodeList.builder()
                 .usedCodes(includeUsed ? usedCodes : null)
                 .unusedCodes(unusedCodes)
+                .build();
+    }
+
+    private CIAssociatedCode buildCiAssociatedCode(Long codeFromSequence) {
+        return CIAssociatedCode.builder()
+                .code(codeFromSequence < 10 ? "0".concat(String.valueOf(codeFromSequence)) : String.valueOf(codeFromSequence))
                 .build();
     }
 
@@ -188,5 +196,13 @@ public class CreditorInstitutionsService {
             throw new AppException(AppError.CREDITOR_INSTITUTION_NOT_FOUND, creditorInstitutionCode);
         }
         return result.get();
+    }
+
+    private boolean isUnusedCode(Long num, List<Long> alreadyUsedSegregationCodes, List<Long> alreadyUsedApplicationCodes) {
+        return !alreadyUsedSegregationCodes.contains(num) && !alreadyUsedApplicationCodes.contains(num);
+    }
+
+    private boolean isNotReservedCode(Long num) {
+        return !num.equals(47L) && !num.equals(81L) && !num.equals(85L);
     }
 }
