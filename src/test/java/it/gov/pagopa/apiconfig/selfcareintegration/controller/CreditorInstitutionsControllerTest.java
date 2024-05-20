@@ -19,9 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockApplicationCodesList;
-import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockSegregationCodesList;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStationDetailsList;
-import static org.mockito.ArgumentMatchers.any;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockUsedSegregationCodesList;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -72,9 +71,8 @@ class CreditorInstitutionsControllerTest {
             "/creditorinstitutions/1234/segregationcodes",
     })
     void testGetSegregationCodes(String url) throws Exception {
-        when(creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
-                anyString(), anyBoolean(), any()))
-                .thenReturn(getMockSegregationCodesList());
+        when(creditorInstitutionsService.getAvailableCISegregationCodes(anyString()))
+                .thenReturn(getMockUsedSegregationCodesList());
         mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
