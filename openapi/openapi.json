@@ -8,8 +8,23 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "http://localhost:8080"
+    },
+    {
+      "url": "https://{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "api.dev.platform.pagopa.it",
+          "enum": [
+            "api.dev.platform.pagopa.it",
+            "api.uat.platform.pagopa.it",
+            "api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/apiconfig-selfcare-integration/v1/"
+        }
+      }
     }
   ],
   "tags": [
@@ -800,25 +815,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "showUsedCodes",
-            "in": "query",
-            "description": "The flag that permits to show the codes already used. Default: true",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "service",
-            "in": "query",
-            "description": "The service endpoint, to be used as a search filter to obtain only the segregation codes used by the CI for stations using same endpoint service. Default: null",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -835,7 +831,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CIAssociatedCodeList"
+                  "$ref": "#/components/schemas/AvailableCodes"
                 }
               }
             }
@@ -2137,6 +2133,19 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "AvailableCodes": {
+        "type": "object",
+        "properties": {
+          "availableCodes": {
+            "type": "array",
+            "description": "List of codes not used for existing associations",
+            "items": {
+              "type": "string",
+              "description": "List of codes not used for existing associations"
+            }
           }
         }
       },
