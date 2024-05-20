@@ -107,7 +107,7 @@ public class TestUtil {
     }
 
     public static AvailableCodes getMockUsedSegregationCodesList() throws IOException {
-        return getMockRequest("request/get_creditorinstitution_segregationcodes_ok2.json", AvailableCodes.class);
+        return getMockRequest("response/get_creditorinstitution_segregationcodes_ok2.json", AvailableCodes.class);
     }
 
     public static ChannelDetails getMockChannelDetails() throws IOException {
