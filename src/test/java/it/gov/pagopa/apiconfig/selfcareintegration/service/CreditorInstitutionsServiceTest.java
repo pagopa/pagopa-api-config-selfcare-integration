@@ -150,7 +150,12 @@ class CreditorInstitutionsServiceTest {
             "'00493410583', '96'",
             "'01484460587', '97'",
     })
-    void getSegregationCodesReservedSuccess(String ciTaxCode, String resultCode) {
+    void getSegregationCodesReservedSuccess(String ciTaxCode, String resultCode) throws IOException {
+        List<PaStazionePa> stations = List.of(getMockPaStazionePa());
+
+        when(paRepository.findByIdDominio(anyString())).thenReturn(Optional.of(getMockPa()));
+        when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
         AvailableCodes result = assertDoesNotThrow(() ->
                 creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode)
         );
@@ -159,9 +164,6 @@ class CreditorInstitutionsServiceTest {
         assertNotNull(result.getAvailableCodeList());
         assertEquals(1, result.getAvailableCodeList().size());
         assertEquals(resultCode, result.getAvailableCodeList().get(0));
-
-        verify(paRepository, never()).findByIdDominio(anyString());
-        verify(ciStationRepository, never()).findByFkPa(anyLong());
     }
 
     @Test

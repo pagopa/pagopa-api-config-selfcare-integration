@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -98,34 +97,18 @@ public class CreditorInstitutionsService {
      * @return the available segregation codes
      */
     public AvailableCodes getAvailableCISegregationCodes(@NotNull String ciTaxCode) {
-        List<String> availableCodes;
-        if (ciTaxCode.equals(ROMA_CAPITALE_TAX_CODE)) {
-            availableCodes = Collections.singletonList("49");
-        } else if (ciTaxCode.equals(ACI_TAX_CODE)) {
-            availableCodes = Collections.singletonList("96");
-        } else if (ciTaxCode.equals(UNIONECAMERE_TAX_CODE)) {
-            availableCodes = Collections.singletonList("97");
-        } else {
-            Pa pa = getPaIfExists(ciTaxCode);
-            List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkPa(pa.getObjId());
+        Pa pa = getPaIfExists(ciTaxCode);
+        List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkPa(pa.getObjId());
 
-            List<Long> usedSegregationCodes =
-                    stazionePaList.parallelStream()
-                            .map(PaStazionePa::getSegregazione)
-                            .filter(Objects::nonNull)
-                            .toList();
-            List<Long> usedApplicationCodes =
-                    stazionePaList.parallelStream()
-                            .map(PaStazionePa::getProgressivo)
-                            .filter(Objects::nonNull)
-                            .toList();
+        List<Long> usedSegregationCodes = getUsedSegregationCodes(stazionePaList);
+        List<Long> usedApplicationCodes = getUsedApplicationCodes(stazionePaList);
 
-            availableCodes = LongStream.rangeClosed(0, segregationCodeMaxValue).parallel()
-                    .boxed()
-                    .filter(num -> isNotReservedCode(num) && isUnusedCode(num, usedSegregationCodes, usedApplicationCodes))
-                    .map(this::getCode)
-                    .toList();
-        }
+        List<String> availableCodes = getAvailableCodesForCI(ciTaxCode).parallel()
+                .boxed()
+                .filter(num -> isNotReservedCode(num) && isUnusedCode(num, usedSegregationCodes, usedApplicationCodes))
+                .map(this::getCode)
+                .toList();
+
         return AvailableCodes.builder()
                 .availableCodeList(availableCodes)
                 .build();
@@ -203,5 +186,28 @@ public class CreditorInstitutionsService {
 
     private boolean isNotReservedCode(Long num) {
         return !num.equals(47L) && !num.equals(81L) && !num.equals(85L);
+    }
+
+    private List<Long> getUsedApplicationCodes(List<PaStazionePa> stazionePaList) {
+        return stazionePaList.parallelStream()
+                .map(PaStazionePa::getProgressivo)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    private List<Long> getUsedSegregationCodes(List<PaStazionePa> stazionePaList) {
+        return stazionePaList.parallelStream()
+                .map(PaStazionePa::getSegregazione)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    private LongStream getAvailableCodesForCI(String ciTaxCode) {
+        return switch (ciTaxCode) {
+            case ROMA_CAPITALE_TAX_CODE -> LongStream.of(49L);
+            case ACI_TAX_CODE -> LongStream.of(96L);
+            case UNIONECAMERE_TAX_CODE -> LongStream.of(97L);
+            default -> LongStream.rangeClosed(0, segregationCodeMaxValue);
+        };
     }
 }
