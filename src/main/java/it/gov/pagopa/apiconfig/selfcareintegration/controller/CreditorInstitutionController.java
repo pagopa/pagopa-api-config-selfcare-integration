@@ -192,7 +192,7 @@ public class CreditorInstitutionController {
   }
 
   /**
-   * GET /{creditorInstitutionCode}/segregationcodes : Get creditor institution station
+   * GET /{creditorInstitutionCode}/segregationcodes : Get creditor institution segregation codes
    *
    * @param creditorInstitutionCode station code. (required)
    * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
