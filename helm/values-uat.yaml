@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.10.7"
+    tag: "1.10.7-1-VAS-912-fix-segregation-code"
     pullPolicy: Always
   livenessProbe:
     httpGet:
