@@ -80,4 +80,11 @@ public class CreditorInstitutionDetail {
     @JsonProperty("broadcast")
     @Schema(description = "The flag that define if the station is made for broadcast operations", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean broadcast;
+
+    // TODO annotations
+    private String endpointRT;
+    private String endpointRedirect;
+    private String endpointMU;
+    private Integer versionePrimitive;
+    private Boolean ecStatus;
 }

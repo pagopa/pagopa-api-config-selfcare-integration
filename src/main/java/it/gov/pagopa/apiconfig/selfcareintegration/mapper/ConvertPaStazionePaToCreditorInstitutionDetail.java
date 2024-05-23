@@ -15,8 +15,8 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
 
         PaStazionePa src = context.getSource();
         Pa pa = src.getPa();
-        Stazioni stazioni = src.getFkStazione();
-        IntermediariPa intermediariPa = stazioni.getIntermediarioPa();
+        Stazioni stazione = src.getFkStazione();
+        IntermediariPa intermediariPa = stazione.getIntermediarioPa();
 
         return CreditorInstitutionDetail.builder()
                 .businessName(pa.getRagioneSociale())
@@ -25,13 +25,18 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 .cbillCode(pa.getCbill())
                 .brokerBusinessName(intermediariPa.getCodiceIntermediario())
                 .brokerCode(intermediariPa.getIdIntermediarioPa())
-                .stationCode(stazioni.getIdStazione())
-                .stationEnabled(stazioni.getEnabled())
-                .stationVersion(stazioni.getVersione())
+                .stationCode(stazione.getIdStazione())
+                .stationEnabled(stazione.getEnabled())
+                .stationVersion(stazione.getVersione())
                 .auxDigit(src.getAuxDigit())
                 .segregationCode(getDoubleDigitCode(src.getSegregazione()))
                 .applicationCode(getDoubleDigitCode(src.getProgressivo()))
                 .broadcast(src.getBroadcast())
+                .endpointRT(stazione.getProtocollo() + stazione.getIp() + stazione.getPorta() + stazione.getServizio())
+                .endpointRedirect(stazione.getRedirectProtocollo() + stazione.getRedirectIp() + stazione.getRedirectPorta()+ stazione.getRedirectPath() + stazione.getRedirectQueryString())
+                .endpointMU(stazione.getProtocollo4Mod() + stazione.getIp4Mod() + stazione.getPorta4Mod() + stazione.getServizio4Mod())
+                .versionePrimitive(stazione.getVersionePrimitive())
+                .ecStatus(src.getPa().getEnabled())
                 .build();
     }
 
