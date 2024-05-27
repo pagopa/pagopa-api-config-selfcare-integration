@@ -53,6 +53,7 @@ import static org.mockito.Mockito.when;
 class CreditorInstitutionsServiceTest {
 
     private static final String CI_TAX_CODE = "1234";
+    private static final String TARGET_CI_TAX_CODE = "targetCITaxCode";
 
     @MockBean
     private PaRepository paRepository;
@@ -153,11 +154,11 @@ class CreditorInstitutionsServiceTest {
     void getSegregationCodesReservedSuccess(String ciTaxCode, String resultCode) throws IOException {
         List<PaStazionePa> stations = List.of(getMockPaStazionePa());
 
-        when(paRepository.findByIdDominio(anyString())).thenReturn(Optional.of(getMockPa()));
+        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
         when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
         AvailableCodes result = assertDoesNotThrow(() ->
-                creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode)
+                creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode, TARGET_CI_TAX_CODE)
         );
 
         assertNotNull(result);
@@ -173,11 +174,11 @@ class CreditorInstitutionsServiceTest {
         stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
         List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutSegregationCode);
 
-        when(paRepository.findByIdDominio(CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
+        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
         when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
 
         AvailableCodes result = assertDoesNotThrow(() ->
-                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE)
+                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
         );
 
         assertNotNull(result);
@@ -192,7 +193,7 @@ class CreditorInstitutionsServiceTest {
         when(paRepository.findByIdDominio("12345")).thenReturn(Optional.empty());
 
         AppException e = assertThrows(AppException.class, () ->
-                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE)
+                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
         );
 
         assertNotNull(e);
