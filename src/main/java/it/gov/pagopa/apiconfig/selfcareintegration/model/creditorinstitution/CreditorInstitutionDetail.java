@@ -81,10 +81,23 @@ public class CreditorInstitutionDetail {
     @Schema(description = "The flag that define if the station is made for broadcast operations", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean broadcast;
 
-    // TODO annotations
+    @JsonProperty("endpoint_rt")
+    @Schema(description = "endpoint for RT", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String endpointRT;
+
+    @JsonProperty("endpoint_redirect")
+    @Schema(description = "endpoint for Redirect", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String endpointRedirect;
+
+    @JsonProperty("endpoint_mod4")
+    @Schema(description = "endpoint for Modello Unico", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String endpointMU;
+
+    @JsonProperty("primitive_version")
+    @Schema(description = "Version of the primitive", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer versionePrimitive;
-    private Boolean ecStatus;
+
+    @JsonProperty("ci_status")
+    @Schema(description = "True if the CI is enabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Boolean ciStatus;
 }
