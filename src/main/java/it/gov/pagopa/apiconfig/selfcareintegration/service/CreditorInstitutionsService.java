@@ -96,8 +96,8 @@ public class CreditorInstitutionsService {
      * @param ciTaxCode creditor institution's tax code
      * @return the available segregation codes
      */
-    public AvailableCodes getAvailableCISegregationCodes(@NotNull String ciTaxCode) {
-        Pa pa = getPaIfExists(ciTaxCode);
+    public AvailableCodes getAvailableCISegregationCodes(@NotNull String ciTaxCode, String targetCITaxCode) {
+        Pa pa = getPaIfExists(targetCITaxCode);
         List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkPa(pa.getObjId());
 
         List<Long> usedSegregationCodes = getUsedSegregationCodes(stazionePaList);

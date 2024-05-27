@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -113,7 +114,8 @@ public class CreditorInstitutionController {
     /**
      * GET /{creditorInstitutionCode}/segregationcodes : Get creditor institution segregation codes
      *
-     * @param creditorInstitutionCode station code. (required)
+     * @param ciTaxCode Creditor institution's tax code that own the station
+     * @param targetCITaxCode Tax code of the creditor institution that will be associated to the station
      * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
      * code 500)
      */
@@ -130,11 +132,12 @@ public class CreditorInstitutionController {
             @ApiResponse(responseCode = "500", description = "Service unavailable",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
     })
-    @GetMapping(value = "/{creditorInstitutionCode}/segregationcodes", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{ci-tax-code}/segregationcodes", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AvailableCodes> getSegregationCodesFromCreditorInstitution(
-            @Parameter(description = "Organization fiscal code, the fiscal code of the Organization.") @PathVariable String creditorInstitutionCode
+            @Parameter(description = "Creditor institution's tax code that own the station") @PathVariable("ci-tax-code") String ciTaxCode,
+            @Parameter(description = "Tax code of the creditor institution that will be associated to the station") @RequestParam @NotBlank String targetCITaxCode
     ) {
-        return ResponseEntity.ok(this.creditorInstitutionsService.getAvailableCISegregationCodes(creditorInstitutionCode));
+        return ResponseEntity.ok(this.creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode, targetCITaxCode));
     }
 
     /**
