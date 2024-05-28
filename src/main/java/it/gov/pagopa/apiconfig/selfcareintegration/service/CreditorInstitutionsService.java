@@ -12,7 +12,9 @@ import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedCreditorIn
 import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
+import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
+import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +49,8 @@ public class CreditorInstitutionsService {
 
     private final ExtendedCreditorInstitutionStationRepository ciStationRepository;
 
+    private final StazioniRepository stationRepository;
+
     private final PaRepository paRepository;
 
     private final ModelMapper modelMapper;
@@ -56,11 +60,13 @@ public class CreditorInstitutionsService {
             @Value("${sc-int.application_code.max_value}") Integer applicationCodeMaxValue,
             @Value("${sc-int.segregation_code.max_value}") Integer segregationCodeMaxValue,
             ExtendedCreditorInstitutionStationRepository ciStationRepository,
+            StazioniRepository stationRepository,
             PaRepository paRepository,
             ModelMapper modelMapper) {
         this.applicationCodeMaxValue = applicationCodeMaxValue;
         this.segregationCodeMaxValue = segregationCodeMaxValue;
         this.ciStationRepository = ciStationRepository;
+        this.stationRepository = stationRepository;
         this.paRepository = paRepository;
         this.modelMapper = modelMapper;
     }
@@ -134,6 +140,25 @@ public class CreditorInstitutionsService {
 
         return paList.stream()
                 .map(pa -> modelMapper.map(pa, CreditorInstitutionInfo.class))
+                .toList();
+    }
+
+    /**
+     * Retrieve the list of creditor institution's associated to a specific station
+     *
+     * @param stationCode station's code
+     * @return the list of creditor institutions
+     */
+    public List<CreditorInstitutionInfo> getStationCreditorInstitutions(String stationCode) {
+        Stazioni station = this.stationRepository.findByIdStazione(stationCode)
+                .orElseThrow(() -> new AppException(AppError.STATION_NOT_FOUND, stationCode));
+
+        List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkStazione(station);
+        return stazionePaList.parallelStream()
+                .map(paStazionePa -> CreditorInstitutionInfo.builder()
+                        .creditorInstitutionCode(paStazionePa.getPa().getIdDominio())
+                        .businessName(paStazionePa.getPa().getRagioneSociale())
+                        .build())
                 .toList();
     }
 

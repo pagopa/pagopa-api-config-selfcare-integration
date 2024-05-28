@@ -80,6 +80,35 @@ public class CreditorInstitutionController {
     }
 
     /**
+     * GET /stations/{station-code} : Get the list of creditor institutions associated to a station
+     *
+     * @param stationCode station code. (required)
+     * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
+     * code 500)
+     */
+    @Operation(
+            summary = "Get the list of creditor institutions associated to a station",
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = CreditorInstitutionInfo.class)))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Service unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
+    })
+    @GetMapping(value = "/stations/{station-code}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<CreditorInstitutionInfo>> getStationCreditorInstitutions(
+            @Parameter(description = "Station's code") @PathVariable("station-code") String stationCode
+    ) {
+        return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode));
+    }
+
+    /**
      * GET /{creditorInstitutionCode}/applicationcodes : Get creditor institution station
      *
      * @param creditorInstitutionCode station code. (required)
@@ -114,7 +143,7 @@ public class CreditorInstitutionController {
     /**
      * GET /{creditorInstitutionCode}/segregationcodes : Get creditor institution segregation codes
      *
-     * @param ciTaxCode Creditor institution's tax code that own the station
+     * @param ciTaxCode       Creditor institution's tax code that own the station
      * @param targetCITaxCode Tax code of the creditor institution that will be associated to the station
      * @return OK. (status code 200) or Not Found (status code 404) or Service unavailable (status
      * code 500)
