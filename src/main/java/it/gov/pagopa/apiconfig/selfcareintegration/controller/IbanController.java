@@ -10,14 +10,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansListTemp;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.IbansService;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.constraints.*;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -122,4 +120,71 @@ public class IbanController {
             creditorInstitutions,
             PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, "fkPa", "objId"))));
   }
+
+  // TODO: delete after adapting to pagination
+    @Operation(
+            summary = "Get creditor institution ibans list",
+            security = {
+                    @SecurityRequirement(name = "ApiKey"),
+                    @SecurityRequirement(name = "Authorization")
+            },
+            tags = {
+                    "Creditor Institutions",
+            })
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content =
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = IbansListTemp.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content =
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ProblemJson.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(schema = @Schema())),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Forbidden",
+                            content = @Content(schema = @Schema())),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found",
+                            content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+                    @ApiResponse(
+                            responseCode = "429",
+                            description = "Too many requests",
+                            content = @Content(schema = @Schema())),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Service unavailable",
+                            content =
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ProblemJson.class)))
+            })
+    @GetMapping(
+            value = "/{creditorinstitutioncode}/list",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<IbansListTemp> getIbans(
+            @Size(max = 50)
+            @Parameter(
+                    description = "The fiscal code of the Organization.",
+                    required = true)
+            @PathVariable("creditorinstitutioncode")
+            @NotNull @Pattern(regexp = "\\d{11}", message = "CI fiscal code not valid")
+            String creditorInstitutionCode,
+            @RequestParam(required = false, name = "label") @Parameter(description = "Filter by label")
+            String filterByLabel) {
+
+        return ResponseEntity.ok(ibansService.getIbansList(creditorInstitutionCode, filterByLabel));
+    }
 }
