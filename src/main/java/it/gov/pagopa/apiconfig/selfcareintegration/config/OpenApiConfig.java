@@ -32,9 +32,11 @@ public class OpenApiConfig {
   public OpenAPI customOpenAPI(
       @Value("${info.application.name}") String appName,
       @Value("${info.application.description}") String appDescription,
-      @Value("${info.application.version}") String appVersion) {
+      @Value("${info.application.version}") String appVersion,
+      @Value("${server.port}") String port
+  ) {
     return new OpenAPI()
-            .servers(List.of(new Server().url("http://localhost:8080"),
+            .servers(List.of(new Server().url(String.format("http://localhost:%s", port)),
                     new Server().url("https://{host}{basePath}")
                             .variables(new ServerVariables()
                                     .addServerVariable("host",
