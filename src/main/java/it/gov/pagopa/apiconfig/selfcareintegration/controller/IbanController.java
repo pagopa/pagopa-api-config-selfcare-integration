@@ -95,7 +95,7 @@ public class IbanController {
     }
   )
   @PostMapping(
-    value = "",
+    value = "/",
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @Cacheable(value = "getIbans")
@@ -122,6 +122,7 @@ public class IbanController {
   }
 
   // TODO: delete after adapting to pagination
+    @Deprecated
     @Operation(
             summary = "Get creditor institution ibans list",
             security = {
