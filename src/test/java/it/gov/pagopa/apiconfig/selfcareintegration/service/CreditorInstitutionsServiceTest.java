@@ -11,7 +11,9 @@ import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedCreditorIn
 import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
+import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.PaRepository;
+import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +39,7 @@ import java.util.TimeZone;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockPa;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockPaStazionePa;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStazioni;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,12 +57,16 @@ class CreditorInstitutionsServiceTest {
 
     private static final String CI_TAX_CODE = "1234";
     private static final String TARGET_CI_TAX_CODE = "targetCITaxCode";
+    private static final String STATION_CODE = "stationCode";
 
     @MockBean
     private PaRepository paRepository;
 
     @MockBean
     private ExtendedCreditorInstitutionStationRepository ciStationRepository;
+
+    @MockBean
+    private StazioniRepository stationRepository;
 
     @Autowired
     private CreditorInstitutionsService creditorInstitutionsService;
@@ -240,5 +247,30 @@ class CreditorInstitutionsServiceTest {
         assertNotNull(e);
         assertEquals(AppError.INTERNAL_SERVER_ERROR.title, e.getTitle());
         assertEquals(AppError.INTERNAL_SERVER_ERROR.httpStatus, e.getHttpStatus());
+    }
+
+    @Test
+    void getStationCreditorInstitutionsSuccess() throws IOException {
+        Stazioni stazioni = getMockStazioni();
+        PaStazionePa paStazionePa = getMockPaStazionePa();
+        when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.of(stazioni));
+        when(ciStationRepository.findByFkStazione(stazioni)).thenReturn(Collections.singletonList(paStazionePa));
+
+        List<CreditorInstitutionInfo> result = assertDoesNotThrow(() -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void getStationCreditorInstitutionsFailNotFound() {
+        when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.empty());
+
+        AppException e = assertThrows(AppException.class, () -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
+
+        assertNotNull(e);
+        assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
+
+        verify(ciStationRepository, never()).findByFkStazione(any());
     }
 }

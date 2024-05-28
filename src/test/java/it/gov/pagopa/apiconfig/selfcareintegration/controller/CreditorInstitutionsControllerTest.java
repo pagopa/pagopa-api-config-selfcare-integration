@@ -92,4 +92,15 @@ class CreditorInstitutionsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
+
+    @Test
+    void getStationCreditorInstitutionsTest() throws Exception {
+
+        when(creditorInstitutionsService.getStationCreditorInstitutions("stationCode"))
+                .thenReturn(Collections.singletonList(new CreditorInstitutionInfo()));
+
+        mvc.perform(get("/creditorinstitutions/stations/{station-code}", "stationCode"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
 }
