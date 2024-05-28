@@ -97,7 +97,7 @@ class CreditorInstitutionsControllerTest {
     void getStationCreditorInstitutionsTest() throws Exception {
 
         when(creditorInstitutionsService.getStationCreditorInstitutions("stationCode"))
-                .thenReturn(Collections.singletonList(new CreditorInstitutionInfo()));
+                .thenReturn(Collections.singletonList("ciTaxCode"));
 
         mvc.perform(get("/creditorinstitutions/stations/{station-code}", "stationCode"))
                 .andExpect(status().isOk())

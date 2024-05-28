@@ -92,7 +92,7 @@ public class CreditorInstitutionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = CreditorInstitutionInfo.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = String.class)))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
@@ -102,7 +102,7 @@ public class CreditorInstitutionController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
     })
     @GetMapping(value = "/stations/{station-code}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<CreditorInstitutionInfo>> getStationCreditorInstitutions(
+    public ResponseEntity<List<String>> getStationCreditorInstitutions(
             @Parameter(description = "Station's code") @PathVariable("station-code") String stationCode
     ) {
         return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode));

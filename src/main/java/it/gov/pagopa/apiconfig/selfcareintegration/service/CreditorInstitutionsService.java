@@ -147,18 +147,15 @@ public class CreditorInstitutionsService {
      * Retrieve the list of creditor institution's associated to a specific station
      *
      * @param stationCode station's code
-     * @return the list of creditor institutions
+     * @return the list of creditor institution's tax codes
      */
-    public List<CreditorInstitutionInfo> getStationCreditorInstitutions(String stationCode) {
+    public List<String> getStationCreditorInstitutions(String stationCode) {
         Stazioni station = this.stationRepository.findByIdStazione(stationCode)
                 .orElseThrow(() -> new AppException(AppError.STATION_NOT_FOUND, stationCode));
 
         List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkStazione(station);
         return stazionePaList.parallelStream()
-                .map(paStazionePa -> CreditorInstitutionInfo.builder()
-                        .creditorInstitutionCode(paStazionePa.getPa().getIdDominio())
-                        .businessName(paStazionePa.getPa().getRagioneSociale())
-                        .build())
+                .map(paStazionePa -> paStazionePa.getPa().getIdDominio())
                 .toList();
     }
 

@@ -256,7 +256,7 @@ class CreditorInstitutionsServiceTest {
         when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.of(stazioni));
         when(ciStationRepository.findByFkStazione(stazioni)).thenReturn(Collections.singletonList(paStazionePa));
 
-        List<CreditorInstitutionInfo> result = assertDoesNotThrow(() -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
+        List<String> result = assertDoesNotThrow(() -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
 
         assertNotNull(result);
         assertEquals(1, result.size());
