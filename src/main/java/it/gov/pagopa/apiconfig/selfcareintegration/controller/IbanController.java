@@ -175,7 +175,7 @@ public class IbanController {
     @GetMapping(
             value = "/{creditorinstitutioncode}/list",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<IbansListTemp> getIbans(
+    public ResponseEntity<IbansListTemp> getIbansList(
             @Size(max = 50)
             @Parameter(
                     description = "The fiscal code of the Organization.",
