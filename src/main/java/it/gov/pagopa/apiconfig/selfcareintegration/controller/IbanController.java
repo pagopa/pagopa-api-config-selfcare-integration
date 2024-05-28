@@ -122,7 +122,6 @@ public class IbanController {
   }
 
   // TODO: delete after adapting to pagination
-    @Deprecated
     @Operation(
             summary = "Get creditor institution ibans list",
             security = {
