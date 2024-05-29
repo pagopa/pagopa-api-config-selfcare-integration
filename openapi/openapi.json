@@ -4,7 +4,7 @@
     "title": "API-Config - SelfCare Integration",
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.10.10-1-VAS-912-fix-segregation-code"
+    "version": "1.10.10-2-VAS-912-fix-segregation-code"
   },
   "servers": [
     {
