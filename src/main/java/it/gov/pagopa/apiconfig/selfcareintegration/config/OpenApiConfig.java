@@ -12,9 +12,14 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.servers.ServerVariable;
+import io.swagger.v3.oas.models.servers.ServerVariables;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +32,18 @@ public class OpenApiConfig {
   public OpenAPI customOpenAPI(
       @Value("${info.application.name}") String appName,
       @Value("${info.application.description}") String appDescription,
-      @Value("${info.application.version}") String appVersion) {
+      @Value("${info.application.version}") String appVersion,
+      @Value("${server.port}") String port
+  ) {
     return new OpenAPI()
+            .servers(List.of(new Server().url(String.format("http://localhost:%s", port)),
+                    new Server().url("https://{host}{basePath}")
+                            .variables(new ServerVariables()
+                                    .addServerVariable("host",
+                                            new ServerVariable()._enum(List.of("api.dev.platform.pagopa.it","api.uat.platform.pagopa.it","api.platform.pagopa.it"))
+                                                    ._default("api.dev.platform.pagopa.it"))
+                                    .addServerVariable("basePath", new ServerVariable()._default("/apiconfig-selfcare-integration/v1/"))
+                            )))
         .components(
             new Components()
                 .addSecuritySchemes(

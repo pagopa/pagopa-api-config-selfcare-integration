@@ -18,6 +18,8 @@ public enum AppError {
             HttpStatus.NOT_FOUND,
             "Creditor Institutions not found",
             "No Creditor Institutions found with codes: %s"),
+    STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Station not found", "No Station found with code: %s"),
+
 
     BROKER_NOT_FOUND(HttpStatus.NOT_FOUND, "Broker not found", "No Broker found with code: %s"),
     UNKNOWN(null, null, null);
