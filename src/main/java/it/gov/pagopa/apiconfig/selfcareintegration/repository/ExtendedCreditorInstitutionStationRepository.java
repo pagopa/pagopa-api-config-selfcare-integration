@@ -1,6 +1,7 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.repository;
 
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
+import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,6 @@ public interface ExtendedCreditorInstitutionStationRepository extends PaStazione
   List<PaStazionePa> findByFkPa(@Param("fkPa") Long creditorInstitutionId);
 
   Page<PaStazionePa> findByFkPa(@Param("fkPa") Long creditorInstitutionId, Pageable pageable);
+
+  List<PaStazionePa> findByFkStazione(@Param("fkStazione") Stazioni station);
 }

@@ -19,9 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockApplicationCodesList;
-import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockSegregationCodesList;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStationDetailsList;
-import static org.mockito.ArgumentMatchers.any;
+import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockUsedSegregationCodesList;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -72,10 +71,11 @@ class CreditorInstitutionsControllerTest {
             "/creditorinstitutions/1234/segregationcodes",
     })
     void testGetSegregationCodes(String url) throws Exception {
-        when(creditorInstitutionsService.getSegregationCodesFromCreditorInstitution(
-                anyString(), anyBoolean(), any()))
-                .thenReturn(getMockSegregationCodesList());
-        mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
+        when(creditorInstitutionsService.getAvailableCISegregationCodes(anyString(), anyString()))
+                .thenReturn(getMockUsedSegregationCodesList());
+        mvc.perform(get(url)
+                        .param("targetCITaxCode", "targetCITaxCode")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -89,6 +89,17 @@ class CreditorInstitutionsControllerTest {
 
         mvc.perform(get("/creditorinstitutions/")
                         .param("taxCodeList", taxCodeList.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void getStationCreditorInstitutionsTest() throws Exception {
+
+        when(creditorInstitutionsService.getStationCreditorInstitutions("stationCode"))
+                .thenReturn(Collections.singletonList("ciTaxCode"));
+
+        mvc.perform(get("/creditorinstitutions/stations/{station-code}", "stationCode"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }

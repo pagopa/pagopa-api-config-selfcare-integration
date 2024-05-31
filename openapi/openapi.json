@@ -4,12 +4,27 @@
     "title": "API-Config - SelfCare Integration",
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.10.10"
+    "version": "1.10.10-2-VAS-912-fix-segregation-code"
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "http://localhost:8080"
+    },
+    {
+      "url": "https://{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "api.dev.platform.pagopa.it",
+          "enum": [
+            "api.dev.platform.pagopa.it",
+            "api.uat.platform.pagopa.it",
+            "api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/apiconfig-selfcare-integration/v1/"
+        }
+      }
     }
   ],
   "tags": [
@@ -647,31 +662,21 @@
         }
       ]
     },
-    "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
+    "/creditorinstitutions/stations/{station-code}": {
       "get": {
         "tags": [
           "Creditor Institutions"
         ],
-        "summary": "Get application code associations with creditor institution",
-        "operationId": "getApplicationCodesFromCreditorInstitution",
+        "summary": "Get the list of creditor institutions associated to a station",
+        "operationId": "getStationCreditorInstitutions",
         "parameters": [
           {
-            "name": "creditorInstitutionCode",
+            "name": "station-code",
             "in": "path",
-            "description": "Organization fiscal code, the fiscal code of the Organization.",
+            "description": "Station's code",
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "showUsedCodes",
-            "in": "query",
-            "description": "The flag that permits to show the codes already used. Default: true",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
             }
           }
         ],
@@ -689,7 +694,28 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CIAssociatedCodeList"
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -784,13 +810,149 @@
         }
       ]
     },
-    "/creditorinstitutions/{creditorInstitutionCode}/segregationcodes": {
+    "/creditorinstitutions/{ci-tax-code}/segregationcodes": {
       "get": {
         "tags": [
           "Creditor Institutions"
         ],
         "summary": "Get segregation code associations with creditor institution",
         "operationId": "getSegregationCodesFromCreditorInstitution",
+        "parameters": [
+          {
+            "name": "ci-tax-code",
+            "in": "path",
+            "description": "Creditor institution's tax code that own the station",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetCITaxCode",
+            "in": "query",
+            "description": "Tax code of the creditor institution that will be associated to the station",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableCodes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Get application code associations with creditor institution",
+        "operationId": "getApplicationCodesFromCreditorInstitution",
         "parameters": [
           {
             "name": "creditorInstitutionCode",
@@ -809,15 +971,6 @@
             "schema": {
               "type": "boolean",
               "default": true
-            }
-          },
-          {
-            "name": "service",
-            "in": "query",
-            "description": "The service endpoint, to be used as a search filter to obtain only the segregation codes used by the CI for stations using same endpoint service. Default: null",
-            "required": false,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -1664,6 +1817,28 @@
   },
   "components": {
     "schemas": {
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
+          }
+        }
+      },
       "IbanDetails": {
         "type": "object",
         "properties": {
@@ -1760,28 +1935,6 @@
             "type": "integer",
             "description": "Total number of items for all pages",
             "format": "int64"
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
           }
         }
       },
@@ -2350,6 +2503,19 @@
             "description": "List of codes not used for existing associations",
             "items": {
               "$ref": "#/components/schemas/CIAssociatedCode"
+            }
+          }
+        }
+      },
+      "AvailableCodes": {
+        "type": "object",
+        "properties": {
+          "availableCodes": {
+            "type": "array",
+            "description": "List of codes not used for existing associations",
+            "items": {
+              "type": "string",
+              "description": "List of codes not used for existing associations"
             }
           }
         }

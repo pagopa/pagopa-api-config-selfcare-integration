@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.code.AvailableCodes;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCode;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.code.CIAssociatedCodeList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetail;
@@ -58,7 +59,7 @@ public class TestUtil {
         List<StationDetails> stationDetails = List.of(getMockStationDetails());
         return StationDetailsList.builder()
                 .stationsDetailsList(stationDetails)
-                .pageInfo(getMockPageInfo(0, 1, 10, stationDetails.size()))
+                .pageInfo(getMockPageInfo(1, 10, stationDetails.size()))
                 .build();
     }
 
@@ -66,7 +67,7 @@ public class TestUtil {
         List<CreditorInstitutionDetail> creditorInstitutionDetails = List.of(getMockCreditorInstitutionDetail());
         return CreditorInstitutionDetails.builder()
                 .creditorInstitutions(creditorInstitutionDetails)
-                .pageInfo(getMockPageInfo(0, 1, 10, creditorInstitutionDetails.size()))
+                .pageInfo(getMockPageInfo(1, 10, creditorInstitutionDetails.size()))
                 .build();
     }
 
@@ -77,22 +78,15 @@ public class TestUtil {
                 .build();
     }
 
-    public static CIAssociatedCodeList getMockSegregationCodesList() throws IOException {
-        return CIAssociatedCodeList.builder()
-                .usedCodes(List.of(getMockUsedSegregationCodesList()))
-                .unusedCodes(List.of(getMockUnusedSegregationCodesList()))
-                .build();
-    }
-
     public static ChannelDetailsList getMockChannelDetailsList() throws IOException {
         List<ChannelDetails> channelDetails = List.of(getMockChannelDetails());
         return ChannelDetailsList.builder()
                 .channelsDetailsList(channelDetails)
-                .pageInfo(getMockPageInfo(0, 1, 10, channelDetails.size()))
+                .pageInfo(getMockPageInfo(1, 10, channelDetails.size()))
                 .build();
     }
 
-    public static PageInfo getMockPageInfo(int page, int totalPages, int limit, int size) {
+    public static PageInfo getMockPageInfo(int totalPages, int limit, int size) {
         return PageInfo.builder().page(0).limit(limit).totalPages(totalPages).itemsFound(size).build();
     }
 
@@ -112,12 +106,8 @@ public class TestUtil {
         return getMockRequest("request/get_application_codes_ok2.json", CIAssociatedCode.class);
     }
 
-    public static CIAssociatedCode getMockUsedSegregationCodesList() throws IOException {
-        return getMockRequest("request/get_segregation_codes_ok2.json", CIAssociatedCode.class);
-    }
-
-    public static CIAssociatedCode getMockUnusedSegregationCodesList() throws IOException {
-        return getMockRequest("request/get_segregation_codes_ok1.json", CIAssociatedCode.class);
+    public static AvailableCodes getMockUsedSegregationCodesList() throws IOException {
+        return getMockRequest("response/get_creditorinstitution_segregationcodes_ok2.json", AvailableCodes.class);
     }
 
     public static ChannelDetails getMockChannelDetails() throws IOException {
@@ -132,7 +122,7 @@ public class TestUtil {
         return getMockRequest("request/get_station_ok1.json", Stazioni.class);
     }
 
-    public static List<PaStazionePa> getMockPaStazionePa(Boolean enabledStation) throws IOException {
+    public static List<PaStazionePa> getMockPaStazionePa(Boolean enabledStation) {
         List<PaStazionePa> paStazionePa = new ArrayList<>();
         PaStazionePa enabled = PaStazionePa.builder()
                 .pa(Pa.builder()
@@ -391,7 +381,7 @@ public class TestUtil {
         );
     }
 
-    public static IbansList getMockIbanList() throws IOException {
+    public static IbansList getMockIbanList() {
         return IbansList.builder()
                 .ibans(List.of(
                         IbanDetails.builder()
