@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.10.13-1-fix-iban-list-model"
+    tag: "1.10.13-2-fix-iban-list-model"
     pullPolicy: Always
   livenessProbe:
     httpGet:
