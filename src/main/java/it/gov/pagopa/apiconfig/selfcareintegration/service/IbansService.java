@@ -3,6 +3,7 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppError;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetailsTemp;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansListTemp;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedIbanMasterRepository;
@@ -63,14 +64,14 @@ public class IbansService {
             ibanMasters = extendedIbanMasterRepository.findByFkPaAndLabel(pa.getObjId(), label);
         }
 
-        List<IbanDetails> ibanDetailsList = ibanMasters.stream()
-                .map(elem -> modelMapper.map(elem, IbanDetails.class))
+        List<IbanDetailsTemp> ibanDetailsList = ibanMasters.stream()
+                .map(elem -> modelMapper.map(elem, IbanDetailsTemp.class))
                 .collect(Collectors.toList());
 
         if(ibanDetailsList.isEmpty() && (("ACA").equals(label) || ("0201138TS").equals(label))) {
             IbanMaster lastPublishedIban = getLastPublishedIban(pa);
             if(lastPublishedIban != null) {
-                ibanDetailsList.add(modelMapper.map(lastPublishedIban, IbanDetails.class));
+                ibanDetailsList.add(modelMapper.map(lastPublishedIban, IbanDetailsTemp.class));
             }
         }
 

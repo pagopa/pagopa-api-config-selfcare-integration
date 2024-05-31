@@ -18,6 +18,6 @@ public class IbansListTemp {
   @JsonProperty("ibans")
   @NotNull
   @Schema(description = "List of IBANs associated to the passed creditor institutions")
-  private List<IbanDetails> ibans;
+  private List<IbanDetailsTemp> ibans;
 
 }
