@@ -1,6 +1,6 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.mapper;
 
-import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetailsTemp;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanEnhanced;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanLabel;
 import it.gov.pagopa.apiconfig.starter.entity.Iban;
 import it.gov.pagopa.apiconfig.starter.entity.IbanAttributeMaster;
@@ -12,10 +12,10 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-public class ConvertIbanMasterToIbanDetailsTemp implements Converter<IbanMaster, IbanDetailsTemp> {
+public class ConvertIbanMasterToIbanDetailsTemp implements Converter<IbanMaster, IbanEnhanced> {
 
     @Override
-    public IbanDetailsTemp convert(MappingContext<IbanMaster, IbanDetailsTemp> context) {
+    public IbanEnhanced convert(MappingContext<IbanMaster, IbanEnhanced> context) {
         IbanMaster src = context.getSource();
 
         List<IbanLabel> labels = src.getIbanAttributesMasters().stream()
@@ -27,7 +27,7 @@ public class ConvertIbanMasterToIbanDetailsTemp implements Converter<IbanMaster,
                 .toList();
 
         Iban iban = src.getIban();
-        return IbanDetailsTemp.builder()
+        return IbanEnhanced.builder()
                 .ciOwnerFiscalCode(src.getPa().getIdDominio())
                 .companyName(src.getPa().getRagioneSociale())
                 .ibanValue(iban.getIban())

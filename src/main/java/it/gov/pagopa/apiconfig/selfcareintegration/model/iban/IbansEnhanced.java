@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class IbansListTemp {
+public class IbansEnhanced {
 
   @JsonProperty("ibans")
   @NotNull
   @Schema(description = "List of IBANs associated to the passed creditor institutions")
-  private List<IbanDetailsTemp> ibans;
+  private List<IbanEnhanced> ibans;
 
 }

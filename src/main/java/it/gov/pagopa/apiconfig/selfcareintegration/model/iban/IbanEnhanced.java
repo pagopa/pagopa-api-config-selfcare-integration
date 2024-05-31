@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class IbanDetailsTemp {
+public class IbanEnhanced {
 
     @JsonProperty("iban")
     @Schema(example = "IT99C0222211111000000000000", required = true, description = "The iban code")

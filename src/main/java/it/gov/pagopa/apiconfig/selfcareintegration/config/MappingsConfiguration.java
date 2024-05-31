@@ -5,7 +5,7 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.channel.ChannelDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetail;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetailsTemp;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanEnhanced;
 import it.gov.pagopa.apiconfig.starter.entity.Canali;
 import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
@@ -33,7 +33,7 @@ public class MappingsConfiguration {
                 .setConverter(new ConvertPaStazionePaToCreditorInstitutionDetail());
 
         mapper.createTypeMap(Pa.class, CreditorInstitutionInfo.class).setConverter(new ConvertPaToCreditorInstitutionInfo());
-        mapper.createTypeMap(IbanMaster.class, IbanDetailsTemp.class).setConverter(new ConvertIbanMasterToIbanDetailsTemp());
+        mapper.createTypeMap(IbanMaster.class, IbanEnhanced.class).setConverter(new ConvertIbanMasterToIbanDetailsTemp());
 
         return mapper;
     }

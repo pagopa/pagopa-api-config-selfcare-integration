@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
-import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansListTemp;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansEnhanced;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.IbansService;
 import java.util.List;
 import javax.validation.Valid;
@@ -139,7 +139,7 @@ public class IbanController {
                             content =
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = IbansListTemp.class))),
+                                    schema = @Schema(implementation = IbansEnhanced.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Bad Request",
@@ -174,7 +174,7 @@ public class IbanController {
     @GetMapping(
             value = "/{creditorinstitutioncode}/list",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<IbansListTemp> getIbans(
+    public ResponseEntity<IbansEnhanced> getIbans(
             @Size(max = 50)
             @Parameter(
                     description = "The fiscal code of the Organization.",
