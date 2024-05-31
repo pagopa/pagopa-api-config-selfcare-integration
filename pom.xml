@@ -12,7 +12,7 @@
 
     <groupId>it.gov.pagopa.api-config</groupId>
     <artifactId>selfcareintegration</artifactId>
-    <version>1.10.10-2-VAS-912-fix-segregation-code</version>
+    <version>1.10.11</version>
     <name>API-Config - SelfCare Integration</name>
     <description>Spring application exposes APIs for SelfCare</description>
 
