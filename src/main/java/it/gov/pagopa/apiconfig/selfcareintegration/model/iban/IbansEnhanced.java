@@ -15,9 +15,9 @@ import java.util.List;
 @ToString
 public class IbansEnhanced {
 
-  @JsonProperty("ibans")
+  @JsonProperty("ibans_enhanced")
   @NotNull
   @Schema(description = "List of IBANs associated to the passed creditor institutions")
-  private List<IbanEnhanced> ibans;
+  private List<IbanEnhanced> ibanEnhancedList;
 
 }

@@ -76,7 +76,7 @@ public class IbansService {
         }
 
         return IbansEnhanced.builder()
-                .ibans(ibanDetailsList)
+                .ibanEnhancedList(ibanDetailsList)
                 .build();
     }
 
