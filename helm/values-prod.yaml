@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.10.14"
+    tag: "1.10.14-1-rollback-segregationcode"
     pullPolicy: Always
   livenessProbe:
     httpGet:
