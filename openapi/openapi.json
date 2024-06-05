@@ -2447,7 +2447,7 @@
           },
           "endpoint_rt" : {
             "type" : "string",
-            "description" : "endpoint for RT"
+            "description" : "endpoint for Ricevuta Telematica"
           },
           "endpoint_redirect" : {
             "type" : "string",

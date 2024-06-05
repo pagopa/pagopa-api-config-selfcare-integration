@@ -82,7 +82,7 @@ public class CreditorInstitutionDetail {
     private Boolean broadcast;
 
     @JsonProperty("endpoint_rt")
-    @Schema(description = "endpoint for RT", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "endpoint for Ricevuta Telematica", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String endpointRT;
 
     @JsonProperty("endpoint_redirect")
@@ -95,7 +95,7 @@ public class CreditorInstitutionDetail {
 
     @JsonProperty("primitive_version")
     @Schema(description = "Version of the primitive", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Integer versionePrimitive;
+    private Integer primitiveVersion;
 
     @JsonProperty("ci_status")
     @Schema(description = "True if the CI is enabled", requiredMode = Schema.RequiredMode.REQUIRED)

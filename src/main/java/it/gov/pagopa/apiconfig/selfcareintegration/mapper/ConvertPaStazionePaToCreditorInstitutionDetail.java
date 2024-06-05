@@ -67,7 +67,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
             builder.endpointMU(endpointMU);
         }
 
-        builder.versionePrimitive(stazione.getVersionePrimitive());
+        builder.primitiveVersion(stazione.getVersionePrimitive());
         builder.ciStatus(deNull(src.getPa().getEnabled()));
         return builder.build();
     }
