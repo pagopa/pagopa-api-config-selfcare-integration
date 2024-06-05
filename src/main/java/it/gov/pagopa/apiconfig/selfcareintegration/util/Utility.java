@@ -27,4 +27,8 @@ public class Utility {
     public static String deNull(Object value) {
         return Optional.ofNullable(value).orElse("").toString();
     }
+
+    public static Boolean deNull(Boolean value) {
+        return Optional.ofNullable(value).orElse(false);
+    }
 }

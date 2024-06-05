@@ -11,7 +11,8 @@
       "station_version": 2,
       "aux_digit": 3,
       "segregation_code": "11",
-      "broadcast": false
+      "broadcast": false,
+      "ci_status": true
     }
   ],
   "page_info": {

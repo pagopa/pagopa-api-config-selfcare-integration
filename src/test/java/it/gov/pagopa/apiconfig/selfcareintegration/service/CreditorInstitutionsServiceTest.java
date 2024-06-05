@@ -152,60 +152,60 @@ class CreditorInstitutionsServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
     }
 
-//    @ParameterizedTest
-//    @CsvSource({
-//            "'02438750586', '49'",
-//            "'00493410583', '96'",
-//            "'01484460587', '97'",
-//    })
-//    void getSegregationCodesReservedSuccess(String ciTaxCode, String resultCode) throws IOException {
-//        List<PaStazionePa> stations = List.of(getMockPaStazionePa());
-//
-//        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
-//        when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
-//
-//        AvailableCodes result = assertDoesNotThrow(() ->
-//                creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode, TARGET_CI_TAX_CODE)
-//        );
-//
-//        assertNotNull(result);
-//        assertNotNull(result.getAvailableCodeList());
-//        assertEquals(1, result.getAvailableCodeList().size());
-//        assertEquals(resultCode, result.getAvailableCodeList().get(0));
-//    }
+    @ParameterizedTest
+    @CsvSource({
+            "'02438750586', '49'",
+            "'00493410583', '96'",
+            "'01484460587', '97'",
+    })
+    void getSegregationCodesReservedSuccess(String ciTaxCode, String resultCode) throws IOException {
+        List<PaStazionePa> stations = List.of(getMockPaStazionePa());
 
-//    @Test
-//    void getSegregationCodesSuccess() throws IOException, JSONException {
-//        PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
-//        stationWithoutSegregationCode.setSegregazione(null);
-//        stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
-//        List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutSegregationCode);
-//
-//        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
-//        when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
-//
-//        AvailableCodes result = assertDoesNotThrow(() ->
-//                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
-//        );
-//
-//        assertNotNull(result);
-//        assertNotNull(result.getAvailableCodeList());
-//        String actual = TestUtil.toJson(result);
-//        String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
-//        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
-//    }
-//
-//    @Test
-//    void getSegregationCodes_404() {
-//        when(paRepository.findByIdDominio("12345")).thenReturn(Optional.empty());
-//
-//        AppException e = assertThrows(AppException.class, () ->
-//                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
-//        );
-//
-//        assertNotNull(e);
-//        assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
-//    }
+        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
+        when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
+        AvailableCodes result = assertDoesNotThrow(() ->
+                creditorInstitutionsService.getAvailableCISegregationCodes(ciTaxCode, TARGET_CI_TAX_CODE)
+        );
+
+        assertNotNull(result);
+        assertNotNull(result.getAvailableCodeList());
+        assertEquals(1, result.getAvailableCodeList().size());
+        assertEquals(resultCode, result.getAvailableCodeList().get(0));
+    }
+
+    @Test
+    void getSegregationCodesSuccess() throws IOException, JSONException {
+        PaStazionePa stationWithoutSegregationCode = getMockPaStazionePa();
+        stationWithoutSegregationCode.setSegregazione(null);
+        stationWithoutSegregationCode.getFkStazione().setIdStazione("nosegcodestation");
+        List<PaStazionePa> stations = List.of(getMockPaStazionePa(), stationWithoutSegregationCode);
+
+        when(paRepository.findByIdDominio(TARGET_CI_TAX_CODE)).thenReturn(Optional.of(getMockPa()));
+        when(ciStationRepository.findByFkPa(anyLong())).thenReturn(stations);
+
+        AvailableCodes result = assertDoesNotThrow(() ->
+                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
+        );
+
+        assertNotNull(result);
+        assertNotNull(result.getAvailableCodeList());
+        String actual = TestUtil.toJson(result);
+        String expected = TestUtil.readJsonFromFile("response/get_creditorinstitution_segregationcodes_ok1.json");
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    void getSegregationCodes_404() {
+        when(paRepository.findByIdDominio("12345")).thenReturn(Optional.empty());
+
+        AppException e = assertThrows(AppException.class, () ->
+                creditorInstitutionsService.getAvailableCISegregationCodes(CI_TAX_CODE, TARGET_CI_TAX_CODE)
+        );
+
+        assertNotNull(e);
+        assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
+    }
 
     @Test
     void getCreditorInstitutionInfoListSuccess() throws IOException {

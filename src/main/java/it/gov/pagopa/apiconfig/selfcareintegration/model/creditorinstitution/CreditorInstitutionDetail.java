@@ -100,4 +100,5 @@ public class CreditorInstitutionDetail {
     @JsonProperty("ci_status")
     @Schema(description = "True if the CI is enabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean ciStatus;
+
 }
