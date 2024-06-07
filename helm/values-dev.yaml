@@ -101,6 +101,7 @@ microservice-chart: &microservice-chart
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
     APP_LOGGING_LEVEL: 'DEBUG'
     DEFAULT_LOGGING_LEVEL: 'INFO'
+    SHOW_SQL: 'false'
     OTEL_SERVICE_NAME: "pagopa-api-config-selfcare-integration"
     OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=azure-dev"
     OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-system.svc:4317"
