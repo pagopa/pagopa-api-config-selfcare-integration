@@ -154,7 +154,7 @@ public class CreditorInstitutionsService {
                 .orElseThrow(() -> new AppException(AppError.STATION_NOT_FOUND, stationCode));
 
         List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkStazione(station);
-        return stazionePaList.parallelStream()
+        return stazionePaList.stream()
                 .map(paStazionePa -> paStazionePa.getPa().getIdDominio())
                 .toList();
     }
