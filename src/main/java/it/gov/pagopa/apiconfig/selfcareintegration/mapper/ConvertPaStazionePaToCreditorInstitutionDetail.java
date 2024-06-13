@@ -41,7 +41,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                     deNull(stazione.getProtocollo()).toLowerCase(),
                     deNull(stazione.getIp()),
                     deNull(stazione.getPorta()),
-                    startWith("/", deNull(stazione.getServizio()))
+                    addPrefixIfAbsent("/", deNull(stazione.getServizio()))
             );
             builder.endpointRT(endpointRT);
         }
@@ -51,8 +51,8 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                     deNull(stazione.getRedirectProtocollo().toLowerCase()),
                     deNull(stazione.getRedirectIp()),
                     deNull(stazione.getRedirectPorta()),
-                    startWith("/", deNull(stazione.getRedirectPath())),
-                    startWith("?", deNull(stazione.getRedirectQueryString()))
+                    addPrefixIfAbsent("/", deNull(stazione.getRedirectPath())),
+                    addPrefixIfAbsent("?", deNull(stazione.getRedirectQueryString()))
             );
             builder.endpointRedirect(endpointRedirect);
         }
@@ -62,7 +62,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 deNull(stazione.getProtocollo4Mod()).toLowerCase(),
                 deNull(stazione.getIp4Mod()),
                 deNull(stazione.getPorta4Mod()),
-                startWith("/", deNull(stazione.getServizio4Mod()))
+                addPrefixIfAbsent("/", deNull(stazione.getServizio4Mod()))
         );
             builder.endpointMU(endpointMU);
         }
@@ -72,7 +72,7 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
         return builder.build();
     }
 
-    private String startWith(String prefix, String s) {
+    private String addPrefixIfAbsent(String prefix, String s) {
         if (!s.startsWith(prefix)) {
             return prefix + s;
         }
