@@ -1,2637 +1,2503 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "API-Config - SelfCare Integration",
-    "description": "Spring application exposes APIs for SelfCare",
-    "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.11.3"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "API-Config - SelfCare Integration",
+    "description" : "Spring application exposes APIs for SelfCare",
+    "termsOfService" : "https://www.pagopa.gov.it/",
+    "version" : "1.10.14"
   },
-  "servers": [
-    {
-      "url": "http://localhost:8080"
-    },
-    {
-      "url": "https://{host}{basePath}",
-      "variables": {
-        "host": {
-          "default": "api.dev.platform.pagopa.it",
-          "enum": [
-            "api.dev.platform.pagopa.it",
-            "api.uat.platform.pagopa.it",
-            "api.platform.pagopa.it"
-          ]
-        },
-        "basePath": {
-          "default": "/apiconfig-selfcare-integration/v1/"
-        }
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "https://{host}{basePath}",
+    "variables" : {
+      "host" : {
+        "default" : "api.dev.platform.pagopa.it",
+        "enum" : [ "api.dev.platform.pagopa.it", "api.uat.platform.pagopa.it", "api.platform.pagopa.it" ]
+      },
+      "basePath" : {
+        "default" : "/apiconfig-selfcare-integration/v1/"
       }
     }
-  ],
-  "tags": [
-    {
-      "name": "PSP Brokers",
-      "description": "Everything about PSP's brokers"
-    },
-    {
-      "name": "Ibans",
-      "description": "Everything about IBANs"
-    },
-    {
-      "name": "Creditor Institutions",
-      "description": "Everything about Creditor Institution"
-    },
-    {
-      "name": "PSP",
-      "description": "Everything about PSP"
-    },
-    {
-      "name": "Brokers",
-      "description": "Everything about brokers"
-    }
-  ],
-  "paths": {
-    "/brokers/{broker-tax-code}/creditor-institutions": {
-      "get": {
-        "tags": [
-          "Brokers"
-        ],
-        "summary": "Get creditor institutions associated to broker by station",
-        "operationId": "getCreditorInstitutionsAssociatedToBroker",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of elements on one page. Default = 50",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 50
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number. Page value starts from 0",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "broker-tax-code",
-            "in": "path",
-            "description": "Filter by broker tax code associated to creditor institutions",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "enabled",
-            "in": "query",
-            "description": "Filter by enabled station",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+  } ],
+  "tags" : [ {
+    "name" : "PSP Brokers",
+    "description" : "Everything about PSP's brokers"
+  }, {
+    "name" : "Ibans",
+    "description" : "Everything about IBANs"
+  }, {
+    "name" : "Creditor Institutions",
+    "description" : "Everything about Creditor Institution"
+  }, {
+    "name" : "PSP",
+    "description" : "Everything about PSP"
+  }, {
+    "name" : "Brokers",
+    "description" : "Everything about brokers"
+  } ],
+  "paths" : {
+    "/brokers/{broker-tax-code}/creditor-institutions" : {
+      "get" : {
+        "tags" : [ "Brokers" ],
+        "summary" : "Get creditor institutions associated to broker by station",
+        "operationId" : "getCreditorInstitutionsAssociatedToBroker",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of elements on one page. Default = 50",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 50
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Page number. Page value starts from 0",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "broker-tax-code",
+          "in" : "path",
+          "description" : "Filter by broker tax code associated to creditor institutions",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "enabled",
+          "in" : "query",
+          "description" : "Filter by enabled station",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreditorInstitutionDetails"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CreditorInstitutionDetails"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/brokers/{broker-tax-code}/stations": {
-      "get": {
-        "tags": [
-          "Brokers"
-        ],
-        "summary": "Get broker's station list",
-        "operationId": "getStationsDetailsFromBroker",
-        "parameters": [
-          {
-            "name": "broker-tax-code",
-            "in": "path",
-            "description": "The broker's tax code.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "stationId",
-            "in": "query",
-            "description": "The identifier of the station.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "ciTaxCode",
-            "in": "query",
-            "description": "The creditor institution's tax code.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of elements to be included in the page.",
-            "required": true,
-            "schema": {
-              "maximum": 999,
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The index of the page, starting from 0.",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
+    "/brokers/{broker-tax-code}/stations" : {
+      "get" : {
+        "tags" : [ "Brokers" ],
+        "summary" : "Get broker's station list",
+        "operationId" : "getStationsDetailsFromBroker",
+        "parameters" : [ {
+          "name" : "broker-tax-code",
+          "in" : "path",
+          "description" : "The broker's tax code.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "stationId",
+          "in" : "query",
+          "description" : "The identifier of the station.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "ciTaxCode",
+          "in" : "query",
+          "description" : "The creditor institution's tax code.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StationDetailsList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/brokerspsp/{brokerId}/channels": {
-      "get": {
-        "tags": [
-          "PSP Brokers"
-        ],
-        "summary": "Get PSP broker's channel list",
-        "operationId": "getChannelDetailsFromPSPBroker",
-        "parameters": [
-          {
-            "name": "brokerId",
-            "in": "path",
-            "description": "The identifier of the PSP broker.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "channelId",
-            "in": "query",
-            "description": "The identifier of the channel.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of elements to be included in the page.",
-            "required": true,
-            "schema": {
-              "maximum": 999,
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The index of the page, starting from 0.",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
+    "/brokerspsp/{brokerId}/channels" : {
+      "get" : {
+        "tags" : [ "PSP Brokers" ],
+        "summary" : "Get PSP broker's channel list",
+        "operationId" : "getChannelDetailsFromPSPBroker",
+        "parameters" : [ {
+          "name" : "brokerId",
+          "in" : "path",
+          "description" : "The identifier of the PSP broker.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "channelId",
+          "in" : "query",
+          "description" : "The identifier of the channel.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChannelDetailsList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ChannelDetailsList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/creditorinstitutions": {
-      "get": {
-        "tags": [
-          "Creditor Institutions"
-        ],
-        "summary": "Get the list of creditor institution business names",
-        "description": "Return a list of business name and tax code of creditor institutions, given the provided list of creditor institution tax codes",
-        "operationId": "getCreditorInstitutionNamesFromTaxCodes",
-        "parameters": [
-          {
-            "name": "taxCodeList",
-            "in": "query",
-            "description": "List of Creditor Institution's tax code",
-            "required": true,
-            "schema": {
-              "maxItems": 10,
-              "minItems": 0,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+    "/creditorinstitutions" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions" ],
+        "summary" : "Get the list of creditor institution business names",
+        "description" : "Return a list of business name and tax code of creditor institutions, given the provided list of creditor institution tax codes",
+        "operationId" : "getCreditorInstitutionNamesFromTaxCodes",
+        "parameters" : [ {
+          "name" : "taxCodeList",
+          "in" : "query",
+          "description" : "List of Creditor Institution's tax code",
+          "required" : true,
+          "schema" : {
+            "maxItems" : 10,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreditorInstitutionInfo"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/CreditorInstitutionInfo"
                   }
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/creditorinstitutions/stations/{station-code}": {
-      "get": {
-        "tags": [
-          "Creditor Institutions"
-        ],
-        "summary": "Get the list of creditor institutions associated to a station",
-        "operationId": "getStationCreditorInstitutions",
-        "parameters": [
-          {
-            "name": "station-code",
-            "in": "path",
-            "description": "Station's code",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/creditorinstitutions/stations/{station-code}" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions" ],
+        "summary" : "Get the list of creditor institutions associated to a station",
+        "operationId" : "getStationCreditorInstitutions",
+        "parameters" : [ {
+          "name" : "station-code",
+          "in" : "path",
+          "description" : "Station's code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/creditorinstitutions/{ci-tax-code}/segregationcodes": {
-      "get": {
-        "tags": [
-          "Creditor Institutions"
-        ],
-        "summary": "Get segregation code associations with creditor institution",
-        "operationId": "getSegregationCodesFromCreditorInstitution",
-        "parameters": [
-          {
-            "name": "ci-tax-code",
-            "in": "path",
-            "description": "Creditor institution's tax code that own the station",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "targetCITaxCode",
-            "in": "query",
-            "description": "Tax code of the creditor institution that will be associated to the station",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/creditorinstitutions/{ci-tax-code}/segregationcodes" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions" ],
+        "summary" : "Get segregation code associations with creditor institution",
+        "operationId" : "getSegregationCodesFromCreditorInstitution",
+        "parameters" : [ {
+          "name" : "ci-tax-code",
+          "in" : "path",
+          "description" : "Creditor institution's tax code that own the station",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "targetCITaxCode",
+          "in" : "query",
+          "description" : "Tax code of the creditor institution that will be associated to the station",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AvailableCodes"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AvailableCodes"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes": {
-      "get": {
-        "tags": [
-          "Creditor Institutions"
-        ],
-        "summary": "Get application code associations with creditor institution",
-        "operationId": "getApplicationCodesFromCreditorInstitution",
-        "parameters": [
-          {
-            "name": "creditorInstitutionCode",
-            "in": "path",
-            "description": "Organization fiscal code, the fiscal code of the Organization.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showUsedCodes",
-            "in": "query",
-            "description": "The flag that permits to show the codes already used. Default: true",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+    "/creditorinstitutions/{creditorInstitutionCode}/applicationcodes" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions" ],
+        "summary" : "Get application code associations with creditor institution",
+        "operationId" : "getApplicationCodesFromCreditorInstitution",
+        "parameters" : [ {
+          "name" : "creditorInstitutionCode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "showUsedCodes",
+          "in" : "query",
+          "description" : "The flag that permits to show the codes already used. Default: true",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "default" : true
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CIAssociatedCodeList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CIAssociatedCodeList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/creditorinstitutions/{creditorInstitutionCode}/stations": {
-      "get": {
-        "tags": [
-          "Creditor Institutions"
-        ],
-        "summary": "Get creditor institution station list",
-        "operationId": "getStationsDetailsFromCreditorInstitution",
-        "parameters": [
-          {
-            "name": "creditorInstitutionCode",
-            "in": "path",
-            "description": "Organization fiscal code, the fiscal code of the Organization.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of elements to be included in the page.",
-            "required": true,
-            "schema": {
-              "maximum": 999,
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The index of the page, starting from 0.",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
+    "/creditorinstitutions/{creditorInstitutionCode}/stations" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions" ],
+        "summary" : "Get creditor institution station list",
+        "operationId" : "getStationsDetailsFromCreditorInstitution",
+        "parameters" : [ {
+          "name" : "creditorInstitutionCode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StationDetailsList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/ibans": {
-      "post": {
-        "tags": [
-          "Ibans"
-        ],
-        "summary": "Get the paginated list of all IBANs, filtering by creditor institution",
-        "operationId": "getIbans",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of elements to be included in the page.",
-            "required": true,
-            "schema": {
-              "maximum": 1000,
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The index of the page, starting from 0.",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
+    "/ibans" : {
+      "post" : {
+        "tags" : [ "Ibans" ],
+        "summary" : "Get the paginated list of all IBANs, filtering by creditor institution",
+        "operationId" : "getIbans",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 1000,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
           }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "required": true
+          "required" : true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IbansList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbansList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/ibans/{creditorinstitutioncode}/list": {
-      "get": {
-        "tags": [
-          "Creditor Institutions",
-          "Ibans"
-        ],
-        "summary": "Get creditor institution ibans list",
-        "operationId": "getIbans_1",
-        "parameters": [
-          {
-            "name": "creditorinstitutioncode",
-            "in": "path",
-            "description": "The fiscal code of the Organization.",
-            "required": true,
-            "schema": {
-              "maxLength": 50,
-              "minLength": 0,
-              "pattern": "\\d{11}",
-              "type": "string"
-            }
-          },
-          {
-            "name": "label",
-            "in": "query",
-            "description": "Filter by label",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
+    "/ibans/{creditorinstitutioncode}/list" : {
+      "get" : {
+        "tags" : [ "Creditor Institutions", "Ibans" ],
+        "summary" : "Get creditor institution ibans list",
+        "operationId" : "getIbans_1",
+        "parameters" : [ {
+          "name" : "creditorinstitutioncode",
+          "in" : "path",
+          "description" : "The fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "\\d{11}",
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "label",
+          "in" : "query",
+          "description" : "Filter by label",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IbansListTemp"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbansEnhanced"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/info": {
-      "get": {
-        "tags": [
-          "Home"
-        ],
-        "summary": "Return OK if application is started",
-        "operationId": "healthCheck",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/payment-service-providers/{pspFiscalCode}/channels": {
-      "get": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Get PSP's channel list",
-        "operationId": "getChannelByFiscalCode",
-        "parameters": [
-          {
-            "name": "pspFiscalCode",
-            "in": "path",
-            "description": "The fiscal code of the PSP.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of elements to be included in the page.",
-            "required": true,
-            "schema": {
-              "maximum": 999,
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The index of the page, starting from 0.",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
+    "/payment-service-providers/{pspFiscalCode}/channels" : {
+      "get" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Get PSP's channel list",
+        "operationId" : "getChannelByFiscalCode",
+        "parameters" : [ {
+          "name" : "pspFiscalCode",
+          "in" : "path",
+          "description" : "The fiscal code of the PSP.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
+          "required" : true,
+          "schema" : {
+            "maximum" : 999,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChannelDetailsList"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ChannelDetailsList"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     }
   },
-  "components": {
-    "schemas": {
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+  "components" : {
+    "schemas" : {
+      "ProblemJson" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
           },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
+          "status" : {
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer",
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format" : "int32",
+            "example" : 200
           },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the problem.",
+            "example" : "There was an error processing the request"
           }
         }
       },
-      "IbanDetails": {
-        "type": "object",
-        "properties": {
-          "ci_fiscal_code": {
-            "type": "string"
+      "IbanDetails" : {
+        "type" : "object",
+        "properties" : {
+          "ci_fiscal_code" : {
+            "type" : "string"
           },
-          "ci_name": {
-            "type": "string"
+          "ci_name" : {
+            "type" : "string"
           },
-          "iban": {
-            "type": "string"
+          "iban" : {
+            "type" : "string"
           },
-          "inserted_date": {
-            "type": "string",
-            "format": "date-time"
+          "inserted_date" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "validity_date": {
-            "type": "string",
-            "format": "date-time"
+          "validity_date" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "due_date": {
-            "type": "string",
-            "format": "date-time"
+          "due_date" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "description": {
-            "type": "string"
+          "description" : {
+            "type" : "string"
           },
-          "owner_fiscal_code": {
-            "type": "string"
+          "owner_fiscal_code" : {
+            "type" : "string"
           },
-          "labels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IbanLabel"
+          "labels" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanLabel"
             }
           }
         },
-        "description": "List of IBANs associated to the passed creditor institutions"
+        "description" : "List of IBANs associated to the passed creditor institutions"
       },
-      "IbanLabel": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
+      "IbanLabel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
           },
-          "description": {
-            "type": "string"
-          }
-        }
-      },
-      "IbansList": {
-        "required": [
-          "ibans",
-          "page_info"
-        ],
-        "type": "object",
-        "properties": {
-          "ibans": {
-            "type": "array",
-            "description": "List of IBANs associated to the passed creditor institutions",
-            "items": {
-              "$ref": "#/components/schemas/IbanDetails"
-            }
-          },
-          "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
-          }
-        }
-      },
-      "PageInfo": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "description": "Page number",
-            "format": "int32"
-          },
-          "limit": {
-            "type": "integer",
-            "description": "Required number of items per page",
-            "format": "int32"
-          },
-          "items_found": {
-            "type": "integer",
-            "description": "Number of items found. (The last page may have fewer elements than required)",
-            "format": "int32"
-          },
-          "total_pages": {
-            "type": "integer",
-            "description": "Total number of pages",
-            "format": "int32"
-          },
-          "total_items": {
-            "type": "integer",
-            "description": "Total number of items for all pages",
-            "format": "int64"
-          }
-        }
-      },
-      "ChannelDetails": {
-        "required": [
-          "agid",
-          "broker_psp_code",
-          "card_chart",
-          "channel_code",
-          "digital_stamp_brand",
-          "enabled",
-          "on_us",
-          "payment_model",
-          "port",
-          "primitive_version",
-          "protocol",
-          "recovery",
-          "rt_push",
-          "thread_number",
-          "timeout_a",
-          "timeout_b",
-          "timeout_c"
-        ],
-        "type": "object",
-        "properties": {
-          "channel_code": {
-            "type": "string",
-            "example": "223344556677889900"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "broker_description": {
-            "type": "string",
-            "description": "Broker description. Read only field",
-            "example": "Lorem ipsum dolor sit amet"
-          },
-          "password": {
-            "type": "string"
-          },
-          "new_password": {
-            "type": "string"
-          },
-          "protocol": {
-            "type": "string",
-            "enum": [
-              "HTTPS",
-              "HTTP"
-            ]
-          },
-          "ip": {
-            "type": "string"
-          },
-          "port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "service": {
-            "type": "string"
-          },
-          "broker_psp_code": {
-            "type": "string"
-          },
-          "proxy_enabled": {
-            "type": "boolean"
-          },
-          "proxy_host": {
-            "type": "string"
-          },
-          "proxy_port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "proxy_username": {
-            "type": "string"
-          },
-          "proxy_password": {
-            "type": "string"
-          },
-          "target_host": {
-            "type": "string"
-          },
-          "target_port": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "target_path": {
-            "type": "string"
-          },
-          "thread_number": {
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_a": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_b": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_c": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "nmp_service": {
-            "type": "string"
-          },
-          "new_fault_code": {
-            "type": "boolean"
-          },
-          "target_host_nmp": {
-            "type": "string"
-          },
-          "target_port_nmp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "target_path_nmp": {
-            "type": "string"
-          },
-          "redirect_ip": {
-            "type": "string"
-          },
-          "redirect_path": {
-            "type": "string"
-          },
-          "redirect_port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "redirect_query_string": {
-            "type": "string"
-          },
-          "redirect_protocol": {
-            "type": "string",
-            "enum": [
-              "HTTPS",
-              "HTTP"
-            ]
-          },
-          "payment_model": {
-            "type": "string",
-            "enum": [
-              "IMMEDIATE",
-              "IMMEDIATE_MULTIBENEFICIARY",
-              "DEFERRED",
-              "ACTIVATED_AT_PSP"
-            ]
-          },
-          "serv_plugin": {
-            "type": "string"
-          },
-          "rt_push": {
-            "type": "boolean"
-          },
-          "on_us": {
-            "type": "boolean"
-          },
-          "card_chart": {
-            "type": "boolean"
-          },
-          "recovery": {
-            "type": "boolean"
-          },
-          "digital_stamp_brand": {
-            "type": "boolean"
-          },
-          "flag_io": {
-            "type": "boolean"
-          },
-          "flag_psp_cp": {
-            "type": "boolean"
-          },
-          "agid": {
-            "type": "boolean"
-          },
-          "primitive_version": {
-            "maximum": 2,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Primitive number version",
-            "format": "int32"
+          "description" : {
+            "type" : "string"
           }
         },
-        "description": "List of stations associated to the same entity"
+        "description" : "The labels array associated with the iban"
       },
-      "ChannelDetailsList": {
-        "required": [
-          "channels",
-          "page_info"
-        ],
-        "type": "object",
-        "properties": {
-          "channels": {
-            "type": "array",
-            "description": "List of stations associated to the same entity",
-            "items": {
-              "$ref": "#/components/schemas/ChannelDetails"
+      "IbansList" : {
+        "required" : [ "ibans", "page_info" ],
+        "type" : "object",
+        "properties" : {
+          "ibans" : {
+            "type" : "array",
+            "description" : "List of IBANs associated to the passed creditor institutions",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanDetails"
             }
           },
-          "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
           }
         }
       },
-      "AppInfo": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
+      "PageInfo" : {
+        "type" : "object",
+        "properties" : {
+          "page" : {
+            "type" : "integer",
+            "description" : "Page number",
+            "format" : "int32"
           },
-          "version": {
-            "type": "string"
+          "limit" : {
+            "type" : "integer",
+            "description" : "Required number of items per page",
+            "format" : "int32"
           },
-          "environment": {
-            "type": "string"
+          "items_found" : {
+            "type" : "integer",
+            "description" : "Number of items found. (The last page may have fewer elements than required)",
+            "format" : "int32"
           },
-          "dbConnection": {
-            "type": "string"
+          "total_pages" : {
+            "type" : "integer",
+            "description" : "Total number of pages",
+            "format" : "int32"
+          },
+          "total_items" : {
+            "type" : "integer",
+            "description" : "Total number of items for all pages",
+            "format" : "int64"
           }
         }
       },
-      "IbansListTemp": {
-        "required": [
-          "ibans"
-        ],
-        "type": "object",
-        "properties": {
-          "ibans": {
-            "type": "array",
-            "description": "List of IBANs associated to the passed creditor institutions",
-            "items": {
-              "$ref": "#/components/schemas/IbanDetails"
-            }
-          }
-        }
-      },
-      "CreditorInstitutionInfo": {
-        "required": [
-          "business_name",
-          "creditor_institution_code"
-        ],
-        "type": "object",
-        "properties": {
-          "business_name": {
-            "type": "string",
-            "description": "The business name of the creditor institution",
-            "example": "Comune di Roma"
+      "ChannelDetails" : {
+        "required" : [ "agid", "broker_psp_code", "card_chart", "channel_code", "digital_stamp_brand", "enabled", "on_us", "payment_model", "port", "primitive_version", "protocol", "recovery", "rt_push", "thread_number", "timeout_a", "timeout_b", "timeout_c" ],
+        "type" : "object",
+        "properties" : {
+          "channel_code" : {
+            "type" : "string",
+            "example" : "223344556677889900"
           },
-          "creditor_institution_code": {
-            "type": "string",
-            "description": "The tax code of the creditor institution",
-            "example": "02438750586"
-          }
-        }
-      },
-      "BrokerDetails": {
-        "required": [
-          "broker_code",
-          "broker_details",
-          "enabled",
-          "extended_fault_bean"
-        ],
-        "type": "object",
-        "properties": {
-          "broker_code": {
-            "maxLength": 35,
-            "minLength": 0,
-            "type": "string",
-            "description": "Code used to identify the intermediate EC",
-            "example": "223344556677889900"
+          "enabled" : {
+            "type" : "boolean"
           },
-          "broker_details": {
-            "type": "string",
-            "description": "Name and generic details of the intermediate EC",
-            "example": "Regione Veneto"
+          "broker_description" : {
+            "type" : "string",
+            "description" : "Broker description. Read only field",
+            "example" : "Lorem ipsum dolor sit amet"
           },
-          "enabled": {
-            "type": "boolean",
-            "description": "Parameter to find out whether or not the intermediate has been enabled"
+          "password" : {
+            "type" : "string"
           },
-          "extended_fault_bean": {
-            "type": "boolean",
-            "description": "Parameter to find out whether or not the extended fault bean has been enabled"
+          "new_password" : {
+            "type" : "string"
+          },
+          "protocol" : {
+            "type" : "string",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "ip" : {
+            "type" : "string"
+          },
+          "port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "service" : {
+            "type" : "string"
+          },
+          "broker_psp_code" : {
+            "type" : "string"
+          },
+          "proxy_enabled" : {
+            "type" : "boolean"
+          },
+          "proxy_host" : {
+            "type" : "string"
+          },
+          "proxy_port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "proxy_username" : {
+            "type" : "string"
+          },
+          "proxy_password" : {
+            "type" : "string"
+          },
+          "target_host" : {
+            "type" : "string"
+          },
+          "target_port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "target_path" : {
+            "type" : "string"
+          },
+          "thread_number" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_a" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_b" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_c" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "nmp_service" : {
+            "type" : "string"
+          },
+          "new_fault_code" : {
+            "type" : "boolean"
+          },
+          "target_host_nmp" : {
+            "type" : "string"
+          },
+          "target_port_nmp" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "target_path_nmp" : {
+            "type" : "string"
+          },
+          "redirect_ip" : {
+            "type" : "string"
+          },
+          "redirect_path" : {
+            "type" : "string"
+          },
+          "redirect_port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "redirect_query_string" : {
+            "type" : "string"
+          },
+          "redirect_protocol" : {
+            "type" : "string",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "payment_model" : {
+            "type" : "string",
+            "enum" : [ "IMMEDIATE", "IMMEDIATE_MULTIBENEFICIARY", "DEFERRED", "ACTIVATED_AT_PSP" ]
+          },
+          "serv_plugin" : {
+            "type" : "string"
+          },
+          "rt_push" : {
+            "type" : "boolean"
+          },
+          "on_us" : {
+            "type" : "boolean"
+          },
+          "card_chart" : {
+            "type" : "boolean"
+          },
+          "recovery" : {
+            "type" : "boolean"
+          },
+          "digital_stamp_brand" : {
+            "type" : "boolean"
+          },
+          "flag_io" : {
+            "type" : "boolean"
+          },
+          "flag_psp_cp" : {
+            "type" : "boolean"
+          },
+          "agid" : {
+            "type" : "boolean"
+          },
+          "primitive_version" : {
+            "maximum" : 2,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Primitive number version",
+            "format" : "int32"
           }
         },
-        "description": "Details of the intermediate EC of the station"
+        "description" : "List of stations associated to the same entity"
       },
-      "StationDetails": {
-        "required": [
-          "broker_details",
-          "enabled",
-          "port",
-          "primitive_version",
-          "protocol",
-          "station_code",
-          "thread_number",
-          "timeout_a",
-          "timeout_b",
-          "timeout_c",
-          "version"
-        ],
-        "type": "object",
-        "properties": {
-          "station_code": {
-            "maxLength": 35,
-            "minLength": 0,
-            "type": "string",
-            "description": "Unique code to identify the station",
-            "example": "1234567890100"
-          },
-          "enabled": {
-            "type": "boolean",
-            "description": "Parameter to find out whether or not the station has been enabled",
-            "default": true
-          },
-          "broker_description": {
-            "type": "string",
-            "description": "A description of the intermediate EC",
-            "example": "Regione Lazio"
-          },
-          "version": {
-            "maximum": 2,
-            "minimum": 1,
-            "type": "integer",
-            "description": "The version of the station",
-            "format": "int64"
-          },
-          "ip": {
-            "type": "string",
-            "description": "Ip address of the station"
-          },
-          "new_password": {
-            "type": "string",
-            "description": "New password of the station"
-          },
-          "password": {
-            "type": "string",
-            "description": "Password of the station"
-          },
-          "port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Port address of the station",
-            "format": "int64"
-          },
-          "protocol": {
-            "type": "string",
-            "description": "Protocol associated to the station",
-            "enum": [
-              "HTTPS",
-              "HTTP"
-            ]
-          },
-          "redirect_ip": {
-            "type": "string",
-            "description": "Redirect ip address of the station"
-          },
-          "redirect_path": {
-            "type": "string",
-            "description": "Redirect path of the station"
-          },
-          "redirect_port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Redirect port address of the station",
-            "format": "int64"
-          },
-          "redirect_query_string": {
-            "type": "string",
-            "description": "Redirect query string of the station"
-          },
-          "redirect_protocol": {
-            "type": "string",
-            "description": "Redirect protocol associated to the station",
-            "enum": [
-              "HTTPS",
-              "HTTP"
-            ]
-          },
-          "service": {
-            "type": "string"
-          },
-          "pof_service": {
-            "type": "string"
-          },
-          "broker_details": {
-            "$ref": "#/components/schemas/BrokerDetails"
-          },
-          "protocol_4mod": {
-            "type": "string",
-            "description": "Protocol 4mod associated to the station",
-            "enum": [
-              "HTTPS",
-              "HTTP"
-            ]
-          },
-          "ip_4mod": {
-            "type": "string",
-            "description": "Ip address 4mod associated to the station"
-          },
-          "port_4mod": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Port address 4mod associated to the station",
-            "format": "int64"
-          },
-          "service_4mod": {
-            "type": "string"
-          },
-          "proxy_enabled": {
-            "type": "boolean",
-            "description": "Parameter to inspect if the proxy has been enabled for this station"
-          },
-          "proxy_host": {
-            "type": "string",
-            "description": "Proxy host"
-          },
-          "proxy_port": {
-            "maximum": 65535,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Proxy port address",
-            "format": "int64"
-          },
-          "proxy_username": {
-            "type": "string"
-          },
-          "proxy_password": {
-            "type": "string"
-          },
-          "thread_number": {
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_a": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_b": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "timeout_c": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "flag_online": {
-            "type": "boolean"
-          },
-          "invio_rt_istantaneo": {
-            "type": "boolean",
-            "description": "Parameter useful to find out if the instantaneous rt has been enabled"
-          },
-          "target_host": {
-            "type": "string",
-            "description": "Target address of the station"
-          },
-          "target_port": {
-            "type": "integer",
-            "description": "Port address target associated to the station",
-            "format": "int64"
-          },
-          "target_path": {
-            "type": "string",
-            "description": "Target path of the station"
-          },
-          "target_host_pof": {
-            "type": "string",
-            "description": "Pof address associated to the station"
-          },
-          "target_port_pof": {
-            "type": "integer",
-            "description": "Port address pof associated to the station",
-            "format": "int64"
-          },
-          "target_path_pof": {
-            "type": "string",
-            "description": "Pof path associated to the station"
-          },
-          "primitive_version": {
-            "maximum": 2,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Primitive number version",
-            "format": "int32",
-            "enum": [
-              1,
-              2
-            ]
-          }
-        },
-        "description": "List of stations associated to the same entity"
-      },
-      "StationDetailsList": {
-        "required": [
-          "page_info",
-          "stations"
-        ],
-        "type": "object",
-        "properties": {
-          "stations": {
-            "type": "array",
-            "description": "List of stations associated to the same entity",
-            "items": {
-              "$ref": "#/components/schemas/StationDetails"
+      "ChannelDetailsList" : {
+        "required" : [ "channels", "page_info" ],
+        "type" : "object",
+        "properties" : {
+          "channels" : {
+            "type" : "array",
+            "description" : "List of stations associated to the same entity",
+            "items" : {
+              "$ref" : "#/components/schemas/ChannelDetails"
             }
           },
-          "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
           }
         }
       },
-      "CIAssociatedCode": {
-        "required": [
-          "code"
-        ],
-        "type": "object",
-        "properties": {
-          "code": {
-            "maxLength": 2,
-            "minLength": 2,
-            "type": "string",
-            "description": "The code that bound uniquely a creditor institution to a station"
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
           },
-          "name": {
-            "type": "string",
-            "description": "The name of the station associated to the creditor institution, if exists"
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
+          },
+          "dbConnection" : {
+            "type" : "string"
+          }
+        }
+      },
+      "IbanEnhanced" : {
+        "required" : [ "ci_owner", "due_date", "iban", "is_active", "publication_date", "validity_date" ],
+        "type" : "object",
+        "properties" : {
+          "iban" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z]{2}\\d{2}[a-zA-Z0-9]{1,30}",
+            "type" : "string",
+            "description" : "The iban code",
+            "example" : "IT99C0222211111000000000000"
+          },
+          "ci_owner" : {
+            "maxLength" : 11,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "Fiscal code of the Creditor Institution who owns the iban",
+            "readOnly" : true,
+            "example" : "77777777777"
+          },
+          "company_name" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "The Creditor Institution company name",
+            "readOnly" : true,
+            "example" : "Comune di Firenze"
+          },
+          "description" : {
+            "maxLength" : 300,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "The description the Creditor Institution gives to the iban about its usage",
+            "example" : "Riscossione Tributi"
+          },
+          "is_active" : {
+            "type" : "boolean",
+            "description" : "True if the iban is active",
+            "example" : true
+          },
+          "validity_date" : {
+            "type" : "string",
+            "description" : "The date the Creditor Institution wants the iban to be used for its payments",
+            "format" : "date-time",
+            "example" : "2023-04-01T13:49:19.897Z"
+          },
+          "publication_date" : {
+            "type" : "string",
+            "description" : "The date on which the iban has been inserted in the system",
+            "format" : "date-time",
+            "readOnly" : true,
+            "example" : "2023-06-01T23:59:59.999Z"
+          },
+          "due_date" : {
+            "type" : "string",
+            "description" : "The date on which the iban will expire",
+            "format" : "date-time",
+            "example" : "2023-12-31T23:59:59.999Z"
+          },
+          "labels" : {
+            "type" : "array",
+            "description" : "The labels array associated with the iban",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanLabel"
+            }
           }
         },
-        "description": "List of codes not used for existing associations"
+        "description" : "List of IBANs associated to the passed creditor institutions"
       },
-      "CIAssociatedCodeList": {
-        "required": [
-          "unused"
-        ],
-        "type": "object",
-        "properties": {
-          "used": {
-            "type": "array",
-            "description": "List of codes already used for existing associations",
-            "items": {
-              "$ref": "#/components/schemas/CIAssociatedCode"
-            }
-          },
-          "unused": {
-            "type": "array",
-            "description": "List of codes not used for existing associations",
-            "items": {
-              "$ref": "#/components/schemas/CIAssociatedCode"
+      "IbansEnhanced" : {
+        "required" : [ "ibans_enhanced" ],
+        "type" : "object",
+        "properties" : {
+          "ibans_enhanced" : {
+            "type" : "array",
+            "description" : "List of IBANs associated to the passed creditor institutions",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanEnhanced"
             }
           }
         }
       },
-      "AvailableCodes": {
-        "type": "object",
-        "properties": {
-          "availableCodes": {
-            "type": "array",
-            "description": "List of codes not used for existing associations",
-            "items": {
-              "type": "string",
-              "description": "List of codes not used for existing associations"
+      "CreditorInstitutionInfo" : {
+        "required" : [ "business_name", "creditor_institution_code" ],
+        "type" : "object",
+        "properties" : {
+          "business_name" : {
+            "type" : "string",
+            "description" : "The business name of the creditor institution",
+            "example" : "Comune di Roma"
+          },
+          "creditor_institution_code" : {
+            "type" : "string",
+            "description" : "The tax code of the creditor institution",
+            "example" : "02438750586"
+          }
+        }
+      },
+      "BrokerDetails" : {
+        "required" : [ "broker_code", "broker_details", "enabled", "extended_fault_bean" ],
+        "type" : "object",
+        "properties" : {
+          "broker_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "Code used to identify the intermediate EC",
+            "example" : "223344556677889900"
+          },
+          "broker_details" : {
+            "type" : "string",
+            "description" : "Name and generic details of the intermediate EC",
+            "example" : "Regione Veneto"
+          },
+          "enabled" : {
+            "type" : "boolean",
+            "description" : "Parameter to find out whether or not the intermediate has been enabled"
+          },
+          "extended_fault_bean" : {
+            "type" : "boolean",
+            "description" : "Parameter to find out whether or not the extended fault bean has been enabled"
+          }
+        },
+        "description" : "Details of the intermediate EC of the station"
+      },
+      "StationDetails" : {
+        "required" : [ "broker_details", "enabled", "port", "primitive_version", "protocol", "station_code", "thread_number", "timeout_a", "timeout_b", "timeout_c", "version" ],
+        "type" : "object",
+        "properties" : {
+          "station_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "Unique code to identify the station",
+            "example" : "1234567890100"
+          },
+          "enabled" : {
+            "type" : "boolean",
+            "description" : "Parameter to find out whether or not the station has been enabled",
+            "default" : true
+          },
+          "broker_description" : {
+            "type" : "string",
+            "description" : "A description of the intermediate EC",
+            "example" : "Regione Lazio"
+          },
+          "version" : {
+            "maximum" : 2,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "The version of the station",
+            "format" : "int64"
+          },
+          "ip" : {
+            "type" : "string",
+            "description" : "Ip address of the station"
+          },
+          "new_password" : {
+            "type" : "string",
+            "description" : "New password of the station"
+          },
+          "password" : {
+            "type" : "string",
+            "description" : "Password of the station"
+          },
+          "port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Port address of the station",
+            "format" : "int64"
+          },
+          "protocol" : {
+            "type" : "string",
+            "description" : "Protocol associated to the station",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "redirect_ip" : {
+            "type" : "string",
+            "description" : "Redirect ip address of the station"
+          },
+          "redirect_path" : {
+            "type" : "string",
+            "description" : "Redirect path of the station"
+          },
+          "redirect_port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Redirect port address of the station",
+            "format" : "int64"
+          },
+          "redirect_query_string" : {
+            "type" : "string",
+            "description" : "Redirect query string of the station"
+          },
+          "redirect_protocol" : {
+            "type" : "string",
+            "description" : "Redirect protocol associated to the station",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "service" : {
+            "type" : "string"
+          },
+          "pof_service" : {
+            "type" : "string"
+          },
+          "broker_details" : {
+            "$ref" : "#/components/schemas/BrokerDetails"
+          },
+          "protocol_4mod" : {
+            "type" : "string",
+            "description" : "Protocol 4mod associated to the station",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "ip_4mod" : {
+            "type" : "string",
+            "description" : "Ip address 4mod associated to the station"
+          },
+          "port_4mod" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Port address 4mod associated to the station",
+            "format" : "int64"
+          },
+          "service_4mod" : {
+            "type" : "string"
+          },
+          "proxy_enabled" : {
+            "type" : "boolean",
+            "description" : "Parameter to inspect if the proxy has been enabled for this station"
+          },
+          "proxy_host" : {
+            "type" : "string",
+            "description" : "Proxy host"
+          },
+          "proxy_port" : {
+            "maximum" : 65535,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Proxy port address",
+            "format" : "int64"
+          },
+          "proxy_username" : {
+            "type" : "string"
+          },
+          "proxy_password" : {
+            "type" : "string"
+          },
+          "thread_number" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_a" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_b" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_c" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "flag_online" : {
+            "type" : "boolean"
+          },
+          "invio_rt_istantaneo" : {
+            "type" : "boolean",
+            "description" : "Parameter useful to find out if the instantaneous rt has been enabled"
+          },
+          "target_host" : {
+            "type" : "string",
+            "description" : "Target address of the station"
+          },
+          "target_port" : {
+            "type" : "integer",
+            "description" : "Port address target associated to the station",
+            "format" : "int64"
+          },
+          "target_path" : {
+            "type" : "string",
+            "description" : "Target path of the station"
+          },
+          "target_host_pof" : {
+            "type" : "string",
+            "description" : "Pof address associated to the station"
+          },
+          "target_port_pof" : {
+            "type" : "integer",
+            "description" : "Port address pof associated to the station",
+            "format" : "int64"
+          },
+          "target_path_pof" : {
+            "type" : "string",
+            "description" : "Pof path associated to the station"
+          },
+          "primitive_version" : {
+            "maximum" : 2,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Primitive number version",
+            "format" : "int32",
+            "enum" : [ 1, 2 ]
+          }
+        },
+        "description" : "List of stations associated to the same entity"
+      },
+      "StationDetailsList" : {
+        "required" : [ "page_info", "stations" ],
+        "type" : "object",
+        "properties" : {
+          "stations" : {
+            "type" : "array",
+            "description" : "List of stations associated to the same entity",
+            "items" : {
+              "$ref" : "#/components/schemas/StationDetails"
+            }
+          },
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "CIAssociatedCode" : {
+        "required" : [ "code" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "maxLength" : 2,
+            "minLength" : 2,
+            "type" : "string",
+            "description" : "The code that bound uniquely a creditor institution to a station"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the station associated to the creditor institution, if exists"
+          }
+        },
+        "description" : "List of codes not used for existing associations"
+      },
+      "CIAssociatedCodeList" : {
+        "required" : [ "unused" ],
+        "type" : "object",
+        "properties" : {
+          "used" : {
+            "type" : "array",
+            "description" : "List of codes already used for existing associations",
+            "items" : {
+              "$ref" : "#/components/schemas/CIAssociatedCode"
+            }
+          },
+          "unused" : {
+            "type" : "array",
+            "description" : "List of codes not used for existing associations",
+            "items" : {
+              "$ref" : "#/components/schemas/CIAssociatedCode"
             }
           }
         }
       },
-      "CreditorInstitutionDetail": {
-        "required": [
-          "broker_code",
-          "business_name",
-          "creditor_institution_code",
-          "psp_payment",
-          "station_code",
-          "station_enabled",
-          "station_version"
-        ],
-        "type": "object",
-        "properties": {
-          "business_name": {
-            "type": "string",
-            "description": "The business name of the creditor institution",
-            "example": "Comune di Roma"
+      "AvailableCodes" : {
+        "type" : "object",
+        "properties" : {
+          "availableCodes" : {
+            "type" : "array",
+            "description" : "List of codes not used for existing associations",
+            "items" : {
+              "type" : "string",
+              "description" : "List of codes not used for existing associations"
+            }
+          }
+        }
+      },
+      "CreditorInstitutionDetail" : {
+        "required" : [ "broker_code", "business_name", "ci_status", "creditor_institution_code", "psp_payment", "station_code", "station_enabled", "station_version" ],
+        "type" : "object",
+        "properties" : {
+          "business_name" : {
+            "type" : "string",
+            "description" : "The business name of the creditor institution",
+            "example" : "Comune di Roma"
           },
-          "creditor_institution_code": {
-            "type": "string",
-            "description": "The fiscal code of the creditor institution",
-            "example": "02438750586"
+          "creditor_institution_code" : {
+            "type" : "string",
+            "description" : "The fiscal code of the creditor institution",
+            "example" : "02438750586"
           },
-          "psp_payment": {
-            "type": "boolean",
-            "default": true
+          "psp_payment" : {
+            "type" : "boolean",
+            "default" : true
           },
-          "cbill_code": {
-            "type": "string",
-            "description": "The CBill code of the creditor institution",
-            "example": "APNEY"
+          "cbill_code" : {
+            "type" : "string",
+            "description" : "The CBill code of the creditor institution",
+            "example" : "APNEY"
           },
-          "broker_business_name": {
-            "type": "string",
-            "description": "The business name of the broker associated to creditor institution by defined station",
-            "example": "Regione Lazio"
+          "broker_business_name" : {
+            "type" : "string",
+            "description" : "The business name of the broker associated to creditor institution by defined station",
+            "example" : "Regione Lazio"
           },
-          "broker_code": {
-            "type": "string",
-            "description": "The fiscal code of the broker associated to creditor institution by defined station",
-            "example": "80143490581"
+          "broker_code" : {
+            "type" : "string",
+            "description" : "The fiscal code of the broker associated to creditor institution by defined station",
+            "example" : "80143490581"
           },
-          "station_code": {
-            "type": "string",
-            "description": "The code of the station that permits to associate a creditor institution to a broker",
-            "example": "80143490581_01"
+          "station_code" : {
+            "type" : "string",
+            "description" : "The code of the station that permits to associate a creditor institution to a broker",
+            "example" : "80143490581_01"
           },
-          "station_enabled": {
-            "type": "boolean",
-            "description": "The flag that define if the station is enabled or not",
-            "default": true
+          "station_enabled" : {
+            "type" : "boolean",
+            "description" : "The flag that define if the station is enabled or not",
+            "default" : true
           },
-          "station_version": {
-            "type": "integer",
-            "description": "The version of the station. It can be either 1 or 2",
-            "format": "int64",
-            "example": 2
+          "station_version" : {
+            "type" : "integer",
+            "description" : "The version of the station. It can be either 1 or 2",
+            "format" : "int64",
+            "example" : 2
           },
-          "aux_digit": {
-            "type": "integer",
-            "description": "The value of the AUX digit field that can be set in payments' IUV",
-            "format": "int64",
-            "example": 3
+          "aux_digit" : {
+            "type" : "integer",
+            "description" : "The value of the AUX digit field that can be set in payments' IUV",
+            "format" : "int64",
+            "example" : 3
           },
-          "segregation_code": {
-            "type": "string",
-            "description": "The value of the segregation code that can be set in payments' IUV in order to use this station",
-            "example": "05"
+          "segregation_code" : {
+            "type" : "string",
+            "description" : "The value of the segregation code that can be set in payments' IUV in order to use this station",
+            "example" : "05"
           },
-          "application_code": {
-            "type": "string",
-            "description": "The value of the application code that can be set in payments' IUV in order to use this station",
-            "example": "02"
+          "application_code" : {
+            "type" : "string",
+            "description" : "The value of the application code that can be set in payments' IUV in order to use this station",
+            "example" : "02"
           },
-          "broadcast": {
-            "type": "boolean",
-            "description": "The flag that define if the station is made for broadcast operations"
+          "broadcast" : {
+            "type" : "boolean",
+            "description" : "The flag that define if the station is made for broadcast operations"
+          },
+          "endpoint_rt" : {
+            "type" : "string",
+            "description" : "endpoint for Ricevuta Telematica"
+          },
+          "endpoint_redirect" : {
+            "type" : "string",
+            "description" : "endpoint for Redirect"
+          },
+          "endpoint_mod4" : {
+            "type" : "string",
+            "description" : "endpoint for Modello Unico"
+          },
+          "primitive_version" : {
+            "type" : "integer",
+            "description" : "Version of the primitive",
+            "format" : "int32"
+          },
+          "ci_status" : {
+            "type" : "boolean",
+            "description" : "True if the CI is enabled"
           }
         },
-        "description": "List of creditor institutions associated to the same broker by different stations"
+        "description" : "List of creditor institutions associated to the same broker by different stations"
       },
-      "CreditorInstitutionDetails": {
-        "required": [
-          "creditor_institutions",
-          "page_info"
-        ],
-        "type": "object",
-        "properties": {
-          "creditor_institutions": {
-            "type": "array",
-            "description": "List of creditor institutions associated to the same broker by different stations",
-            "items": {
-              "$ref": "#/components/schemas/CreditorInstitutionDetail"
+      "CreditorInstitutionDetails" : {
+        "required" : [ "creditor_institutions", "page_info" ],
+        "type" : "object",
+        "properties" : {
+          "creditor_institutions" : {
+            "type" : "array",
+            "description" : "List of creditor institutions associated to the same broker by different stations",
+            "items" : {
+              "$ref" : "#/components/schemas/CreditorInstitutionDetail"
             }
           },
-          "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
           }
         }
       }
     },
-    "securitySchemes": {
-      "ApiKey": {
-        "type": "apiKey",
-        "description": "The API key to access this function app.",
-        "name": "Ocp-Apim-Subscription-Key",
-        "in": "header"
+    "securitySchemes" : {
+      "ApiKey" : {
+        "type" : "apiKey",
+        "description" : "The API key to access this function app.",
+        "name" : "Ocp-Apim-Subscription-Key",
+        "in" : "header"
       },
-      "Authorization": {
-        "type": "http",
-        "description": "JWT token get after Azure Login",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+      "Authorization" : {
+        "type" : "http",
+        "description" : "JWT token get after Azure Login",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
       }
     }
   }

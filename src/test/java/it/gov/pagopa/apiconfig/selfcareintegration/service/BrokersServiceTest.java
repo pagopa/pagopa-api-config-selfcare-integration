@@ -119,6 +119,7 @@ class BrokersServiceTest {
         String actual = TestUtil.toJson(result);
 
         String expected = TestUtil.readJsonFromFile("response/get_creditor_institution_details_ok" + fileIndex + ".json");
+        System.out.println(actual);
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 }
