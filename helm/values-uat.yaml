@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.11.0-1-hotfix-iddominio"
+    tag: "1.11.1"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -101,7 +101,6 @@ microservice-chart: &microservice-chart
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
     APP_LOGGING_LEVEL: 'DEBUG'
     DEFAULT_LOGGING_LEVEL: 'INFO'
-    SHOW_SQL: 'false'
     OTEL_SERVICE_NAME: "pagopa-api-config-selfcare-integration"
     OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=azure-uat"
     OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-system.svc:4317"

@@ -12,7 +12,7 @@
 
     <groupId>it.gov.pagopa.api-config</groupId>
     <artifactId>selfcareintegration</artifactId>
-    <version>1.11.0-1-hotfix-iddominio</version>
+    <version>1.11.1</version>
     <name>API-Config - SelfCare Integration</name>
     <description>Spring application exposes APIs for SelfCare</description>
 
