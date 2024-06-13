@@ -12,6 +12,8 @@
       "aux_digit": 3,
       "segregation_code": "11",
       "broadcast": false,
+      "endpoint_rt": "https://1.1.1.1:8080/service",
+      "endpoint_redirect": "http://2.2.2.2:443/base?key=value",
       "ci_status": true
     },
     {
