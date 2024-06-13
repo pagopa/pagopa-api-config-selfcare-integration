@@ -27,7 +27,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.11.2"
+    tag: "1.11.3"
     pullPolicy: Always
   livenessProbe:
     httpGet:
