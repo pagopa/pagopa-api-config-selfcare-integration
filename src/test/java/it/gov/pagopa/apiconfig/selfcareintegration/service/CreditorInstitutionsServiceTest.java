@@ -47,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -218,7 +217,7 @@ class CreditorInstitutionsServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         CreditorInstitutionInfo ci = result.get(0);
-        assertEquals(pa.getIdDominio(), ci.getCreditorInstitutionCode());
+        assertEquals(pa.getIdDominio(), ci.getCiTaxCode());
         assertEquals(pa.getRagioneSociale(), ci.getBusinessName());
     }
 
