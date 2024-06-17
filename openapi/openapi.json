@@ -667,7 +667,7 @@
         "tags": [
           "Creditor Institutions"
         ],
-        "summary": "Get the list of creditor institutions associated to a station",
+        "summary": "Get the list of creditor institutions that can be associated to a station",
         "operationId": "getStationCreditorInstitutions",
         "parameters": [
           {
@@ -677,6 +677,20 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "ciTaxCodeList",
+            "in": "query",
+            "description": "List of Creditor Institution's tax code, restrict the research to this tax code list only",
+            "required": true,
+            "schema": {
+              "maxItems": 10,
+              "minItems": 0,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -696,7 +710,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/CreditorInstitutionInfo"
                   }
                 }
               }
@@ -2263,7 +2277,7 @@
       "CreditorInstitutionInfo": {
         "required": [
           "business_name",
-          "creditor_institution_code"
+          "ci_tax_code"
         ],
         "type": "object",
         "properties": {
@@ -2272,7 +2286,7 @@
             "description": "The business name of the creditor institution",
             "example": "Comune di Roma"
           },
-          "creditor_institution_code": {
+          "ci_tax_code": {
             "type": "string",
             "description": "The tax code of the creditor institution",
             "example": "02438750586"
