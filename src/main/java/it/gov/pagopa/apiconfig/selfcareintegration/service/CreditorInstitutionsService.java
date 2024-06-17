@@ -149,12 +149,12 @@ public class CreditorInstitutionsService {
      * @param stationCode station's code
      * @return the list of creditor institution's tax codes
      */
-    public List<CreditorInstitutionInfo> getStationCreditorInstitutions(String stationCode, List<String> taxCodeList) {
+    public List<CreditorInstitutionInfo> getStationCreditorInstitutions(String stationCode, List<String> ciTaxCodeList) {
         Stazioni station = this.stationRepository.findByIdStazione(stationCode)
                 .orElseThrow(() -> new AppException(AppError.STATION_NOT_FOUND, stationCode));
 
-        List<Pa> paList = this.paRepository.findByIdDominioIn(taxCodeList)
-                .orElseThrow(() -> new AppException(AppError.PA_NOT_FOUND, taxCodeList));
+        List<Pa> paList = this.paRepository.findByIdDominioIn(ciTaxCodeList)
+                .orElseThrow(() -> new AppException(AppError.PA_NOT_FOUND, ciTaxCodeList));
 
         List<String> stazionePaList = this.ciStationRepository.findByFkStazioneAndPaIn(station, paList).stream()
                 .map(paStazionePa -> paStazionePa.getPa().getIdDominio())

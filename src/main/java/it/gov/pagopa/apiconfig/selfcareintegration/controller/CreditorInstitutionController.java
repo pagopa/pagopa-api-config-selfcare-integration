@@ -104,9 +104,9 @@ public class CreditorInstitutionController {
     @GetMapping(value = "/stations/{station-code}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<CreditorInstitutionInfo>> getStationCreditorInstitutions(
             @Parameter(description = "Station's code") @PathVariable("station-code") String stationCode,
-            @Parameter(description = "List of Creditor Institution's tax code") @RequestParam @Size(max = 10) List<String> taxCodeList
+            @Parameter(description = "List of Creditor Institution's tax code") @RequestParam @Size(max = 10) List<String> ciTaxCodeList
     ) {
-        return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode, taxCodeList));
+        return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode, ciTaxCodeList));
     }
 
     /**
