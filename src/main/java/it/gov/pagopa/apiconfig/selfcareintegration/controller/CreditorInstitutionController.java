@@ -87,12 +87,12 @@ public class CreditorInstitutionController {
      * code 500)
      */
     @Operation(
-            summary = "Get the list of creditor institutions associated to a station",
+            summary = "Get the list of creditor institutions that can be associated to a station",
             security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = String.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = CreditorInstitutionInfo.class)))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
@@ -102,10 +102,11 @@ public class CreditorInstitutionController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
     })
     @GetMapping(value = "/stations/{station-code}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<String>> getStationCreditorInstitutions(
-            @Parameter(description = "Station's code") @PathVariable("station-code") String stationCode
+    public ResponseEntity<List<CreditorInstitutionInfo>> getStationCreditorInstitutions(
+            @Parameter(description = "Station's code") @PathVariable("station-code") String stationCode,
+            @Parameter(description = "List of Creditor Institution's tax code") @RequestParam @Size(max = 10) List<String> taxCodeList
     ) {
-        return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode));
+        return ResponseEntity.ok(this.creditorInstitutionsService.getStationCreditorInstitutions(stationCode, taxCodeList));
     }
 
     /**
