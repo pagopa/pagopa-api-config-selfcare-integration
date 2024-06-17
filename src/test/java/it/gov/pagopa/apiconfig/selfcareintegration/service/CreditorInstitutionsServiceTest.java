@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,6 +58,7 @@ class CreditorInstitutionsServiceTest {
     private static final String CI_TAX_CODE = "1234";
     private static final String TARGET_CI_TAX_CODE = "targetCITaxCode";
     private static final String STATION_CODE = "stationCode";
+    private static final String RAGIONE_SOCIALE = "pa";
 
     @MockBean
     private PaRepository paRepository;
@@ -218,7 +219,7 @@ class CreditorInstitutionsServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         CreditorInstitutionInfo ci = result.get(0);
-        assertEquals(pa.getIdDominio(), ci.getCreditorInstitutionCode());
+        assertEquals(pa.getIdDominio(), ci.getCiTaxCode());
         assertEquals(pa.getRagioneSociale(), ci.getBusinessName());
     }
 
@@ -253,24 +254,51 @@ class CreditorInstitutionsServiceTest {
     void getStationCreditorInstitutionsSuccess() throws IOException {
         Stazioni stazioni = getMockStazioni();
         PaStazionePa paStazionePa = getMockPaStazionePa();
-        when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.of(stazioni));
-        when(ciStationRepository.findByFkStazione(stazioni)).thenReturn(Collections.singletonList(paStazionePa));
+        Pa pa = getMockPa();
+        List<String> ciTaxCodes = List.of(CI_TAX_CODE, pa.getIdDominio());
+        List<Pa> paList = List.of(pa, Pa.builder().idDominio(CI_TAX_CODE).ragioneSociale(RAGIONE_SOCIALE).build());
 
-        List<String> result = assertDoesNotThrow(() -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
+        when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.of(stazioni));
+        when(paRepository.findByIdDominioIn(ciTaxCodes)).thenReturn(Optional.of(paList));
+        when(ciStationRepository.findByFkStazioneAndPaIn(stazioni, paList)).thenReturn(Collections.singletonList(paStazionePa));
+
+        List<CreditorInstitutionInfo> result = assertDoesNotThrow(() ->
+                creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE, ciTaxCodes));
 
         assertNotNull(result);
         assertEquals(1, result.size());
+        assertEquals(RAGIONE_SOCIALE, result.get(0).getBusinessName());
+        assertEquals(CI_TAX_CODE, result.get(0).getCiTaxCode());
     }
 
     @Test
-    void getStationCreditorInstitutionsFailNotFound() {
+    void getStationCreditorInstitutionsFailStationNotFound() {
+        List<String> ciTaxCodes = Collections.singletonList(CI_TAX_CODE);
+
         when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.empty());
 
-        AppException e = assertThrows(AppException.class, () -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE));
+        AppException e = assertThrows(AppException.class, () -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE, ciTaxCodes));
 
         assertNotNull(e);
         assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
 
-        verify(ciStationRepository, never()).findByFkStazione(any());
+        verify(paRepository, never()).findByIdDominioIn(anyList());
+        verify(ciStationRepository, never()).findByFkStazioneAndPaIn(any(), anyList());
+    }
+
+    @Test
+    void getStationCreditorInstitutionsFailPaNotFound() throws IOException {
+        List<String> ciTaxCodes = Collections.singletonList(CI_TAX_CODE);
+        Stazioni stazioni = getMockStazioni();
+
+        when(stationRepository.findByIdStazione(STATION_CODE)).thenReturn(Optional.of(stazioni));
+        when(paRepository.findByIdDominioIn(ciTaxCodes)).thenReturn(Optional.empty());
+
+        AppException e = assertThrows(AppException.class, () -> creditorInstitutionsService.getStationCreditorInstitutions(STATION_CODE, ciTaxCodes));
+
+        assertNotNull(e);
+        assertEquals(HttpStatus.NOT_FOUND, e.getHttpStatus());
+
+        verify(ciStationRepository, never()).findByFkStazioneAndPaIn(any(), anyList());
     }
 }

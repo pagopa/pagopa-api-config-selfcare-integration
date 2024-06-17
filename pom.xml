@@ -12,7 +12,7 @@
 
     <groupId>it.gov.pagopa.api-config</groupId>
     <artifactId>selfcareintegration</artifactId>
-    <version>1.11.4</version>
+    <version>1.11.4-1-VAS-1113-improvement-get-available-ci-for-station-api</version>
     <name>API-Config - SelfCare Integration</name>
     <description>Spring application exposes APIs for SelfCare</description>
 

@@ -106,6 +106,7 @@ create table NODO4_CFG.STAZIONI
     TARGET_HOST_POF       varchar(100),
     TARGET_PORT_POF       numeric,
     TARGET_PATH_POF       varchar(100),
+    FLAG_STANDIN          char         not null default 'N',
     VERSIONE_PRIMITIVE    numeric(2)   default 1,
     constraint PK_STAZIONI
         primary key (OBJ_ID),

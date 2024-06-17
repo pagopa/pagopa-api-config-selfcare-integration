@@ -95,11 +95,13 @@ class CreditorInstitutionsControllerTest {
 
     @Test
     void getStationCreditorInstitutionsTest() throws Exception {
+        List<String> ciTaxCodes = Collections.singletonList("ciTaxCode");
 
-        when(creditorInstitutionsService.getStationCreditorInstitutions("stationCode"))
-                .thenReturn(Collections.singletonList("ciTaxCode"));
+        when(creditorInstitutionsService.getStationCreditorInstitutions("stationCode", ciTaxCodes))
+                .thenReturn(Collections.singletonList(CreditorInstitutionInfo.builder().build()));
 
-        mvc.perform(get("/creditorinstitutions/stations/{station-code}", "stationCode"))
+        mvc.perform(get("/creditorinstitutions/stations/{station-code}", "stationCode")
+                        .param("ciTaxCodeList", String.valueOf(ciTaxCodes)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }

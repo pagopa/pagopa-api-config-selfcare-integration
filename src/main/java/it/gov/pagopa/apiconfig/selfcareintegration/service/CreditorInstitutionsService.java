@@ -149,13 +149,20 @@ public class CreditorInstitutionsService {
      * @param stationCode station's code
      * @return the list of creditor institution's tax codes
      */
-    public List<String> getStationCreditorInstitutions(String stationCode) {
+    public List<CreditorInstitutionInfo> getStationCreditorInstitutions(String stationCode, List<String> ciTaxCodeList) {
         Stazioni station = this.stationRepository.findByIdStazione(stationCode)
                 .orElseThrow(() -> new AppException(AppError.STATION_NOT_FOUND, stationCode));
 
-        List<PaStazionePa> stazionePaList = this.ciStationRepository.findByFkStazione(station);
-        return stazionePaList.stream()
+        List<Pa> paList = this.paRepository.findByIdDominioIn(ciTaxCodeList)
+                .orElseThrow(() -> new AppException(AppError.PA_NOT_FOUND, ciTaxCodeList));
+
+        List<String> stazionePaList = this.ciStationRepository.findByFkStazioneAndPaIn(station, paList).stream()
                 .map(paStazionePa -> paStazionePa.getPa().getIdDominio())
+                .toList();
+
+        return paList.parallelStream()
+                .filter(pa -> !stazionePaList.contains(pa.getIdDominio()))
+                .map(pa -> this.modelMapper.map(pa, CreditorInstitutionInfo.class))
                 .toList();
     }
 
