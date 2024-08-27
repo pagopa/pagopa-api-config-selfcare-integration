@@ -36,7 +36,7 @@ public class ConvertIbanMasterToIbanDetail implements Converter<IbanMaster, Iban
                 .validityDate(OffsetDateTime.ofInstant(src.getValidityDate().toInstant(), ZoneId.of("UTC")))
                 .dueDate(OffsetDateTime.ofInstant(iban.getDueDate().toInstant(), ZoneId.of("UTC")))
                 .description(src.getDescription())
-                .ownerFiscalCode(iban.getFiscalCode())
+                .ownerFiscalCode(iban.getPa().getIdDominio())
                 .labels(labels)
                 .build();
     }
