@@ -342,6 +342,7 @@ public class TestUtil {
                                 .objId(10L)
                                 .iban("IT01X02933019297465283757")
                                 .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .pa(pa)
                                 .build()
                         )
                         .ibanAttributesMasters(List.of())
@@ -357,6 +358,7 @@ public class TestUtil {
                                 .objId(11L)
                                 .iban("IT01X02933019297465283758")
                                 .dueDate(Timestamp.valueOf("2035-12-31 23:59:59.999"))
+                                .pa(pa)
                                 .build()
                         )
                         .ibanAttributesMasters(List.of(

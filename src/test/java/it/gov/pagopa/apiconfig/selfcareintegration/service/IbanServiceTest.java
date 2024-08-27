@@ -6,6 +6,7 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbansList;
 import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedIbanMasterRepository;
 import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
+import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,7 +90,21 @@ class IbanServiceTest {
     void getIbans_multipleCI_200() throws IOException, JSONException {
 
         List<String> ciList = List.of("168480242", "99999999999");
-        Page<IbanMaster> page = TestUtil.mockPage(Lists.newArrayList(getMockIbanMaster2()), 10, 0);
+        List<IbanMaster> ibanMaster = getMockIbanMaster2();
+        Pa pa = Pa.builder()
+                .objId(100L)
+                .idDominio("99999999999")
+                .enabled(true)
+                .ragioneSociale("Comune di Ventimiglia")
+                .indirizzoDomicilioFiscale("Via Roma 1")
+                .capDomicilioFiscale("23456")
+                .siglaProvinciaDomicilioFiscale("VE")
+                .comuneDomicilioFiscale("Bassano del Grappa")
+                .denominazioneDomicilioFiscale("Via Roma 1")
+                .description("Bassano del Grappa")
+                .build();
+        ibanMaster.get(0).getIban().setPa(pa);
+        Page<IbanMaster> page = TestUtil.mockPage(Lists.newArrayList(ibanMaster), 10, 0);
 
         when(extendedIbanMasterRepository.findAllByPa_idDominioIn(anyList(), any(Pageable.class)))
                 .thenReturn(page);
