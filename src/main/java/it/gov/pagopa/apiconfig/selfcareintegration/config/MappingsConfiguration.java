@@ -6,10 +6,8 @@ import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.Cre
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionInfo;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanDetails;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.iban.IbanEnhanced;
-import it.gov.pagopa.apiconfig.starter.entity.Canali;
-import it.gov.pagopa.apiconfig.starter.entity.IbanMaster;
-import it.gov.pagopa.apiconfig.starter.entity.Pa;
-import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetails;
+import it.gov.pagopa.apiconfig.starter.entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +32,7 @@ public class MappingsConfiguration {
 
         mapper.createTypeMap(Pa.class, CreditorInstitutionInfo.class).setConverter(new ConvertPaToCreditorInstitutionInfo());
         mapper.createTypeMap(IbanMaster.class, IbanEnhanced.class).setConverter(new ConvertIbanMasterToIbanDetailsTemp());
+        mapper.createTypeMap(Stazioni.class, StationDetails.class).setConverter(new ConvertStazioniToStationDetails());
 
         return mapper;
     }
