@@ -1,8 +1,13 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.util;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.model.PageInfo;
+import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 public class Utility {
@@ -31,4 +36,28 @@ public class Utility {
     public static Boolean deNull(Boolean value) {
         return Optional.ofNullable(value).orElse(false);
     }
+
+    /**
+     * Compute the station's connection flag
+     *
+     * @param station station model
+     * @return true if the station is configured to be synchronous, false otherwise
+     */
+    public static boolean isConnectionSync(Stazioni station) {
+        return (StringUtils.isNotBlank(station.getTargetPath()) && StringUtils.isNotBlank(station.getRedirectIp()))
+                || StringUtils.isNotBlank(station.getTargetPathPof());
+    }
+
+    /**
+     * @param timestamp {@link Timestamp} to convert
+     * @return convert timestamp to {@link OffsetDateTime}
+     */
+    public static OffsetDateTime toOffsetDateTime(Timestamp timestamp) {
+        return timestamp != null
+                ? OffsetDateTime.of(timestamp.toLocalDateTime(), ZoneOffset.UTC)
+                : null;
+    }
+
+
+
 }
