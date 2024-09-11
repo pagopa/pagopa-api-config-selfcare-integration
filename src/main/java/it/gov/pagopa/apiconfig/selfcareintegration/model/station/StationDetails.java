@@ -185,4 +185,10 @@ public class StationDetails extends Station {
       allowableValues = {"1", "2"})
   @JsonProperty("primitive_version")
   private Integer versionePrimitive;
+
+  @JsonProperty("is_payment_options_enabled")
+  private Boolean isPaymentOptionsEnabled = false;
+
+  @JsonProperty("rest_endpoint")
+  private String restEndpoint;
 }

@@ -69,6 +69,8 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
 
         builder.primitiveVersion(stazione.getVersionePrimitive());
         builder.ciStatus(deNull(src.getPa().getEnabled()));
+        builder.restEndpoint(stazione.getRestEndpoint());
+        builder.isPaymentOptionsEnabled(stazione.getIsPaymentOptionsEnabled());
         return builder.build();
     }
 
