@@ -1,6 +1,7 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.mapper;
 
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetail;
+import it.gov.pagopa.apiconfig.selfcareintegration.util.Utility;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.Pa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
@@ -32,8 +33,8 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 .stationEnabled(stazione.getEnabled())
                 .stationVersion(stazione.getVersione())
                 .auxDigit(src.getAuxDigit())
-                .segregationCode(getDoubleDigitCode(src.getSegregazione()))
-                .applicationCode(getDoubleDigitCode(src.getProgressivo()))
+                .segregationCode(Utility.getDoubleDigitCode(src.getSegregazione()))
+                .applicationCode(Utility.getDoubleDigitCode(src.getProgressivo()))
                 .broadcast(src.getBroadcast());
 
         if (Strings.isNotBlank(stazione.getIp())) {
@@ -79,13 +80,5 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
             return prefix + s;
         }
         return s;
-    }
-
-    private String getDoubleDigitCode(Long code) {
-        String doubleDigitCode = null;
-        if (code != null) {
-            doubleDigitCode = String.format("%02d", code);
-        }
-        return doubleDigitCode;
     }
 }
