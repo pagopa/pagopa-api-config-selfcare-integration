@@ -1,8 +1,11 @@
 package it.gov.pagopa.apiconfig.selfcareintegration.controller;
 
 import it.gov.pagopa.apiconfig.Application;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationSegregationCodes;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationSegregationCodesList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockCreditorInstitutionDetails;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStationDetailsList;
@@ -46,6 +50,14 @@ class BrokersControllerTest {
                 .thenReturn(getMockCreditorInstitutionDetails());
         when(brokersService.getCreditorInstitutionsAssociatedToBroker("1234", true, PageRequest.of(0, 50)))
                 .thenReturn(getMockCreditorInstitutionDetails());
+        when(brokersService.getCreditorInstitutionsSegregationCodeAssociatedToBroker("1234"))
+                .thenReturn(CreditorInstitutionStationSegregationCodesList.builder()
+                        .ciStationCodes(
+                                Collections.singletonList(CreditorInstitutionStationSegregationCodes.builder()
+                                                .ciTaxCode("1111")
+                                        .build())
+                        )
+                        .build());
     }
 
     @ParameterizedTest
@@ -55,6 +67,7 @@ class BrokersControllerTest {
             "/brokers/1234/stations?stationId=80007580279_01&ciTaxCode=80007580279&limit=50&page=0",
             "/brokers/1234/creditor-institutions?limit=50&page=0",
             "/brokers/1234/creditor-institutions?enabled=true&limit=50&page=0",
+            "/brokers/1234/creditor-institutions/segregation-codes",
     })
     void testGetOk(String url) throws Exception {
         mvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
