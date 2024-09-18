@@ -101,4 +101,11 @@ public class CreditorInstitutionDetail {
     @Schema(description = "True if the CI is enabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean ciStatus;
 
+    @JsonProperty("is_payment_options_enabled")
+    @Schema(description = "True if the REST endpoint can be used for Payment Options service", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean isPaymentOptionsEnabled;
+
+    @JsonProperty("rest_endpoint")
+    @Schema(description = "Generic REST endpoint", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String restEndpoint;
 }

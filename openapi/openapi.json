@@ -2534,6 +2534,12 @@
               1,
               2
             ]
+          },
+          "is_payment_options_enabled": {
+            "type": "boolean"
+          },
+          "rest_endpoint": {
+            "type": "string"
           }
         },
         "description": "List of stations associated to the same entity"
@@ -2709,6 +2715,14 @@
           "ci_status": {
             "type": "boolean",
             "description": "True if the CI is enabled"
+          },
+          "is_payment_options_enabled": {
+            "type": "boolean",
+            "description": "True if the REST endpoint can be used for Payment Options service"
+          },
+          "rest_endpoint": {
+            "type": "string",
+            "description": "Generic REST endpoint"
           }
         },
         "description": "List of creditor institutions associated to the same broker by different stations"
