@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.ProblemJson;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationSegregationCodesList;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
 import it.gov.pagopa.apiconfig.selfcareintegration.service.BrokersService;
 import org.springframework.data.domain.PageRequest;
@@ -49,49 +50,18 @@ public class BrokerController {
      */
     @Operation(
             summary = "Get broker's station list",
-            security = {
-                    @SecurityRequirement(name = "ApiKey"),
-                    @SecurityRequirement(name = "Authorization")
-            },
-            tags = {
-                    "Brokers",
-            })
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content =
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = StationDetailsList.class))),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Forbidden",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not Found",
-                            content = @Content(schema = @Schema(implementation = ProblemJson.class))),
-                    @ApiResponse(
-                            responseCode = "429",
-                            description = "Too many requests",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Service unavailable",
-                            content =
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProblemJson.class)))
-            })
-    @GetMapping(
-            value = "/{broker-tax-code}/stations",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = StationDetailsList.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Service unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
+    })
+    @GetMapping(value = "/{broker-tax-code}/stations", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<StationDetailsList> getStationsDetailsFromBroker(
             @Parameter(description = "The broker's tax code.", required = true)
             @PathVariable("broker-tax-code")
@@ -101,9 +71,7 @@ public class BrokerController {
             @Parameter(description = "The creditor institution's tax code.") @RequestParam(required = false)
             String ciTaxCode,
             @Valid
-            @Parameter(
-                    description = "The number of elements to be included in the page.",
-                    required = true)
+            @Parameter(description = "The number of elements to be included in the page.", required = true)
             @RequestParam(required = false, defaultValue = "10")
             @Positive
             @Max(999)
@@ -119,49 +87,21 @@ public class BrokerController {
         );
     }
 
-
     @Operation(
             summary = "Get creditor institutions associated to broker by station",
-            security = {
-                    @SecurityRequirement(name = "ApiKey"),
-                    @SecurityRequirement(name = "Authorization")
-            },
-            tags = {
-                    "Brokers",
-            })
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreditorInstitutionDetails.class))),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Forbidden",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "429",
-                            description = "Too many requests",
-                            content = @Content(schema = @Schema())),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Service unavailable",
-                            content =
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProblemJson.class)))
-            })
-    @GetMapping(
-            value = "/{broker-tax-code}/creditor-institutions",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreditorInstitutionDetails.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Service unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
+    })
+    @GetMapping(value = "/{broker-tax-code}/creditor-institutions", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<CreditorInstitutionDetails> getCreditorInstitutionsAssociatedToBroker(
             @Parameter(description = "Number of elements on one page. Default = 50")
             @Positive @RequestParam(required = false, defaultValue = "50")
@@ -174,7 +114,29 @@ public class BrokerController {
             String brokerCode,
             @Parameter(description = "Filter by enabled station")
             @RequestParam(required = false, name = "enabled")
-            Boolean enabled) {
+            Boolean enabled
+    ) {
         return ResponseEntity.ok(brokersService.getCreditorInstitutionsAssociatedToBroker(brokerCode, enabled, PageRequest.of(page, limit)));
+    }
+
+    @Operation(
+            summary = "Get segregation codes grouped by creditor institutions associated to broker's station",
+            security = {@SecurityRequirement(name = "ApiKey"), @SecurityRequirement(name = "Authorization")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreditorInstitutionStationSegregationCodesList.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Service unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProblemJson.class)))
+    })
+    @GetMapping(value = "/{broker-tax-code}/creditor-institutions/segregation-codes", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CreditorInstitutionStationSegregationCodesList> getCreditorInstitutionsSegregationCodeAssociatedToBroker(
+            @Parameter(description = "Broker tax code") @PathVariable("broker-tax-code") String brokerTaxCode
+    ) {
+        return ResponseEntity.ok(this.brokersService.getCreditorInstitutionsSegregationCodeAssociatedToBroker(brokerTaxCode));
     }
 }
