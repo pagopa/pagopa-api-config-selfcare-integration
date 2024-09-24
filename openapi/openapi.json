@@ -208,6 +208,133 @@
         }
       ]
     },
+    "/brokers/{broker-tax-code}/creditor-institutions/segregation-codes": {
+      "get": {
+        "tags": [
+          "Brokers"
+        ],
+        "summary": "Get segregation codes grouped by creditor institutions associated to broker's station",
+        "operationId": "getCreditorInstitutionsSegregationCodeAssociatedToBroker",
+        "parameters": [
+          {
+            "name": "broker-tax-code",
+            "in": "path",
+            "description": "Broker tax code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditorInstitutionStationSegregationCodesList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/brokers/{broker-tax-code}/stations": {
       "get": {
         "tags": [
@@ -2743,6 +2870,39 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "CreditorInstitutionStationSegregationCodes": {
+        "required": [
+          "ci_tax_code",
+          "segregation_code_list"
+        ],
+        "type": "object",
+        "properties": {
+          "ci_tax_code": {
+            "type": "string",
+            "description": "The tax code of the creditor institution",
+            "example": "02438750586"
+          },
+          "segregation_code_list": {
+            "type": "array",
+            "description": "List of segregation code used by the creditor institution in a broker station",
+            "items": {
+              "type": "string",
+              "description": "List of segregation code used by the creditor institution in a broker station"
+            }
+          }
+        }
+      },
+      "CreditorInstitutionStationSegregationCodesList": {
+        "type": "object",
+        "properties": {
+          "ci_station_segregation_codes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditorInstitutionStationSegregationCodes"
+            }
           }
         }
       }

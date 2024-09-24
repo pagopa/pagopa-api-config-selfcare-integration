@@ -3,13 +3,15 @@ package it.gov.pagopa.apiconfig.selfcareintegration.service;
 import it.gov.pagopa.apiconfig.selfcareintegration.config.MappingsConfiguration;
 import it.gov.pagopa.apiconfig.selfcareintegration.exception.AppException;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionDetails;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.CreditorInstitutionStationSegregationCodesList;
+import it.gov.pagopa.apiconfig.selfcareintegration.model.creditorinstitution.ICIStationRelation;
 import it.gov.pagopa.apiconfig.selfcareintegration.model.station.StationDetailsList;
+import it.gov.pagopa.apiconfig.selfcareintegration.repository.ExtendedCreditorInstitutionStationRepository;
 import it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil;
 import it.gov.pagopa.apiconfig.starter.entity.IntermediariPa;
 import it.gov.pagopa.apiconfig.starter.entity.PaStazionePa;
 import it.gov.pagopa.apiconfig.starter.entity.Stazioni;
 import it.gov.pagopa.apiconfig.starter.repository.IntermediariPaRepository;
-import it.gov.pagopa.apiconfig.starter.repository.PaStazionePaRepository;
 import it.gov.pagopa.apiconfig.starter.repository.StazioniRepository;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
@@ -29,15 +31,21 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockBroker;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockPaStazionePa;
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.TestUtil.getMockStazioni;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,6 +54,7 @@ import static org.mockito.Mockito.when;
 class BrokersServiceTest {
 
     private static final String BROKER_CODE = "1234";
+    private static final String CI_TAX_CODE = "ciTaxCode";
     private static final String STATION_ID = "80007580279_01";
     private final Pageable pageable = PageRequest.of(0, 10);
 
@@ -56,7 +65,7 @@ class BrokersServiceTest {
     private IntermediariPaRepository intermediariPaRepository;
 
     @MockBean
-    private PaStazionePaRepository paStazionePaRepository;
+    private ExtendedCreditorInstitutionStationRepository paStazionePaRepository;
 
     @Autowired
     private BrokersService brokersService;
@@ -121,5 +130,39 @@ class BrokersServiceTest {
         String expected = TestUtil.readJsonFromFile("response/get_creditor_institution_details_ok" + fileIndex + ".json");
         System.out.println(actual);
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    void getCreditorInstitutionsSegregationCodeAssociatedToBrokerSuccess() {
+        ICIStationRelation iciStationRelationMock1 = mock(ICIStationRelation.class);
+        ICIStationRelation iciStationRelationMock2 = mock(ICIStationRelation.class);
+        when(paStazionePaRepository.findAllByBrokerTaxCode(BROKER_CODE))
+                .thenReturn(List.of(iciStationRelationMock1, iciStationRelationMock2));
+        when(iciStationRelationMock1.getIdDominio()).thenReturn(CI_TAX_CODE);
+        when(iciStationRelationMock1.getSegregazione()).thenReturn(3L);
+        when(iciStationRelationMock2.getIdDominio()).thenReturn(CI_TAX_CODE);
+        when(iciStationRelationMock1.getSegregazione()).thenReturn(19L);
+
+        CreditorInstitutionStationSegregationCodesList result =
+                assertDoesNotThrow(() -> brokersService.getCreditorInstitutionsSegregationCodeAssociatedToBroker(BROKER_CODE));
+
+        assertNotNull(result);
+        assertNotNull(result.getCiStationCodes());
+        assertEquals(1, result.getCiStationCodes().size());
+        assertEquals(CI_TAX_CODE, result.getCiStationCodes().get(0).getCiTaxCode());
+        assertEquals(2, result.getCiStationCodes().get(0).getSegregationCodes().size());
+    }
+
+    @Test
+    void getCreditorInstitutionsSegregationCodeAssociatedToBrokerSuccessNoResult() {
+        when(paStazionePaRepository.findAllByBrokerTaxCode(BROKER_CODE))
+                .thenReturn(Collections.emptyList());
+
+        CreditorInstitutionStationSegregationCodesList result =
+                assertDoesNotThrow(() -> brokersService.getCreditorInstitutionsSegregationCodeAssociatedToBroker(BROKER_CODE));
+
+        assertNotNull(result);
+        assertNotNull(result.getCiStationCodes());
+        assertTrue(result.getCiStationCodes().isEmpty());
     }
 }

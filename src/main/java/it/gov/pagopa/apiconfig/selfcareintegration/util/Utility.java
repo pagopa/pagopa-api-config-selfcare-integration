@@ -31,4 +31,12 @@ public class Utility {
     public static Boolean deNull(Boolean value) {
         return Optional.ofNullable(value).orElse(false);
     }
+
+    public static String getDoubleDigitCode(Long code) {
+        String doubleDigitCode = null;
+        if (code != null) {
+            doubleDigitCode = String.format("%02d", code);
+        }
+        return doubleDigitCode;
+    }
 }
