@@ -151,19 +151,20 @@ postgresql:
     SPRING_DATASOURCE_PASSWORD: 'postgresql-db-cfg-password'
 # Configuration for Oracle
 oracle:
-  !!merge <<: *microservice-chart
-  ingress:
-    !!merge <<: *ingress
-    path: /pagopa-api-config-selfcare-integration/o/(.*)
-  envConfig:
-    !!merge <<: *envConfig
-    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
-    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
-    SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@(DESCRIPTION=(ENABLE=BROKEN)(ADDRESS=(PROTOCOL=tcp)(PORT=1522)(HOST=db-nodo-pagamenti.d.db-nodo-pagamenti.com))(CONNECT_DATA=(SERVICE_NAME=NDPSPCT_PP_NODO4_CFG))(SO_KEEPALIVE=true)(TCP_KEEPIDLE=60)(TCP_KEEPINTVL=30)(TCP_KEEPCNT=15))"
-    SPRING_DATASOURCE_USERNAME: 'NODO4_CFG'
-    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
-    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
-    DATABASE_SCHEMA: 'NODO4_CFG'
-  envSecret:
-    !!merge <<: *envSecret
-    SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
+  enabled: false
+#  !!merge <<: *microservice-chart
+#  ingress:
+#    !!merge <<: *ingress
+#    path: /pagopa-api-config-selfcare-integration/o/(.*)
+#  envConfig:
+#    !!merge <<: *envConfig
+#    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
+#    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
+#    SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@(DESCRIPTION=(ENABLE=BROKEN)(ADDRESS=(PROTOCOL=tcp)(PORT=1522)(HOST=db-nodo-pagamenti.d.db-nodo-pagamenti.com))(CONNECT_DATA=(SERVICE_NAME=NDPSPCT_PP_NODO4_CFG))(SO_KEEPALIVE=true)(TCP_KEEPIDLE=60)(TCP_KEEPINTVL=30)(TCP_KEEPCNT=15))"
+#    SPRING_DATASOURCE_USERNAME: 'NODO4_CFG'
+#    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
+#    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
+#    DATABASE_SCHEMA: 'NODO4_CFG'
+#  envSecret:
+#    !!merge <<: *envSecret
+#    SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
