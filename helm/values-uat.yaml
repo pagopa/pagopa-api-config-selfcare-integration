@@ -97,12 +97,12 @@ microservice-chart: &microservice-chart
           type: Utilization # Allowed types are 'Utilization' or 'AverageValue'
           value: "75"
   envConfig: &envConfig
-    ENV: 'azure-uat'
+    ENV: 'uat'
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
-    APP_LOGGING_LEVEL: 'DEBUG'
+    APP_LOGGING_LEVEL: 'INFO'
     DEFAULT_LOGGING_LEVEL: 'INFO'
     OTEL_SERVICE_NAME: "pagopa-api-config-selfcare-integration"
-    OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=azure-uat"
+    OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=uat"
     OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-system.svc:4317"
     OTEL_LOGS_EXPORTER: none
     OTEL_TRACES_SAMPLER: "always_on"
@@ -140,7 +140,7 @@ postgresql:
     !!merge <<: *envConfig
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
     APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
-    SPRING_DATASOURCE_URL: "jdbc:postgresql://nodo-db.u.internal.postgresql.pagopa.it:6432/nodo?sslmode=require&prepareThreshold=0&currentSchema=cfg"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://nodo-db.u.internal.postgresql.pagopa.it:5432/nodo?sslmode=require&prepareThreshold=0&currentSchema=cfg"
     SPRING_DATASOURCE_USERNAME: 'cfg'
     SPRING_DATASOURCE_DRIVER: 'org.postgresql.Driver'
     SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.PostgreSQLDialect'
@@ -150,20 +150,21 @@ postgresql:
     !!merge <<: *envSecret
     SPRING_DATASOURCE_PASSWORD: 'postgresql-db-cfg-password'
 # Configuration for Oracle
-oracle:
-  !!merge <<: *microservice-chart
-  ingress:
-    !!merge <<: *ingress
-    path: /pagopa-api-config-selfcare-integration/o/(.*)
-  envConfig:
-    !!merge <<: *envConfig
-    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
-    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
-    SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@(DESCRIPTION=(ENABLE=BROKEN)(ADDRESS=(PROTOCOL=tcp)(PORT=1524)(HOST=db-nodo-pagamenti.u.db-nodo-pagamenti.com))(CONNECT_DATA=(SERVICE_NAME=NDPSPCA_NODO4_CFG))(SO_KEEPALIVE=true)(TCP_KEEPIDLE=60)(TCP_KEEPINTVL=30)(TCP_KEEPCNT=15))"
-    SPRING_DATASOURCE_USERNAME: 'PP_NODO4_CFG'
-    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
-    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
-    DATABASE_SCHEMA: 'NODO4_CFG'
-  envSecret:
-    !!merge <<: *envSecret
-    SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
+# oracle:
+#   enabled: false
+#  !!merge <<: *microservice-chart
+#  ingress:
+#    !!merge <<: *ingress
+#    path: /pagopa-api-config-selfcare-integration/o/(.*)
+#  envConfig:
+#    !!merge <<: *envConfig
+#    WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
+#    APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
+#    SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@(DESCRIPTION=(ENABLE=BROKEN)(ADDRESS=(PROTOCOL=tcp)(PORT=1524)(HOST=db-nodo-pagamenti.u.db-nodo-pagamenti.com))(CONNECT_DATA=(SERVICE_NAME=NDPSPCA_NODO4_CFG))(SO_KEEPALIVE=true)(TCP_KEEPIDLE=60)(TCP_KEEPINTVL=30)(TCP_KEEPCNT=15))"
+#    SPRING_DATASOURCE_USERNAME: 'PP_NODO4_CFG'
+#    SPRING_DATASOURCE_DRIVER: 'oracle.jdbc.OracleDriver'
+#    SPRING_JPA_DB_PLATFORM: 'org.hibernate.dialect.Oracle12cDialect'
+#    DATABASE_SCHEMA: 'NODO4_CFG'
+#  envSecret:
+#    !!merge <<: *envSecret
+#    SPRING_DATASOURCE_PASSWORD: 'oracle-db-cfg-password'
