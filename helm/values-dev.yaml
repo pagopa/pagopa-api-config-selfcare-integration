@@ -45,6 +45,7 @@ microservice-chart: &microservice-chart
     periodSeconds: 10
   deployment:
     create: true
+    replicas: 1
   serviceMonitor:
     create: true
     endpoints:
@@ -64,9 +65,9 @@ microservice-chart: &microservice-chart
     host: "weudev.apiconfig.internal.dev.platform.pagopa.it"
     servicePort: 8080
   serviceAccount:
-    create: false
-    annotations: {}
-    name: ""
+    name: "apiconfig-workload-identity"
+  azure:
+    workloadIdentityClientId: <workload-identity-client-id-set-automatically-by-gha>
   podAnnotations: {}
   podSecurityContext:
     seccompProfile:
