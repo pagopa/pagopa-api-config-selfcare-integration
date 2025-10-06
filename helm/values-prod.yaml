@@ -45,6 +45,7 @@ microservice-chart: &microservice-chart
     periodSeconds: 10
   deployment:
     create: true
+    replicas: 1 # (default) same as HPA minReplica
   serviceMonitor:
     create: true
     endpoints:
