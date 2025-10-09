@@ -108,4 +108,12 @@ public class CreditorInstitutionDetail {
     @JsonProperty("rest_endpoint")
     @Schema(description = "Generic REST endpoint", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String restEndpoint;
+
+    @JsonProperty("aca")
+    @Schema(description = "Flag tha define if ACA archive will be populated", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean aca;
+
+    @JsonProperty("stand_in")
+    @Schema(description = "Flag that define if the debt positions can be paid in Stan In", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean standIn;
 }
