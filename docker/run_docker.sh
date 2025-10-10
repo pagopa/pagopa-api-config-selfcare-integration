@@ -44,7 +44,7 @@ done
 echo $GH_TOKEN > ./secrets
 
 stack_name=$(cd .. && basename "$PWD")
-docker compose -f ./docker-compose.yml -p "${stack_name}" up -d --remove-orphans --force-recreate --build
+DOCKER_BUILDKIT=1 docker compose -f ./docker-compose.yml -p "${stack_name}" up -d --remove-orphans --force-recreate --build
 
 
 # waiting the containers
