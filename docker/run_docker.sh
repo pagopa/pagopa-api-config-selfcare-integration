@@ -51,7 +51,7 @@ DOCKER_BUILDKIT=1 docker compose -f ./docker-compose.yml -p "${stack_name}" up -
 printf 'Waiting for the service'
 attempt_counter=0
 max_attempts=50
-until $(curl --output /dev/null --silent --head --fail http://localhost:8080/actuator/info); do
+until $(curl --output /dev/null --silent --head --fail http://localhost:8080/info); do
     if [ ${attempt_counter} -eq ${max_attempts} ];then
       echo "Max attempts reached"
       exit 1
