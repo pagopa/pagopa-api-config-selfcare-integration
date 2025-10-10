@@ -35,7 +35,13 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
                 .auxDigit(src.getAuxDigit())
                 .segregationCode(Utility.getDoubleDigitCode(src.getSegregazione()))
                 .applicationCode(Utility.getDoubleDigitCode(src.getProgressivo()))
-                .broadcast(src.getBroadcast());
+                .broadcast(src.getBroadcast())
+                .primitiveVersion(stazione.getVersionePrimitive())
+                .ciStatus(deNull(src.getPa().getEnabled()))
+                .restEndpoint(stazione.getRestEndpoint())
+                .isPaymentOptionsEnabled(stazione.getIsPaymentOptionsEnabled())
+                .aca(src.getAca())
+                .standIn(src.getStandin());
 
         if (Strings.isNotBlank(stazione.getIp())) {
             String endpointRT = String.format("%s://%s:%s%s",
@@ -59,19 +65,15 @@ public class ConvertPaStazionePaToCreditorInstitutionDetail implements Converter
         }
 
         if (Strings.isNotBlank(stazione.getIp4Mod())) {
-        String endpointMU = String.format("%s://%s:%s%s",
-                deNull(stazione.getProtocollo4Mod()).toLowerCase(),
-                deNull(stazione.getIp4Mod()),
-                deNull(stazione.getPorta4Mod()),
-                addPrefixIfAbsent("/", deNull(stazione.getServizio4Mod()))
-        );
+            String endpointMU = String.format("%s://%s:%s%s",
+                    deNull(stazione.getProtocollo4Mod()).toLowerCase(),
+                    deNull(stazione.getIp4Mod()),
+                    deNull(stazione.getPorta4Mod()),
+                    addPrefixIfAbsent("/", deNull(stazione.getServizio4Mod()))
+            );
             builder.endpointMU(endpointMU);
         }
 
-        builder.primitiveVersion(stazione.getVersionePrimitive());
-        builder.ciStatus(deNull(src.getPa().getEnabled()));
-        builder.restEndpoint(stazione.getRestEndpoint());
-        builder.isPaymentOptionsEnabled(stazione.getIsPaymentOptionsEnabled());
         return builder.build();
     }
 
