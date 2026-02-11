@@ -69,7 +69,7 @@ jobs:
         run: |
           cd ./docker
           chmod +x ./run_docker.sh
-          ./run_docker.sh local
+          ./run_docker.sh local ${{ secrets.READ_PACKAGES_TOKEN }}
 
       - name: Run Integration Tests
         shell: bash
