@@ -12,3 +12,15 @@ overrides:
   hosts:
     - api.platform.pagopa.it
   base_path: "/apiconfig-selfcare-integration/v1"
+  endpoints:
+    GET /apiconfig-selfcare-integration/v1/ibans/{creditorinstitutioncode}/list:
+      response_time_threshold: 6
+    POST /apiconfig-selfcare-integration/v1/ibans:
+      response_time_threshold: 5
+    GET /apiconfig-selfcare-integration/v1/creditorinstitutions/stations/{station-code}:
+      response_time_threshold: 4
+    GET /apiconfig-selfcare-integration/v1/brokers/{broker-tax-code}/creditor-institutions/segregation-codes:
+      response_time_threshold: 2
+    GET /apiconfig-selfcare-integration/v1/brokers/{broker-tax-code}/creditor-institutions:
+      response_time_threshold: 2
+
