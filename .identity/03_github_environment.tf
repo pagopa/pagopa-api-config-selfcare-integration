@@ -21,7 +21,7 @@ resource "github_repository_environment" "github_repository_environment" {
 
 locals {
   env_secrets = {
-    "CLIENT_ID" : data.azurerm_user_assigned_identity.identity_cd_01.client_id,
+    "CLIENT_ID" : data.azurerm_user_assigned_identity.identity_cd.client_id,
     "TENANT_ID" : data.azurerm_client_config.current.tenant_id,
     "SUBSCRIPTION_ID" : data.azurerm_subscription.current.subscription_id,
   }
@@ -61,37 +61,53 @@ resource "github_actions_environment_variable" "github_environment_runner_variab
   value         = each.value
 }
 
-#############################
-# Secrets of the Repository #
-#############################
 
- #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
- resource "github_actions_secret" "secret_sonar_token" {
-   repository       = local.github.repository
-   secret_name      = "SONAR_TOKEN"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar.value
- }
+###############
+# ENV Secrets #
+###############
 
- #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
- resource "github_actions_secret" "secret_bot_token" {
-
-   repository       = local.github.repository
-   secret_name      = "BOT_TOKEN_GITHUB"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_bot_token.value
- }
-
- #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
- resource "github_actions_secret" "secret_cucumber_token" {
-
-   repository       = local.github.repository
-   secret_name      = "CUCUMBER_PUBLISH_TOKEN"
-   plaintext_value  = data.azurerm_key_vault_secret.key_vault_cucumber_token.value
- }
-
-#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_secret" "secret_read_package_token" {
+#tfsec:ignore:github-actions-no-plain-text-action-secrets
+resource "github_actions_secret" "secret_sonar_token" {
+  count  = var.env_short == "d" ? 1 : 0
 
   repository       = local.github.repository
-  secret_name      = "READ_PACKAGES_TOKEN"
-  plaintext_value  = data.azurerm_key_vault_secret.key_vault_read_package_token.value
+  secret_name      = "SONAR_TOKEN"
+  plaintext_value  = data.azurerm_key_vault_secret.key_vault_sonar.value
+}
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets
+resource "github_actions_secret" "secret_bot_token" {
+  count  = var.env_short == "d" ? 1 : 0
+
+  repository       = local.github.repository
+  secret_name      = "BOT_TOKEN_GITHUB"
+  plaintext_value  = data.azurerm_key_vault_secret.key_vault_bot_token.value
+}
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
+resource "github_actions_secret" "secret_slack_webhook_deploy" {
+  repository      = local.github.repository
+  secret_name     = "SLACK_WEBHOOK_URL_DEPLOY"
+  plaintext_value = data.azurerm_key_vault_secret.key_vault_deploy_slack_webhook.value
+}
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
+resource "github_actions_secret" "secret_slack_webhook_integration_test" {
+  repository      = local.github.repository
+  secret_name     = "SLACK_WEBHOOK_URL_INTEGRATION_TEST"
+  plaintext_value = data.azurerm_key_vault_secret.key_vault_integration_test_slack_webhook.value
+}
+
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
+resource "github_actions_secret" "secret_slack_webhook_report" {
+  repository      = local.github.repository
+  secret_name     = "SLACK_WEBHOOK_URL_REPORT"
+  plaintext_value = data.azurerm_key_vault_secret.key_vault_report_slack_webhook.value
+}
+
+resource "github_actions_secret" "secret_read_package_token" {
+
+  repository      = local.github.repository
+  secret_name     = "READ_PACKAGES_TOKEN"
+  plaintext_value = data.azurerm_key_vault_secret.key_vault_read_package_token.value
 }
