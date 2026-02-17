@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -32,6 +33,7 @@ import java.util.stream.StreamSupport;
 
 import static it.gov.pagopa.apiconfig.selfcareintegration.util.Utility.deNull;
 
+
 @Aspect
 @Component
 @Slf4j
@@ -48,40 +50,30 @@ public class LoggingAspect {
     public static final String OPERATION_ID = "operationId";
     public static final String ARGS = "args";
 
-    final HttpServletRequest httRequest;
-    final HttpServletResponse httpResponse;
-
+    @Autowired
+    HttpServletRequest httRequest;
+    @Autowired
+    HttpServletResponse httpResponse;
     @Value("${info.application.artifactId}")
     private String artifactId;
-
     @Value("${info.application.version}")
     private String version;
-
     @Value("${info.properties.environment}")
     private String environment;
 
-    public LoggingAspect(HttpServletRequest httRequest, HttpServletResponse httpResponse) {
-        this.httRequest = httRequest;
-        this.httpResponse = httpResponse;
-    }
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void restController() {
         // all rest controllers
     }
 
-    @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.repository..*.*(..))")
+    @Pointcut("@within(org.springframework.stereotype.Repository)")
     public void repository() {
         // all repository methods
     }
 
-    @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.service..*.*(..))")
+    @Pointcut("@within(org.springframework.stereotype.Service)")
     public void service() {
-        // all service methods
-    }
-
-    @Pointcut("execution(* it.gov.pagopa.apiconfig.selfcareintegration.exception.ErrorHandler.*(..))")
-    public void errorHandler() {
         // all service methods
     }
 
@@ -115,7 +107,8 @@ public class LoggingAspect {
                                         || prop.toLowerCase().contains("pass")
                                         || prop.toLowerCase().contains("pwd")
                                         || prop.toLowerCase().contains("key")
-                                        || prop.toLowerCase().contains("secret")))
+                                        || prop.toLowerCase().contains("secret")
+                                ))
                 .forEach(prop -> log.debug("{}: {}", prop, env.getProperty(prop)));
     }
 
@@ -167,20 +160,20 @@ public class LoggingAspect {
     }
 
     private static String getDetail(ResponseEntity<ProblemJson> result) {
-        if(result != null && result.getBody() != null && result.getBody().getDetail() != null) {
+        if (result != null && result.getBody() != null && result.getBody().getDetail() != null) {
             return result.getBody().getDetail();
         } else return AppError.UNKNOWN.getDetails();
     }
 
     private static String getTitle(ResponseEntity<ProblemJson> result) {
-        if(result != null && result.getBody() != null && result.getBody().getTitle() != null) {
+        if (result != null && result.getBody() != null && result.getBody().getTitle() != null) {
             return result.getBody().getTitle();
         } else return AppError.UNKNOWN.getTitle();
     }
 
     private static String getExecutionTime() {
         String startTime = MDC.get(START_TIME);
-        if(startTime != null) {
+        if (startTime != null) {
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - Long.parseLong(startTime);
             return String.valueOf(executionTime);
