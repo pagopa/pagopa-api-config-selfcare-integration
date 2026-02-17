@@ -13,14 +13,17 @@ overrides:
     - api.platform.pagopa.it
   base_path: "/apiconfig-selfcare-integration/v1"
   endpoints:
+    GET /brokers/{broker-tax-code}/creditor-institutions:
+      response_time_threshold: 3
+    GET /brokers/{broker-tax-code}/creditor-institutions/segregation-codes:
+        response_time_threshold: 5
+    GET /brokers/{broker-tax-code}/stations:
+        response_time_threshold: 2
+    GET /creditorinstitutions/stations/{station-code}:
+      response_time_threshold: 5
+    GET /creditorinstitutions/{ci-tax-code}/segregationcodes:
+      response_time_threshold: 2.5
+    POST /ibans:
+      response_time_threshold: 6
     GET /ibans/{creditorinstitutioncode}/list:
       response_time_threshold: 6
-    POST /ibans:
-      response_time_threshold: 5
-    GET /creditorinstitutions/stations/{station-code}:
-      response_time_threshold: 4
-    GET /brokers/{broker-tax-code}/creditor-institutions/segregation-codes:
-      response_time_threshold: 2
-    GET /brokers/{broker-tax-code}/creditor-institutions:
-      response_time_threshold: 2
-
