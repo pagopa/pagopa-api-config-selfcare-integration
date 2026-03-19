@@ -14,16 +14,37 @@ overrides:
   base_path: "/apiconfig-selfcare-integration/v1"
   endpoints:
     GET /brokers/{broker-tax-code}/creditor-institutions:
-      response_time_threshold: 3
+        response_time_threshold: 3
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /brokers/{broker-tax-code}/creditor-institutions/segregation-codes:
         response_time_threshold: 5
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /brokers/{broker-tax-code}/stations:
         response_time_threshold: 2
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /creditorinstitutions/stations/{station-code}:
-      response_time_threshold: 5
+        response_time_threshold: 5
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /creditorinstitutions/{ci-tax-code}/segregationcodes:
-      response_time_threshold: 2.5
+        response_time_threshold: 2.5
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     POST /ibans:
-      response_time_threshold: 6
+        response_time_threshold: 6
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /ibans/{creditorinstitutioncode}/list:
-      response_time_threshold: 6
+        response_time_threshold: 6
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
