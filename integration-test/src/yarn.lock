@@ -335,7 +335,7 @@ aws4@^1.2.1, aws4@^1.8.0:
   integrity sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==
 
 axios@^1.6.0:
-  version "1.13.5"
+  version "1.15.0"
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
