@@ -6,4 +6,5 @@ public interface ICIStationRelation {
 
     Long getSegregazione();
 
+    String getRagioneSociale();
 }

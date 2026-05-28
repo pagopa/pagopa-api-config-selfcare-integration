@@ -109,28 +109,35 @@ public class BrokersService {
     public CreditorInstitutionStationSegregationCodesList getCreditorInstitutionsSegregationCodeAssociatedToBroker(
             String brokerTaxCode
     ) {
-        Map<String, List<String>> groupedList =
+        Map<String, Map<String, List<String>>> groupedList =
                 this.paStazionePaRepository.findAllByBrokerTaxCode(brokerTaxCode).parallelStream()
                         .filter(elem -> elem.getSegregazione() != null)
                         .map(elem -> modelMapper.map(elem, CIStationRelation.class))
                         .collect(
                                 Collectors.groupingBy(CIStationRelation::getCiTaxCode,
-                                        Collectors.mapping(
-                                                CIStationRelation::getSegregationCode,
-                                                Collectors.toList()
+                                        Collectors.groupingBy(
+                                                CIStationRelation::getInstitutionName,
+                                                Collectors.mapping(
+                                                        CIStationRelation::getSegregationCode,
+                                                        Collectors.toList()
+                                                )
                                         ))
                         );
 
         return CreditorInstitutionStationSegregationCodesList.builder()
                 .ciStationCodes(groupedList
-                        .keySet()
+                        .entrySet()
                         .parallelStream()
-                        .map(key ->
-                                CreditorInstitutionStationSegregationCodes.builder()
-                                        .ciTaxCode(key)
-                                        .segregationCodes(groupedList.get(key))
-                                        .build()
-                        )
+                        .map(entry -> {
+                            String ciTaxCode = entry.getKey();
+                            Map.Entry<String, List<String>> institutionEntry =
+                                    entry.getValue().entrySet().iterator().next();
+                            return CreditorInstitutionStationSegregationCodes.builder()
+                                    .ciTaxCode(ciTaxCode)
+                                    .institutionName(institutionEntry.getKey())
+                                    .segregationCodes(institutionEntry.getValue())
+                                    .build();
+                        })
                         .toList())
                 .build();
     }

@@ -24,7 +24,7 @@ public interface ExtendedCreditorInstitutionStationRepository extends PaStazione
   List<PaStazionePa> findByFkStazioneAndPaIn(@Param("fkStazione") Stazioni station, @Param("pa") List<Pa> paList);
 
   @Query(value =
-          "SELECT p.idDominio as idDominio, paspa.segregazione as segregazione " +
+          "SELECT p.idDominio as idDominio, p.ragioneSociale as ragioneSociale, paspa.segregazione as segregazione " +
                   "FROM PaStazionePa paspa " +
                   "JOIN Stazioni s ON paspa.fkStazione = s.objId " +
                   "JOIN Pa p ON paspa.fkPa = p.objId " +
