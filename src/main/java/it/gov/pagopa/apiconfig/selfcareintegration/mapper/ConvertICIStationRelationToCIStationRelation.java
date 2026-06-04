@@ -16,6 +16,7 @@ public class ConvertICIStationRelationToCIStationRelation implements Converter<I
         ICIStationRelation source = context.getSource();
 
         return CIStationRelation.builder()
+                .institutionName(source.getRagioneSociale())
                 .ciTaxCode(source.getIdDominio())
                 .segregationCode(Utility.getDoubleDigitCode(source.getSegregazione()))
                 .build();

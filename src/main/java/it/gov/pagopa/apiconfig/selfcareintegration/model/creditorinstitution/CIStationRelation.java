@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CIStationRelation {
 
+    private String institutionName;
     private String ciTaxCode;
     private String segregationCode;
 

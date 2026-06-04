@@ -4,7 +4,7 @@
     "title": "API-Config - SelfCare Integration",
     "description": "Spring application exposes APIs for SelfCare",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.12.16"
+    "version": "1.12.16-1-PIDM-1847-update-api-getECsegregationCodes"
   },
   "servers": [
     {
@@ -2884,6 +2884,7 @@
       "CreditorInstitutionStationSegregationCodes": {
         "required": [
           "ci_tax_code",
+          "institution_name",
           "segregation_code_list"
         ],
         "type": "object",
@@ -2900,6 +2901,11 @@
               "type": "string",
               "description": "List of segregation code used by the creditor institution in a broker station"
             }
+          },
+          "institution_name": {
+            "type": "string",
+            "description": "The name of the creditor institution",
+            "example": "Comune di Brescia"
           }
         }
       },
