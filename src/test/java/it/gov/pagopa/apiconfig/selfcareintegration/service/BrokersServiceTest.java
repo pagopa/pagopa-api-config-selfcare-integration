@@ -56,6 +56,7 @@ class BrokersServiceTest {
     private static final String BROKER_CODE = "1234";
     private static final String CI_TAX_CODE = "ciTaxCode";
     private static final String STATION_ID = "80007580279_01";
+    public static final String RAGIONE_SOCIALE = "RagioneSociale";
     private final Pageable pageable = PageRequest.of(0, 10);
 
     @MockBean
@@ -140,8 +141,10 @@ class BrokersServiceTest {
                 .thenReturn(List.of(iciStationRelationMock1, iciStationRelationMock2));
         when(iciStationRelationMock1.getIdDominio()).thenReturn(CI_TAX_CODE);
         when(iciStationRelationMock1.getSegregazione()).thenReturn(3L);
+        when(iciStationRelationMock1.getRagioneSociale()).thenReturn(RAGIONE_SOCIALE);
         when(iciStationRelationMock2.getIdDominio()).thenReturn(CI_TAX_CODE);
         when(iciStationRelationMock1.getSegregazione()).thenReturn(19L);
+        when(iciStationRelationMock2.getRagioneSociale()).thenReturn(RAGIONE_SOCIALE);
 
         CreditorInstitutionStationSegregationCodesList result =
                 assertDoesNotThrow(() -> brokersService.getCreditorInstitutionsSegregationCodeAssociatedToBroker(BROKER_CODE));
@@ -150,6 +153,7 @@ class BrokersServiceTest {
         assertNotNull(result.getCiStationCodes());
         assertEquals(1, result.getCiStationCodes().size());
         assertEquals(CI_TAX_CODE, result.getCiStationCodes().get(0).getCiTaxCode());
+        assertEquals(RAGIONE_SOCIALE, result.getCiStationCodes().get(0).getInstitutionName());
         assertEquals(2, result.getCiStationCodes().get(0).getSegregationCodes().size());
     }
 
