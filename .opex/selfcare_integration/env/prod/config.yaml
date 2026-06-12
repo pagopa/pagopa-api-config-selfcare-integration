@@ -18,6 +18,11 @@ overrides:
         response_time_evaluation_frequency: 10
         response_time_evaluation_time_window: 20
         response_time_event_occurrences: 2
+    GET /creditorinstitutions:
+        response_time_threshold: 4
+        response_time_evaluation_frequency: 10
+        response_time_evaluation_time_window: 20
+        response_time_event_occurrences: 2
     GET /brokers/{broker-tax-code}/creditor-institutions/segregation-codes:
         response_time_threshold: 5
         response_time_evaluation_frequency: 10
