@@ -49,7 +49,7 @@ overrides:
         response_time_evaluation_time_window: 20
         response_time_event_occurrences: 5
     GET /ibans/{creditorinstitutioncode}/list:
-        response_time_threshold: 6
+        response_time_threshold: 12
         response_time_evaluation_frequency: 10
         response_time_evaluation_time_window: 20
         response_time_event_occurrences: 2
