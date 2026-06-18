@@ -29,7 +29,7 @@ overrides:
         response_time_evaluation_time_window: 20
         response_time_event_occurrences: 10
     GET /brokers/{broker-tax-code}/stations:
-        response_time_threshold: 5
+        response_time_threshold: 8
         response_time_evaluation_frequency: 10
         response_time_evaluation_time_window: 20
         response_time_event_occurrences: 2
