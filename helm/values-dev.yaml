@@ -22,7 +22,7 @@ microservice-chart: &microservice-chart
       envSecret: {}
   image:
     repository: ghcr.io/pagopa/pagopa-api-config-selfcare-integration
-    tag: "1.12.18"
+    tag: "1.12.18-2-PIDM-2502-migrate-haproxy"
     pullPolicy: Always
   livenessProbe:
     httpGet:
@@ -93,9 +93,9 @@ microservice-chart: &microservice-chart
     cooldownPeriod: 60 # seconds
     triggers:
       - type: cpu
+        metricType: Utilization
         metadata:
           # Required
-          type: Utilization # Allowed types are 'Utilization' or 'AverageValue'
           value: "75"
   envConfig: &envConfig
     ENV: 'dev'
@@ -137,6 +137,13 @@ postgresql:
   ingress:
     !!merge <<: *ingress
     path: /pagopa-api-config-selfcare-integration/p/(.*)
+    haproxy:
+      create: true
+      host: "haproxy.apiconfig.internal.dev.platform.pagopa.it"
+      path: "/pagopa-api-config-selfcare-integration/p/"
+      rewriteTarget: "/\\1"
+      annotations:
+        haproxy.org/check: "true"
   envConfig:
     !!merge <<: *envConfig
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
