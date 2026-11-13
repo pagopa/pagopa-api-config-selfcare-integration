@@ -12,7 +12,7 @@
 
     <groupId>it.gov.pagopa.api-config</groupId>
     <artifactId>selfcareintegration</artifactId>
-    <version>1.12.18-1-PIDM-2502-migrate-haproxy</version>
+    <version>1.12.18-2-PIDM-2502-migrate-haproxy</version>
     <name>API-Config - SelfCare Integration</name>
     <description>Spring application exposes APIs for SelfCare</description>
 
