@@ -150,7 +150,7 @@ postgresql:
       create: true
       host: "weuprod.apiconfig.internal.platform.pagopa.it"
       path: "/pagopa-api-config-selfcare-integration/p/"
-      rewriteTarget: "/\1"
+      rewriteTarget: "/\\1"
       annotations:
         haproxy.org/check: "true"
   envConfig:
