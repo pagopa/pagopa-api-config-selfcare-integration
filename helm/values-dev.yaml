@@ -139,7 +139,7 @@ postgresql:
     path: /pagopa-api-config-selfcare-integration/p/(.*)
     haproxy:
       create: true
-      host: "haproxy.selfcare.internal.platform.pagopa.it"
+      host: "haproxy.apiconfig.internal.dev.platform.pagopa.it"
       path: "/pagopa-api-config-selfcare-integration/p/"
       rewriteTarget: "/\\1"
       annotations:
