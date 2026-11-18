@@ -98,6 +98,7 @@ microservice-chart: &microservice-chart
           value: "75"
   envConfig: &envConfig
     ENV: 'prod'
+    JAVA_TOOL_OPTIONS: "-XX:-UseBASE64Intrinsics"
     CORS_CONFIGURATION: '{"origins": ["*"], "methods": ["*"]}'
     APP_LOGGING_LEVEL: 'INFO'
     DEFAULT_LOGGING_LEVEL: 'INFO'
@@ -137,8 +138,8 @@ microservice-chart: &microservice-chart
             namespaces: ["apiconfig"]
             topologyKey: topology.kubernetes.io/zone
 # Configuration used to update image tag (stable or canary) by pipeline
-microservice-chart:
-  !!merge <<: *microservice-chart
+#microservice-chart:
+#  !!merge <<: *microservice-chart
 # Configuration for PostgreSQL
 postgresql:
   !!merge <<: *microservice-chart
@@ -146,7 +147,6 @@ postgresql:
     !!merge <<: *ingress
     path: /pagopa-api-config-selfcare-integration/p/(.*)
   envConfig:
-    JAVA_TOOL_OPTIONS: "-XX:-UseBASE64Intrinsics -XX:UseAVX=2"
     !!merge <<: *envConfig
     WEBSITE_SITE_NAME: 'pagopaapiconfigselfcareintegration' # required to show cloud role name in application insights
     APPLICATIONINSIGHTS_ROLE_NAME: "pagopa-api-config-selfcare-integration"
